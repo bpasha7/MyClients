@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Data.EF.Entities
 {
+    /// <summary>
+    /// Пользователь
+    /// </summary>
     public class User : IEntity<int>
     {
         public User() { }
