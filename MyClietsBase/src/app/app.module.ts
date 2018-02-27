@@ -1,8 +1,9 @@
-import {CdkTableModule} from '@angular/cdk/table';
-import {HttpClientModule} from '@angular/common/http';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
+import { CdkTableModule } from '@angular/cdk/table';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -37,11 +38,23 @@ import {
   MatToolbarModule,
   MatTooltipModule,
 } from '@angular/material';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
+import { ClientsComponent } from './components/clients/clients.component';
+
+/*Routes */
+const appRoutes: Routes = [
+  //{ path: 'desk', component: InputForm },
+  //{ path: 'users', component: UsersForm },
+  //{ path: 'cases', component: CasesForm },
+  { path: 'clients', component: ClientsComponent },
+  // { path: '', component: LoginForm },
+  //{ path: 'login', component: LoginForm }
+]
+/*Routes */
 
 @NgModule({
   exports: [
@@ -80,10 +93,13 @@ import { AppComponent } from './app.component';
     MatTooltipModule,
   ]
 })
-export class DemoMaterialModule {}
+export class DemoMaterialModule { }
 
 @NgModule({
   imports: [
+    RouterModule.forRoot(
+      appRoutes
+    ),
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -94,8 +110,11 @@ export class DemoMaterialModule {}
     ReactiveFormsModule,
   ],
   entryComponents: [],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    ClientsComponent
+  ],
   bootstrap: [AppComponent],
   providers: []
 })
-export class AppModule {}
+export class AppModule { }
