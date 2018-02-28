@@ -1,16 +1,21 @@
 using System.IO;
 using System.Text;
+using Data.EF;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using MyClientsBase.Helpers;
+using MyClientsBase.Services;
 using NLog.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
+using AutoMapper;
 
-namespace MyClietsBase
+namespace MyClientsBase
 {
   public class Startup
   {
@@ -29,6 +34,12 @@ namespace MyClietsBase
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      var connection = Configuration["AppSettings:Connection"];
+      services.AddDbContext<ApplicationDbContext>(options =>
+                  options.UseMySQL(connection, b => b.MigrationsAssembly("MyClientsBase")));
+
+      //inject app config
+      services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(options =>
           {
@@ -43,6 +54,8 @@ namespace MyClietsBase
               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
             };
           });
+      //inject services
+      services.AddScoped<IUserService, UserService>();
 
       // Register the Swagger generator, defining one or more Swagger documents
       services.AddSwaggerGen(c =>
@@ -50,6 +63,8 @@ namespace MyClietsBase
         c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
       });
       services.AddMvc();
+      //inject automapper
+      services.AddAutoMapper();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +75,7 @@ namespace MyClietsBase
       loggerFactory.AddNLog();
       //#if DEBUG
       //      loggerFactory.AddNLogWeb();
-      //      loggerFactory.AddFile("Logs/ts-{Date}");
+            //loggerFactory.AddFile("Logs/ts-{Date}");
       //#endif
 
       app.Use(async (context, next) =>
@@ -86,6 +101,12 @@ namespace MyClietsBase
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
       });
+
+      app.UseCors(x => x
+              .AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials());
 
       app.UseMvcWithDefaultRoute();
       app.UseDefaultFiles();

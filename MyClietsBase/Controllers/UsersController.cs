@@ -1,32 +1,53 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.DTO.Entities;
+using Data.EF.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MyClietsBase.Helpers;
+using Microsoft.IdentityModel.Tokens;
+using MyClientsBase.Helpers;
+using MyClientsBase.Services;
 
-namespace MyClietsBase.Controllers
+namespace MyClientsBase.Controllers
 {
-  [Authorize]
+  /// <summary>
+  /// User Controller
+  /// </summary>
+  //[Authorize]
   [Produces("application/json")]
   [Route("api/Users")]
   public class UsersController : Controller
   {
-    //private IUserService _userService;
+    /// <summary>
+    /// User Servise to work with database
+    /// </summary>
+    private IUserService _userService;
+    /// <summary>
+    /// Mapper
+    /// </summary>
     private IMapper _mapper;
+    /// <summary>
+    /// Application settings. appSettrings.json
+    /// </summary>
     private readonly AppSettings _appSettings;
+    /// <summary>
+    /// Logger
+    /// </summary>
     private ILogger _logger;
-    public UsersController(/*IUserService userService,*/ IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
+
+    public UsersController(IUserService userService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
     {
       try
       {
-        //_userService = userService;
+        _userService = userService;
         _mapper = mapper;
         _appSettings = appSettings.Value;
         _logger = loggerFactory.CreateLogger(typeof(UsersController));
@@ -51,46 +72,41 @@ namespace MyClietsBase.Controllers
     //}
 
     /// <summary>
-    /// Авторизация пользователя
+    /// User Authentication
     /// </summary>
     /// <param name="userDto"></param>
-    /// <returns></returns>
+    /// <returns>Users properties or bad request with text message</returns>
     [AllowAnonymous]
     [HttpPost("authenticate")]
     public IActionResult Authenticate([FromBody]UserDto userDto)
     {
       try
       {
-        /*var user = _userService.Authenticate(userDto.Username, userDto.Password);
+        var user = _userService.Authenticate(userDto.Login, userDto.Password);
 
         if (user == null)
-          throw new AppException("Неверный логин-пароль!");//return Unauthorized();
+          throw new AppException("Неверный логин-пароль!");
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+        var key = System.Text.Encoding.ASCII.GetBytes(_appSettings.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
           Subject = new ClaimsIdentity(new Claim[]
             {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
             }),
-          Expires = DateTime.UtcNow.AddDays(1),
+          Expires = DateTime.UtcNow.AddDays(_appSettings.PassDaysExpired),
           SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var tokenString = tokenHandler.WriteToken(token);
         _logger.LogError($"User #{user.Id} was logged.");
-        // return basic user info (without password) and token to store client side*/
+
         return Ok(new
         {
-          /*Id = user.Id,
-          Username = user.UserName,
+          Id = user.Id,
           Name = user.Name,
           Token = tokenString,
-          City = user.CityInfo.Name,
-          RoleId = user.RoleId,
-          Lat = user.CityInfo.Lat,
-          Lng = user.CityInfo.Lng*/
         });
       }
       catch (AppException ex)
@@ -100,20 +116,32 @@ namespace MyClietsBase.Controllers
       catch (Exception ex)
       {
         _logger.LogError($"{ex}");
-        return BadRequest(ex.Message);
+        return BadRequest("Service error!");
       }
     }
 
-    //// PUT: api/Users/5
-    //[HttpPut("{id}")]
-    //public void Put(int id, [FromBody]string value)
-    //{
-    //}
+    //[AllowAnonymous]
+    [HttpPost]
+    [HttpPost("register")]
+    public IActionResult Register([FromBody]UserDto userDto)
+    {
+      User user = _mapper.Map<User>(userDto);
 
-    //// DELETE: api/ApiWithActions/5
-    //[HttpDelete("{id}")]
-    //public void Delete(int id)
-    //{
-    //}
+      try
+      {
+        _userService.Create(user, userDto.Password);
+        return Ok();
+      }
+      catch (AppException ex)
+      {
+        // return error message if there was an exception
+        return BadRequest(ex.Message);
+      }
+      catch(Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
   }
 }

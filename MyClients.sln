@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyClietsBase", "MyClietsBase\MyClietsBase.csproj", "{5449F917-A65D-47CA-B444-36A4C3847276}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyClientsBase", "MyClietsBase\MyClientsBase.csproj", "{5449F917-A65D-47CA-B444-36A4C3847276}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{1C766C8A-0C93-4148-9C71-6A1827D3A5E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.EF", "Data.EF\Data.EF.csproj", "{A9BCD57D-54D8-452E-91FD-89E3E92FB419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.EF", "Data.EF\Data.EF.csproj", "{A9BCD57D-54D8-452E-91FD-89E3E92FB419}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DTO", "Data.DTO\Data.DTO.csproj", "{570B84DD-BCEB-435E-8C34-371DACC2086D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.DTO", "Data.DTO\Data.DTO.csproj", "{570B84DD-BCEB-435E-8C34-371DACC2086D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{D230AF9F-B956-454A-8FF6-2389C8E3465E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Interfaces", "Domain.Interfaces\Domain.Interfaces.csproj", "{E5060BE5-FE3A-4CF7-BCA1-90C08526C19B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Interfaces", "Domain.Interfaces\Domain.Interfaces.csproj", "{E5060BE5-FE3A-4CF7-BCA1-90C08526C19B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

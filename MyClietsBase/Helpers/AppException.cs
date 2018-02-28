@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace MyClietsBase.Helpers
+namespace MyClientsBase.Helpers
 {
   /// <summary>
   /// Класс обработки ошибки в приложении

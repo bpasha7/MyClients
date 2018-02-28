@@ -2,7 +2,7 @@ using AutoMapper;
 using Data.DTO.Entities;
 using Data.EF.Entities;
 
-namespace MyClietsBase.Helpers
+namespace MyClientsBase.Helpers
 {
   public class AutoMapperProfile : Profile
   {

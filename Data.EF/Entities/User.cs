@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Entities;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.EF.Entities
 {
@@ -12,13 +13,14 @@ namespace Data.EF.Entities
         [Key]
         public int Id { get; set; }
         [Required]
+        [MaxLength(128)]
         public string Name { get; set; }
-        //login-pass
         [Required]
+        [MaxLength(50)]
         public string Login { get; set; }
-        [Required]
+        [Column(TypeName = "VARBINARY(128)")]
         public byte[] PasswordHash { get; set; }
-        [Required]
+        [Column(TypeName = "VARBINARY(128)")]
         public byte[] PasswordSalt { get; set; }
     }
 }
