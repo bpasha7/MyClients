@@ -14,6 +14,7 @@ namespace Data.EF
         /// Users info
         /// </summary>
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

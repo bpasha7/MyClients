@@ -44,6 +44,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { ClientsComponent } from './components/clients/clients.component';
+import { ClientModalComponent } from './components/modals/client/client.component';
+
+import { AppConfig } from './app.config';
+import { UserService, ClientService} from './services/index';
+
 
 /*Routes */
 const appRoutes: Routes = [
@@ -109,12 +114,13 @@ export class DemoMaterialModule { }
     MatNativeDateModule,
     ReactiveFormsModule,
   ],
-  entryComponents: [],
+  entryComponents: [ClientModalComponent],
   declarations: [
     AppComponent,
-    ClientsComponent
+    ClientsComponent,
+    ClientModalComponent
   ],
   bootstrap: [AppComponent],
-  providers: []
+  providers: [AppConfig, ClientService, UserService]
 })
 export class AppModule { }

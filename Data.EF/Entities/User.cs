@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces.Entities;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,5 +23,10 @@ namespace Data.EF.Entities
         public byte[] PasswordHash { get; set; }
         [Column(TypeName = "VARBINARY(128)")]
         public byte[] PasswordSalt { get; set; }
+
+        /// <summary>
+        /// Clients
+        /// </summary>
+        public virtual ICollection<Client> Clients { get; set; }
     }
 }

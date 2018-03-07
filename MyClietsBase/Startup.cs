@@ -56,6 +56,7 @@ namespace MyClientsBase
           });
       //inject services
       services.AddScoped<IUserService, UserService>();
+      services.AddScoped<IClientService, ClientService>();
 
       // Register the Swagger generator, defining one or more Swagger documents
       services.AddSwaggerGen(c =>
@@ -77,7 +78,7 @@ namespace MyClientsBase
       //      loggerFactory.AddNLogWeb();
             //loggerFactory.AddFile("Logs/ts-{Date}");
       //#endif
-
+      
       app.Use(async (context, next) =>
       {
         await next();
@@ -101,12 +102,12 @@ namespace MyClientsBase
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
       });
-
-      app.UseCors(x => x
-              .AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials());
+      
+      //app.UseCors(x => x
+      //        .AllowAnyOrigin()
+      //        .AllowAnyMethod()
+      //        .AllowAnyHeader()
+      //        .AllowCredentials());
 
       app.UseMvcWithDefaultRoute();
       app.UseDefaultFiles();

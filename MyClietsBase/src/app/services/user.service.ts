@@ -14,7 +14,7 @@ export class UserService {
      */
     private controller: string = '/users';
     constructor(private http: Http,
-        public config: AppConfig,
+        //public config: AppConfig,
         private router: Router) { }
     /**#toDo
      * Add create and login functions here
