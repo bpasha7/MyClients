@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MyClientsBase.Helpers;
 using MyClientsBase.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace MyClientsBase.Controllers
 {
@@ -22,6 +23,7 @@ namespace MyClientsBase.Controllers
   /// User Controller
   /// </summary>
   //[Authorize]
+  [EnableCors("MyPolicy")]
   [Produces("application/json")]
   [Route("api/Users")]
   public class UsersController : Controller

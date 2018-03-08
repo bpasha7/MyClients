@@ -12,9 +12,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyClientsBase.Helpers;
 using MyClientsBase.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace MyClientsBase.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Produces("application/json")]
     [Route("api/Clients")]
     public class ClientsController : Controller

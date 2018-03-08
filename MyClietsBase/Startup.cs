@@ -58,6 +58,14 @@ namespace MyClientsBase
       services.AddScoped<IUserService, UserService>();
       services.AddScoped<IClientService, ClientService>();
 
+      services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+      {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowCredentials()
+               .AllowAnyHeader();
+      }));
+
       // Register the Swagger generator, defining one or more Swagger documents
       services.AddSwaggerGen(c =>
       {
@@ -102,7 +110,7 @@ namespace MyClientsBase
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
       });
-      
+      app.UseCors("MyPolicy");
       //app.UseCors(x => x
       //        .AllowAnyOrigin()
       //        .AllowAnyMethod()
