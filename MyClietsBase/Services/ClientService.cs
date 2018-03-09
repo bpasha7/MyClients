@@ -2,6 +2,7 @@ using Data.EF;
 using Data.EF.Entities;
 using Data.EF.UnitOfWork;
 using Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MyClientsBase.Helpers;
 using System;
@@ -14,6 +15,7 @@ namespace MyClientsBase.Services
   public interface IClientService
   {
     void Create(Client client);
+    IList<Client> Get();
   }
   public class ClientService : IClientService
   {
@@ -30,6 +32,11 @@ namespace MyClientsBase.Services
     {
       _repository.Add(client);
       _repository.Save();
+    }
+
+    public IList<Client> Get()
+    {
+      return _repository.Query(c => c.UserId == 1).AsNoTracking().ToList();
     }
   }
 }

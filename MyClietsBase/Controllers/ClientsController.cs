@@ -84,10 +84,26 @@ namespace MyClientsBase.Controllers
     // GET: api/Clients
     [AllowAnonymous]
     [HttpGet]
-          public IEnumerable<string> Get()
+          public IActionResult Get()
           {
-              return new string[] { "value1", "value2" };
-          }
+      try
+      {
+        var clients = _clientService.Get();
+        return Ok(new
+        {
+          Clients = clients
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
 
           /*/ GET: api/Clients/5
           [HttpGet("{id}", Name = "Get")]
