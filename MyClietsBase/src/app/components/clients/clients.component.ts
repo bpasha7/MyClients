@@ -1,13 +1,14 @@
 
 import { Component, ViewChild, Inject } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ClientModalComponent } from '../modals/client/client.component';
 import { Client } from '../../models/index';
 import { ClientService } from '../../services/index';
 import { Http, Headers, RequestOptions, Response, RequestMethod, ResponseContentType } from '@angular/http';
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'clients',
     styleUrls: ['./clients.component.css'],
     templateUrl: './clients.component.html',
@@ -21,12 +22,11 @@ export class ClientsComponent {
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
-    //private client: Client;
     constructor(private http: Http, public dialog: MatDialog, private clientService: ClientService) {
         clientService.get().subscribe(
             data => {
                 this.clients = data.json().clients;
-                //this.resultsLength = this.clients.length;
+                // this.resultsLength = this.clients.length;
                 this.dataSource = new MatTableDataSource(this.clients);
                 this.ngAfterViewInit();
             },
@@ -40,6 +40,7 @@ export class ClientsComponent {
  * Set the paginator and sort after the view init since this component will
  * be able to query its view for the initialized paginator and sort.
  */
+    // tslint:disable-next-line:use-life-cycle-interface
     ngAfterViewInit() {
         if (this.dataSource != null) {
             this.dataSource.paginator = this.paginator;

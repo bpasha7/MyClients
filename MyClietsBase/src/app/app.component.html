@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <h1>My Clients</h1>
+  <h1>{{title}}</h1>
 </mat-toolbar>
 
 <mat-sidenav-container class="my-container">
@@ -10,13 +10,13 @@
   <mat-sidenav #sidenav mode="side" opened="false" color="grey" class="my-sidenav" [fixedInViewport]="false">
       <mat-nav-list class="my-list-menu">
         <h3 mat-subheader>Меню</h3>
-        <a mat-list-item routerLink="/clients">
+        <a mat-list-item (click)="setTitel('Клиенты')" routerLink="/clients">
           <mat-icon mat-list-icon>people</mat-icon>
           Клиенты
         </a>
         <mat-divider></mat-divider>
         <h3 mat-subheader>Управление</h3>
-        <a mat-list-item routerLink=".">
+        <a mat-list-item (click)="setTitel('Настройки')" routerLink=".">
           <mat-icon mat-list-icon>settings</mat-icon>
           Настройки
         </a>

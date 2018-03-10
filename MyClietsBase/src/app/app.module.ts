@@ -4,7 +4,7 @@ import { NgModule, Injectable } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { CustomPaginator } from './components/CustomPaginator';
+import { CustomPaginator } from './components/customPaginator';
 import {
   MAT_DATE_LOCALE,
   MatAutocompleteModule,

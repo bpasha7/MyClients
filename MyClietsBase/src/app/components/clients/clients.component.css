@@ -10,11 +10,10 @@ mat-form-field mat-icon{
     vertical-align: bottom;
 }
 .clients-table-container{
-    min-width: 300px;
-    margin: 3px;
+    min-width: 370px;
+    margin: 0 3px 3px 3px;
 }
 .clients-search-card{
-    min-width: 300px;
     padding: 0px 10px 0px 10px;
 }
 .clients-search-card mat-form-field{

@@ -1,5 +1,6 @@
-import {MediaMatcher} from '@angular/cdk/layout';
+import { MediaMatcher } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  appName = 'My Clients';
+  separator = ' :: ';
+  title = this.appName;
+  public constructor(private titleService: Title ) { }
+
+
+  setTitel(section: string){
+    this.title = this.appName + this.separator + section;
+  }
 }

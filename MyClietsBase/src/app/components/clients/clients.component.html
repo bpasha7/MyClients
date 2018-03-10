@@ -1,4 +1,4 @@
-<div>
+<div class="clients-table-container">
 <mat-card class="clients-search-card" >
 <mat-form-field [floatLabel]="'never'" class="">
     <mat-icon matSuffix>search</mat-icon>
@@ -62,5 +62,5 @@
         </mat-row>
     </mat-table>
 
-    <mat-paginator [length]="clients.length" [pageSize]="10"></mat-paginator>
+    <mat-paginator [length]="clients.length" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
 </div>
