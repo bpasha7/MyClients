@@ -1,48 +1,66 @@
+<div>
+<mat-card class="clients-search-card" >
+<mat-form-field [floatLabel]="'never'" class="">
+    <mat-icon matSuffix>search</mat-icon>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
+</mat-form-field>
 <button mat-raised-button (click)="openDialog()" color="accent">Новый
 </button>
-<div class="example-header">
-    <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-    </mat-form-field>
-  </div>
-  
-  <div class="example-container mat-elevation-z8">
-  
-    <mat-table [dataSource]="dataSource" matSort>
-  
-      <!-- ID Column -->
-      <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
-      </ng-container>
-  
-      <!-- Progress Column -->
-      <!-- <ng-container matColumnDef="progress">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Progress </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
-      </ng-container> -->
-  
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.lastName}} {{row.firstName}} </mat-cell>
-      </ng-container>
-  
-      <!-- Phone Column -->
-      <ng-container matColumnDef="phone">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Тел. </mat-header-cell>
-        <mat-cell *matCellDef="let row" [style.color]="blue"> {{row.phone}} </mat-cell>
-      </ng-container>
+</mat-card>
+</div>
+<div class="clients-table-container">
 
-      <ng-container matColumnDef="link">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Messager </mat-header-cell>
-        <mat-cell *matCellDef="let row" [style.color]="green"> {{row.link}} </mat-cell>
-      </ng-container>
-  
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;">
-      </mat-row>
+    <mat-table [dataSource]="dataSource" matSort>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="lastName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Клиент </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.lastName}} {{row.firstName}} </mat-cell>
+        </ng-container>
+
+        <!-- Contacts Column -->
+        <ng-container matColumnDef="contacts">
+            <mat-header-cell *matHeaderCellDef > Контакты </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button mat-icon-button [matMenuTriggerFor]="contactMenu">
+                    <mat-icon>smartphone</mat-icon>
+                </button>
+                <mat-menu #contactMenu="matMenu">
+                    <button mat-menu-item>
+                        <a class="link-text" href="tel:{{row.phone}}">
+                            <mat-icon>phone</mat-icon>
+                            <span>Звонок</span>
+                        </a>
+                    </button>
+                    <button mat-menu-item>
+                        <a class="link-text" href="sms:{{row.phone}}">
+                            <mat-icon>textsms</mat-icon>
+                            <span>Сообщение</span>
+                        </a>
+                    </button>
+                    <button mat-menu-item ngxClipboard [cbContent]="row.phone">
+                        <mat-icon>content_copy
+                        </mat-icon>
+                        <span>{{row.phone}}</span>
+                    </button>
+                </mat-menu>
+                <button mat-icon-button color="warn" class="social-button">
+                    <a class="link-text" href="{{row.link}}" target="_blank">
+                        <mat-icon>public</mat-icon>
+                    </a>
+                </button>
+                <button mat-icon-button class="social-button">
+                    <a class="link-text" href="{{row.linkPhoto}}" target="_blank">
+                        <mat-icon>party_mode
+                        </mat-icon>
+                    </a>
+                </button>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;">
+        </mat-row>
     </mat-table>
-  
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-  </div>
+
+    <mat-paginator [length]="clients.length" [pageSize]="10"></mat-paginator>
+</div>

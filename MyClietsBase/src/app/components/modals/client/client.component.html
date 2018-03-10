@@ -1,6 +1,5 @@
 <h1 mat-dialog-title>Новый клиент</h1>
-<div mat-dialog-content class="">
-  <!-- <p>Заполните данные</p> -->
+<div mat-dialog-content>
   <div class="container-row">
     <mat-form-field>
       <input matInput placeholder="Фамилия"  [(ngModel)]="client.lastName" required>
@@ -9,25 +8,27 @@
       <input matInput placeholder="Имя" [(ngModel)]="client.firstName" required>
     </mat-form-field>
   </div>
+  <div class="container-column">
+  </div>
   <div class="container-row">
     <mat-form-field>
       <mat-icon matPrefix>phone</mat-icon>
       <input type="tel" matInput placeholder="Телефон" [(ngModel)]="client.phone">
     </mat-form-field>
     <mat-form-field>
-      <input matInput [matDatepicker]="dp3" placeholder="Дата рождения" [(ngModel)]="client.birthday" disabled>
-      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-      <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+      <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="client.birthday">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker startView="multi-year" disabled="false"></mat-datepicker>
     </mat-form-field>
   </div>
   <div class="container-column">
       <mat-form-field>
           <mat-icon matPrefix>message</mat-icon>
-        <input matInput placeholder="Соц. сети" [(ngModel)]="client.link" required>
+        <input matInput placeholder="Соц. сети" [(ngModel)]="client.link" >
       </mat-form-field>
       <mat-form-field>
           <mat-icon matPrefix>photo library</mat-icon>
-        <input matInput placeholder="Instagram" [(ngModel)]="client.photoLink" required>
+        <input matInput placeholder="Instagram" [(ngModel)]="client.linkPhoto" >
       </mat-form-field>
     </div>
 </div>

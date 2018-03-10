@@ -1,10 +1,12 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { CustomPaginator } from './components/CustomPaginator';
 import {
+  MAT_DATE_LOCALE,
   MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
@@ -37,11 +39,15 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
+  MatPaginatorIntl,
 } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ClipboardModule } from 'ngx-clipboard';
+/**
+ * UI components
+ */
 import { AppComponent } from './app.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { ClientModalComponent } from './components/modals/client/client.component';
@@ -100,6 +106,26 @@ const appRoutes: Routes = [
 })
 export class DemoMaterialModule { }
 
+/*const spanishRangeLabel = (page: number, pageSize: number, length: number) => {
+  if (length === 0 || pageSize === 0) { return '0 из ${length}'; }
+
+  length = Math.max(length, 0);
+
+  const startIndex = page * pageSize;
+
+  // If the start index exceeds the list length, do not try and fix the end index to the end.
+  const endIndex = startIndex < length ?
+      Math.min(startIndex + pageSize, length) :
+      startIndex + pageSize;
+
+  return `${startIndex + 1} - ${endIndex} из ${length}`;
+};
+@Injectable()
+export class CustomPaginator extends MatPaginatorIntl {
+  itemsPerPageLabel = 'Всего';
+  getRangeLabel = spanishRangeLabel;
+}*/
+
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -113,6 +139,9 @@ export class DemoMaterialModule { }
     DemoMaterialModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    ClipboardModule,
+    MatTableModule,
+    MatSortModule,
   ],
   entryComponents: [ClientModalComponent],
   declarations: [
@@ -121,6 +150,9 @@ export class DemoMaterialModule { }
     ClientModalComponent
   ],
   bootstrap: [AppComponent],
-  providers: [AppConfig, ClientService, UserService]
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
+    { provide: MatPaginatorIntl, useClass: CustomPaginator },
+     AppConfig, ClientService, UserService]
 })
 export class AppModule { }

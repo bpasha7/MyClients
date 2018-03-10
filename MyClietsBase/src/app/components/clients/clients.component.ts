@@ -1,6 +1,7 @@
 
 import { Component, ViewChild, Inject } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ClientModalComponent } from '../modals/client/client.component';
 import { Client } from '../../models/index';
@@ -13,8 +14,10 @@ import { Http, Headers, RequestOptions, Response, RequestMethod, ResponseContent
 })
 
 export class ClientsComponent {
-    displayedColumns = ['id', 'name', 'phone', 'link'];
+    displayedColumns = ['lastName', 'contacts'];
     dataSource: MatTableDataSource<Client> = null;
+    clients: Client[] = [];
+   // resultsLength: number = 0;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -22,8 +25,10 @@ export class ClientsComponent {
     constructor(private http: Http, public dialog: MatDialog, private clientService: ClientService) {
         clientService.get().subscribe(
             data => {
-                const clients: Client[] = data.json().clients;
-                this.dataSource = new MatTableDataSource(clients);
+                this.clients = data.json().clients;
+                //this.resultsLength = this.clients.length;
+                this.dataSource = new MatTableDataSource(this.clients);
+                this.ngAfterViewInit();
             },
             error => {
                 console.error(error._body);
@@ -50,6 +55,7 @@ export class ClientsComponent {
 
     openDialog(): void {
         const dialogRef = this.dialog.open(ClientModalComponent, {
+            minWidth: '95vw',
             // data: {client: this.client }
         });
 

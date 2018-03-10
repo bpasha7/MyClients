@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Client } from '../../../models/index';
 import { ClientService } from '../../../services/index';
 import { Http, Headers, RequestOptions, Response, RequestMethod, ResponseContentType } from '@angular/http';
@@ -13,19 +13,25 @@ import { error } from 'util';
 export class ClientModalComponent {
     public client: Client;
     constructor(
+        public snackBar: MatSnackBar,
         private clientService: ClientService,
         public dialogRef: MatDialogRef<ClientModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
             this.client = new Client();
+            this.client.birthday = new Date(1990, 0, 1);
     }
 
     create(){
         this.clientService.create(this.client).subscribe(
             data => {
-                console.info("OK");
+                this.snackBar.open('Клиент добавлен.', 'Закрыть', {
+                    duration: 2000,
+                  });
             },
             error => {
-                console.error(error._body);
+                this.snackBar.open(error._body, 'Закрыть', {
+                    duration: 2000,
+                  });
             }
         )
     }
