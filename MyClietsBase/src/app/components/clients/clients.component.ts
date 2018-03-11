@@ -22,7 +22,7 @@ export class ClientsComponent {
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
-    constructor(private http: Http, public dialog: MatDialog, private clientService: ClientService) {
+    constructor(public dialog: MatDialog, private clientService: ClientService) {
         clientService.get().subscribe(
             data => {
                 this.clients = data.json().clients;

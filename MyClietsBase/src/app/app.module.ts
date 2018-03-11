@@ -50,6 +50,7 @@ import { ClipboardModule } from 'ngx-clipboard';
  */
 import { AppComponent } from './app.component';
 import { ClientsComponent } from './components/clients/clients.component';
+import { ClientComponent } from './components/client/client.component';
 import { ClientModalComponent } from './components/modals/client/client.component';
 
 import { AppConfig } from './app.config';
@@ -62,6 +63,7 @@ const appRoutes: Routes = [
   //{ path: 'users', component: UsersForm },
   //{ path: 'cases', component: CasesForm },
   { path: 'clients', component: ClientsComponent },
+  { path: 'client/:id', component: ClientComponent },
   // { path: '', component: LoginForm },
   //{ path: 'login', component: LoginForm }
 ]
@@ -147,6 +149,7 @@ export class CustomPaginator extends MatPaginatorIntl {
   declarations: [
     AppComponent,
     ClientsComponent,
+    ClientComponent,
     ClientModalComponent
   ],
   bootstrap: [AppComponent],
