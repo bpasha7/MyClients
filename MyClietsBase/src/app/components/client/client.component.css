@@ -9,7 +9,7 @@ mat-form-field mat-icon{
     margin-right: 10px;
     vertical-align: bottom;
 }
-.clients-table-container{
+.client-container{
     min-width: 370px;
     margin: 0 3px 3px 3px;
 }
@@ -21,4 +21,8 @@ mat-form-field mat-icon{
 }
 .clients-search-card button{
     margin-left: 10px;
+}
+
+.item-contaner{
+    margin:  0px 3px 3px 3px;
 }

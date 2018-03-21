@@ -29,3 +29,8 @@
     width: 100%;
     padding-top: 2%;
 }
+.my-list-down-menu{
+    position: absolute;
+    bottom: 0px; 
+    width: 100%
+}

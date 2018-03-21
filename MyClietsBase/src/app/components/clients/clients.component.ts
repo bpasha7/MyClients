@@ -56,7 +56,7 @@ export class ClientsComponent {
 
     openDialog(): void {
         const dialogRef = this.dialog.open(ClientModalComponent, {
-            minWidth: '95vw',
+            //minWidth: '95vw',
             // data: {client: this.client }
         });
 

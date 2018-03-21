@@ -1,13 +1,11 @@
 
 import { Component, ViewChild, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ClientModalComponent } from '../modals/client/client.component';
 import { Client } from '../../models/index';
 import { ClientService } from '../../services/index';
-import { Http, Headers, RequestOptions, Response, RequestMethod, ResponseContentType } from '@angular/http';
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'client',
