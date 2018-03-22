@@ -15,7 +15,7 @@ import { ClientService } from '../../services/index';
 })
 
 export class ClientComponent {
-    client: Client = null;
+    client: Client = new Client();
     name: string;
     constructor(
         public snackBar: MatSnackBar,
@@ -35,5 +35,8 @@ export class ClientComponent {
                   });
             }
         );
+    }
+    loadClientHistory(id: number){
+
     }
 }

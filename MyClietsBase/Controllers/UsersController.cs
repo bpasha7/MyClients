@@ -59,6 +59,111 @@ namespace MyClientsBase.Controllers
         _logger.LogError($"{ex}");
       }
     }
+
+    [AllowAnonymous]
+    [HttpPost("{id}/product")]
+    public IActionResult CreateProduct(int id, [FromBody]ProductDto productDto)
+    {
+      try
+      {
+        var product = _mapper.Map<Product>(productDto);
+
+        if (product == null)
+          throw new AppException("Неверный данные!");
+
+        product.UserId = id;
+        _userService.CreateProduct(product);
+        return Ok(new
+        {
+          Message = "Услуга добавлена!"
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    [AllowAnonymous]
+    [HttpPost("{id}/discount")]
+    public IActionResult CreateDiscount(int id, [FromBody]DiscountDto discounttDto)
+    {
+      try
+      {
+        var discount = _mapper.Map<Discount>(discounttDto);
+
+        if (discount == null)
+          throw new AppException("Неверный данные!");
+
+        discount.UserId = id;
+        _userService.CreateDiscount(discount);
+        return Ok(new
+        {
+          Message = "Скидка добавлена!"
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{id}/discounts")]
+    public IActionResult GetDiscounts(int id)
+    {
+      try
+      {
+        var discounts = _userService.GetDiscounts(id);
+        return Ok(new
+        {
+          Discounts = discounts
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{id}/products")]
+    public IActionResult GetProducts(int id)
+    {
+      try
+      {
+        var products = _userService.GetProducts(id);
+        //var t = _mapper.Map<Product[]>(products);
+        return Ok(new
+        {
+          Products = _mapper.Map<ProductDto[]>(products)
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
     //// GET: api/Users
     //[HttpGet]
     //public IEnumerable<string> Get()

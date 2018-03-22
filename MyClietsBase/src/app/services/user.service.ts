@@ -14,7 +14,7 @@ export class UserService {
      */
     private controller: string = '/users';
     constructor(private http: Http,
-        //public config: AppConfig,
+        public config: AppConfig,
         private router: Router) { }
     /**#toDo
      * Add create and login functions here
@@ -23,6 +23,13 @@ export class UserService {
     /**
      * create authorization header with jwt token
      */
+    getProducts(userId: number) {
+        return this.http.get(this.config.apiUrl + this.controller + '/' + userId + '/products');
+    }
+
+    getDiscounts(userId: number) {
+        return this.http.get(this.config.apiUrl + this.controller + '/' + userId + '/discounts');
+    }
     private jwt() {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.token) {

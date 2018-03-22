@@ -52,9 +52,11 @@ import { AppComponent } from './app.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { ClientComponent } from './components/client/client.component';
 import { ClientModalComponent } from './components/modals/client/client.component';
+import { ProductsComponent } from './components/products/products.component';
 
 import { AppConfig } from './app.config';
 import { UserService, ClientService} from './services/index';
+
 
 
 /*Routes */
@@ -63,6 +65,7 @@ const appRoutes: Routes = [
   //{ path: 'users', component: UsersForm },
   //{ path: 'cases', component: CasesForm },
   { path: 'clients', component: ClientsComponent },
+  { path: 'products', component: ProductsComponent },
   { path: 'client/:id', component: ClientComponent },
   // { path: '', component: LoginForm },
   //{ path: 'login', component: LoginForm }
@@ -150,7 +153,8 @@ export class CustomPaginator extends MatPaginatorIntl {
     AppComponent,
     ClientsComponent,
     ClientComponent,
-    ClientModalComponent
+    ClientModalComponent,
+    ProductsComponent
   ],
   bootstrap: [AppComponent],
   providers: [

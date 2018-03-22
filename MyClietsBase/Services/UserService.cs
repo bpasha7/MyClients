@@ -20,6 +20,10 @@ namespace MyClientsBase.Services
     /// <returns></returns>
     User Authenticate(string login, string password);
     User Create(User user, string password);
+    void CreateProduct(Product product);
+    void CreateDiscount(Discount discount);
+    IList<Product> GetProducts(int userId);
+    IList<Discount> GetDiscounts(int userId);
   }
   public class UserService : IUserService
   {
@@ -29,10 +33,13 @@ namespace MyClientsBase.Services
     /// </summary>
     private IRepository<User> _repository;
 
+    private IRepository<Product> _productsRepository;
+
     public UserService(ApplicationDbContext context)
     {
       _unitOfWork = new UnitOfWork(context);
       _repository = _unitOfWork.EfRepository<User>();
+      _productsRepository = _unitOfWork.EfRepository<Product>();
     }
 
     public User Authenticate(string login, string password)
@@ -52,6 +59,29 @@ namespace MyClientsBase.Services
 
       // authentication successful
       return user;
+    }
+
+    public void CreateProduct(Product product)
+    {
+      _repository.Find(u => u.Id == product.UserId, p=>p.Products).Products.Add(product);
+      _repository.Save();
+    }
+
+    public void CreateDiscount(Discount discount)
+    {
+      _repository.Find(u => u.Id == discount.UserId, d => d.Discounts).Discounts.Add(discount);
+      _repository.Save();
+    }
+
+
+    public IList<Product> GetProducts(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, p => p.Products).Products.ToList();
+    }
+
+    public IList<Discount> GetDiscounts(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, d => d.Discounts).Discounts.ToList();
     }
 
     public User Create(User user, string password)

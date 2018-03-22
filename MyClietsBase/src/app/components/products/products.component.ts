@@ -1,38 +1,39 @@
-
-import { Component, ViewChild, Inject } from '@angular/core';
+import { Component, ViewChild, Inject, OnInit } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ClientModalComponent } from '../modals/client/client.component';
-import { Client } from '../../models/index';
-import { ClientService } from '../../services/index';
+import { Product } from '../../models/index';
+import { UserService } from '../../services/index';
+
 @Component({
-    // tslint:disable-next-line:component-selector
-    selector: 'clients',
-    styleUrls: ['./clients.component.css'],
-    templateUrl: './clients.component.html',
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.css']
 })
-
-export class ClientsComponent {
-    displayedColumns = ['lastName', 'contacts'];
-    dataSource: MatTableDataSource<Client> = null;
-    clients: Client[] = [];
-   // resultsLength: number = 0;
-
+export class ProductsComponent implements OnInit {
+    displayedColumns = ['name', 'price'];
+    dataSource: MatTableDataSource<Product> = null;
+    products: Product[] = [];
+  ngOnInit() {
+    this.userService.getProducts(1).subscribe(
+      data => {
+          this.products = data.json().products;
+          // this.resultsLength = this.clients.length;
+          this.dataSource = new MatTableDataSource(this.products);
+          this.ngAfterViewInit();
+      },
+      error => {
+          console.error(error._body);
+      }
+  );
+  }
+    // tslint:disable-next-line:member-ordering
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    // tslint:disable-next-line:member-ordering
     @ViewChild(MatSort) sort: MatSort;
-    constructor(public dialog: MatDialog, private clientService: ClientService) {
-        clientService.getAll().subscribe(
-            data => {
-                this.clients = data.json().clients;
-                // this.resultsLength = this.clients.length;
-                this.dataSource = new MatTableDataSource(this.clients);
-                this.ngAfterViewInit();
-            },
-            error => {
-                console.error(error._body);
-            }
-        );
+    constructor(public dialog: MatDialog, private userService: UserService) {
+
     }
 
     /**
@@ -55,8 +56,6 @@ export class ClientsComponent {
 
     openDialog(): void {
         const dialogRef = this.dialog.open(ClientModalComponent, {
-            //minWidth: '95vw',
-            // data: {client: this.client }
         });
 
         // dialogRef.afterClosed().subscribe(result => {
@@ -64,12 +63,4 @@ export class ClientsComponent {
         //     this.create();
         // })
     }
-
-    /* test(){
-         this.http.get('http://localhost:4201/api/values').subscribe(
-             data => {
-                 var res = data.json().message
-             }
-     );
-     }*/
 }

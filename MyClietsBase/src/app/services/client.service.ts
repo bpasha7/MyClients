@@ -21,14 +21,14 @@ export class ClientService {
      * @param client Client
      */
     create(client: Client) {
-        let headers = new Headers({ 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-        return this.http.post(this.config.apiUrl + this.controller + '/create', client, options);
+        // let headers = new Headers({ 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' });
+        // let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.config.apiUrl + this.controller + '/create', client);//, options);
     }
-    getAll(){
+    getAll() {
         return this.http.get(this.config.apiUrl + this.controller);
     }
-    get(clientId: number){
+    get(clientId: number) {
         return this.http.get(this.config.apiUrl + this.controller + '/' + clientId);
     }
     /**

@@ -13,6 +13,15 @@ namespace MyClientsBase.Helpers
 
       CreateMap<Client, ClientDto>();
       CreateMap<ClientDto, Client>();
+
+      CreateMap<Product, ProductDto>();
+      CreateMap<ProductDto, Product>();
+
+      CreateMap<Discount, DiscountDto>();
+      CreateMap<DiscountDto, Discount>();
+
+      CreateMap<Order, OrderDto>();
+      CreateMap<OrderDto, Order>();
     }
   }
 }

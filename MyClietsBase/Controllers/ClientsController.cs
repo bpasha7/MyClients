@@ -52,7 +52,11 @@ namespace MyClientsBase.Controllers
         _logger.LogError($"{ex}");
       }
     }
-
+    /// <summary>
+    /// Creating new client
+    /// </summary>
+    /// <param name="clientDto"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("create")]
     public IActionResult Create([FromBody]ClientDto clientDto)
@@ -80,7 +84,10 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
-
+    /// <summary>
+    /// Get all clients
+    /// </summary>
+    /// <returns></returns>
     // GET: api/Clients
     [AllowAnonymous]
     [HttpGet]
@@ -104,7 +111,11 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
-
+    /// <summary>
+    /// Get client info
+    /// </summary>
+    /// <param name="id">user id</param>
+    /// <returns></returns>
     // GET: api/Clients/5
     [HttpGet("{id}", Name = "Get")]
     public IActionResult Get(int id)
@@ -127,23 +138,23 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
-    /*
-          // POST: api/Clients
-          [HttpPost]
-          public void Post([FromBody]string value)
-          {
-          }
+    /*    
+              // POST: api/Clients
+              [HttpPost]
+              public void Post([FromBody]string value)
+              {
+              }
 
-          // PUT: api/Clients/5
-          [HttpPut("{id}")]
-          public void Put(int id, [FromBody]string value)
-          {
-          }
+              // PUT: api/Clients/5
+              [HttpPut("{id}")]
+              public void Put(int id, [FromBody]string value)
+              {
+              }
 
-          // DELETE: api/ApiWithActions/5
-          [HttpDelete("{id}")]
-          public void Delete(int id)
-          {
-          }*/
+              // DELETE: api/ApiWithActions/5
+              [HttpDelete("{id}")]
+              public void Delete(int id)
+              {
+              }*/
   }
 }

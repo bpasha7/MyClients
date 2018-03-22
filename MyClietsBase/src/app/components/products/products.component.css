@@ -1,0 +1,29 @@
+.social-button mat-icon{
+    vertical-align: middle;
+}
+.link-text{
+    text-decoration: none;
+    color: rgba(0,0,0,.87);
+}
+mat-form-field mat-icon{
+    margin-right: 10px;
+    vertical-align: bottom;
+}
+.table-container{
+    min-width: 370px;
+    margin: 0 3px 3px 3px;
+}
+.search-card{
+    padding: 0px 10px 0px 10px;
+}
+.search-card mat-form-field{
+    width: 100%;
+}
+.search-card button{
+    margin-left: 10px;
+}
+.add-fixed-button{
+    position: fixed;
+    bottom: 50px;
+    right: 15px;
+}
