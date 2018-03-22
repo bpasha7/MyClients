@@ -15,6 +15,7 @@ namespace MyClientsBase.Services
   public interface IClientService
   {
     void Create(Client client);
+    Client Get(int id);
     IList<Client> Get();
   }
   public class ClientService : IClientService
@@ -37,6 +38,15 @@ namespace MyClientsBase.Services
     public IList<Client> Get()
     {
       return _repository.Query(c => c.UserId == 1).AsNoTracking().ToList();
+    }
+
+    public Client Get(int id)
+    {
+      var client = _repository.Query(c => c.Id == id).AsNoTracking().SingleOrDefault();
+      if (client == null)
+        throw new AppException("Клиент не найден в базе!");
+      else
+        return client;
     }
   }
 }

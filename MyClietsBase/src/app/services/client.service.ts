@@ -25,8 +25,11 @@ export class ClientService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this.config.apiUrl + this.controller + '/create', client, options);
     }
-    get(){
+    getAll(){
         return this.http.get(this.config.apiUrl + this.controller);
+    }
+    get(clientId: number){
+        return this.http.get(this.config.apiUrl + this.controller + '/' + clientId);
     }
     /**
      * create authorization header with jwt token

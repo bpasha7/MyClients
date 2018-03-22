@@ -13,6 +13,9 @@ export class AppComponent {
   title = this.appName;
   public constructor(private titleService: Title ) { }
 
+  skip(){
+    
+  }
 
   setTitel(section: string){
     this.title = this.appName + this.separator + section;

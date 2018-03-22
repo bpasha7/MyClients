@@ -8,41 +8,72 @@
 </mat-grid-list> -->
 <div class="client-container">
     <mat-card class="item-contaner">
-        <!-- <mat-card-header>
-          
+        <div>
+            <img img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="">
+            <div class="client-menu-bar">
+                <button mat-mini-fab color="primary">
+                    <mat-icon aria-label="">public</mat-icon>
+                </button>
+                <button mat-mini-fab color="warn" [matMenuTriggerFor]="contactMenu">
+                    <mat-icon aria-label="">phone</mat-icon>
+                </button>
+                <mat-menu #contactMenu="matMenu">
+                    <button mat-menu-item>
+                        <a class="link-text" href="tel:{{client.phone}}">
+                            <mat-icon>phone</mat-icon>
+                            <span>Звонок</span>
+                        </a>
+                    </button>
+                    <button mat-menu-item>
+                        <a class="link-text" href="sms:{{client.phone}}">
+                            <mat-icon>textsms</mat-icon>
+                            <span>Сообщение</span>
+                        </a>
+                    </button>
+                    <button mat-menu-item ngxClipboard [cbContent]="client.phone">
+                        <mat-icon>content_copy
+                        </mat-icon>
+                        <span>{{client.phone}}</span>
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+        <mat-card-title>{{client.lastName}} {{client.firstName}}
+        </mat-card-title>
+        <button mat-icon-button class="edit-button">
+                <mat-icon aria-label="">mode_edit
 
-    </mat-card-header> -->
-        <img img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-        <mat-card-title>Иванова Иванна </mat-card-title>
+                </mat-icon>
+        </button>
         <mat-card-subtitle>Модель</mat-card-subtitle>
         <mat-card-content>
             <p>
-                День рождения: 8 марта 1990
+                День рождения: {{client.birthday | date:'longDate'}}
             </p>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button>Позвонить</button>
-            <button mat-button>Записать</button>
+            <button mat-raised-button color="primary">Записать</button>
         </mat-card-actions>
-    </mat-card> <!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->
+    </mat-card>
+    <!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->
     <mat-accordion>
-   
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Записи
-            </mat-panel-title>
-            <mat-panel-description>
-                Всего 4 записи
-            </mat-panel-description>
-        </mat-expansion-panel-header>
 
-        <mat-list role="list">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Записи
+                </mat-panel-title>
+                <mat-panel-description>
+                    Всего 4 записи
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-list role="list">
                 <mat-list-item role="listitem">Макияж 8 марта</mat-list-item>
                 <mat-list-item role="listitem">Макияж 8 марта</mat-list-item>
                 <mat-list-item role="listitem">Макияж 8 марта</mat-list-item>
                 <mat-list-item role="listitem">Макияж 8 марта</mat-list-item>
-              </mat-list>
-    </mat-expansion-panel>
+            </mat-list>
+        </mat-expansion-panel>
     </mat-accordion>
 </div>

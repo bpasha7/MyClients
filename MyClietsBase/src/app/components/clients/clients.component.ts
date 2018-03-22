@@ -23,7 +23,7 @@ export class ClientsComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     constructor(public dialog: MatDialog, private clientService: ClientService) {
-        clientService.get().subscribe(
+        clientService.getAll().subscribe(
             data => {
                 this.clients = data.json().clients;
                 // this.resultsLength = this.clients.length;

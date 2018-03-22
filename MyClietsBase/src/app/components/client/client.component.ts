@@ -2,7 +2,8 @@
 import { Component, ViewChild, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { DatePipe } from '@angular/common';
 import { ClientModalComponent } from '../modals/client/client.component';
 import { Client } from '../../models/index';
 import { ClientService } from '../../services/index';
@@ -16,18 +17,23 @@ import { ClientService } from '../../services/index';
 export class ClientComponent {
     client: Client = null;
     name: string;
-    constructor(public dialog: MatDialog,
+    constructor(
+        public snackBar: MatSnackBar,
+        public dialog: MatDialog,
          private clientService: ClientService,
          private route: ActivatedRoute) {
-             //this.name = 
-             this.route.params.subscribe( params => console.log(params) );
-        // clientService.get().subscribe(
-        //     data => {
-        //         this.client = data.json().client;
-        //     },
-        //     error => {
-        //         console.error(error._body);
-        //     }
-        // );
+             this.route.params.subscribe( params => this.loadClientInfo(params["id"]));
+    }
+    loadClientInfo(id: number){
+        this.clientService.get(id).subscribe(
+            data => {
+                this.client = data.json().client;
+            },
+            error => {
+                this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
+                    duration: 2000,
+                  });
+            }
+        );
     }
 }

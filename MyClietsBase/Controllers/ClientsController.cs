@@ -16,11 +16,11 @@ using Microsoft.AspNetCore.Cors;
 
 namespace MyClientsBase.Controllers
 {
-    [EnableCors("MyPolicy")]
-    [Produces("application/json")]
-    [Route("api/Clients")]
-    public class ClientsController : Controller
-    {
+  [EnableCors("MyPolicy")]
+  [Produces("application/json")]
+  [Route("api/Clients")]
+  public class ClientsController : Controller
+  {
     /// <summary>
     /// User Servise to work with database
     /// </summary>
@@ -84,8 +84,8 @@ namespace MyClientsBase.Controllers
     // GET: api/Clients
     [AllowAnonymous]
     [HttpGet]
-          public IActionResult Get()
-          {
+    public IActionResult Get()
+    {
       try
       {
         var clients = _clientService.Get();
@@ -105,13 +105,29 @@ namespace MyClientsBase.Controllers
       }
     }
 
-          /*/ GET: api/Clients/5
-          [HttpGet("{id}", Name = "Get")]
-          public string Get(int id)
-          {
-              return "value";
-          }
-
+    // GET: api/Clients/5
+    [HttpGet("{id}", Name = "Get")]
+    public IActionResult Get(int id)
+    {
+      try
+      {
+        var client = _clientService.Get(id);
+        return Ok(new
+        {
+          Client = client
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+    /*
           // POST: api/Clients
           [HttpPost]
           public void Post([FromBody]string value)
@@ -129,5 +145,5 @@ namespace MyClientsBase.Controllers
           public void Delete(int id)
           {
           }*/
-    }
+  }
 }

@@ -17,8 +17,13 @@ mat-form-field mat-icon{
     padding: 0px 10px 0px 10px;
 }
 .clients-search-card mat-form-field{
-    width: 65%;
+    width: 100%;
 }
 .clients-search-card button{
     margin-left: 10px;
+}
+.add-fixed-button{
+    position: fixed;
+    bottom: 50px;
+    right: 15px;
 }

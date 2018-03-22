@@ -7,7 +7,7 @@
 
 <mat-sidenav-container class="my-container">
 
-  <mat-sidenav #sidenav mode="side" opened="false" color="grey" class="my-sidenav" [fixedInViewport]="false">
+  <mat-sidenav #sidenav mode="over" opened="false" color="grey" class="my-sidenav" [fixedInViewport]="false">
     <mat-nav-list class="my-list-menu">
       <h3 mat-subheader>Меню</h3>
       <a mat-list-item routerLink="/clients">
@@ -44,11 +44,11 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div (click)="sidenav.toggle()">
+    <!-- <div (click)="sidenav.isOpen ? sidenav.toggle() : skip()">{{sidenav.isOpen}} -->
       <router-outlet>
 
       </router-outlet>
-    </div>
+    <!-- </div> -->
   </mat-sidenav-content>
 
 </mat-sidenav-container>
