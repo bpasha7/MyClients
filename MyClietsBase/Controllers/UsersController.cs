@@ -119,6 +119,35 @@ namespace MyClientsBase.Controllers
     }
 
     [AllowAnonymous]
+    [HttpPost("{id}/order")]
+    public IActionResult CreateOrder(int id, [FromBody]OrderDto ordertDto)
+    {
+      try
+      {
+        var order = _mapper.Map<Order>(ordertDto);
+
+        if (order == null)
+          throw new AppException("Неверный данные!");
+
+        order.UserId = id;
+        _userService.CreateOrder(order);
+        return Ok(new
+        {
+          Message = "Запись добавлена!"
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    [AllowAnonymous]
     [HttpGet("{id}/discounts")]
     public IActionResult GetDiscounts(int id)
     {
@@ -127,7 +156,7 @@ namespace MyClientsBase.Controllers
         var discounts = _userService.GetDiscounts(id);
         return Ok(new
         {
-          Discounts = discounts
+          Discounts = _mapper.Map<DiscountDto[]>(discounts)
         });
       }
       catch (AppException ex)
@@ -148,7 +177,6 @@ namespace MyClientsBase.Controllers
       try
       {
         var products = _userService.GetProducts(id);
-        //var t = _mapper.Map<Product[]>(products);
         return Ok(new
         {
           Products = _mapper.Map<ProductDto[]>(products)

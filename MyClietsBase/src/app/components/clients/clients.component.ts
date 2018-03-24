@@ -1,4 +1,3 @@
-
 import { Component, ViewChild, Inject } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -22,7 +21,11 @@ export class ClientsComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     constructor(public dialog: MatDialog, private clientService: ClientService) {
-        clientService.getAll().subscribe(
+       this.loadClients();
+    }
+
+    loadClients() {
+        this.clientService.getAll().subscribe(
             data => {
                 this.clients = data.json().clients;
                 // this.resultsLength = this.clients.length;

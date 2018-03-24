@@ -5,6 +5,7 @@ import { ClientService } from '../../../services/index';
 import { Http, Headers, RequestOptions, Response, RequestMethod, ResponseContentType } from '@angular/http';
 import { error } from 'util';
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'client-dialog',
     styleUrls: ['./client.component.css'],
     templateUrl: './client.component.html',
@@ -21,7 +22,7 @@ export class ClientModalComponent {
             this.client.birthday = new Date(1990, 0, 1);
     }
 
-    create(){
+    create() {
         this.clientService.create(this.client).subscribe(
             data => {
                 this.snackBar.open('Клиент добавлен.', 'Закрыть', {
@@ -33,18 +34,9 @@ export class ClientModalComponent {
                     duration: 2000,
                   });
             }
-        )
+        );
     }
     onNoClick(): void {
         this.dialogRef.close();
     }
-
-
-    // test(){
-    //     this.http.get('http://localhost:4201/api/values').subscribe(
-    //         data => {
-    //             var res = data.json().message
-    //         }
-    // );
-    // }
 }

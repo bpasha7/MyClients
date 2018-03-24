@@ -1,4 +1,4 @@
-<div class="table-container">
+<div class="table-container" *ngIf="products?.length > 0" >
   <mat-card class="search-card">
     <mat-form-field [floatLabel]="'never'" class="">
       <mat-icon matPrefix>search</mat-icon>
@@ -13,7 +13,7 @@
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Услуга </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+      <mat-cell *matCellDef="let row" (click)="openEditDialog(row)" > {{row.name}} </mat-cell>
     </ng-container>
 
     <!-- Price Column -->
@@ -28,8 +28,7 @@
   </mat-table>
 
   <mat-paginator [length]="products.length" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
-
-  <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
-    <mat-icon aria-label="">add</mat-icon>
-  </button>
 </div>
+<button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
+  <mat-icon aria-label="">add</mat-icon>
+</button>

@@ -1,0 +1,56 @@
+<h1 mat-dialog-title>{{ title }} </h1>
+<div mat-dialog-content>
+  <div class="container-column">
+    <!-- products -->
+    <mat-form-field>
+      <mat-select placeholder="Услуга" [formControl]="productControl" (change)="calculate()" [(ngModel)]="selectedProduct" required>
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let product of products" [value]="product">
+          {{product.name}} {{product.price}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="productControl.hasError('required')">Выберите услугу</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="container-row">
+    <mat-form-field>
+      <mat-icon matSuffix>access_time</mat-icon>
+      <input matInput placeholder="Время" value="09:50">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Дата" [(ngModel)]="order.date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker startView="multi-year" disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="container-column">
+    <!-- discount -->
+    <mat-form-field>
+      <mat-select placeholder="Скидки" value="0" (change)="calculate()" [formControl]="discountControl">
+        <mat-option [value]="0">Без</mat-option>
+        <mat-option *ngFor="let discount of discounts" [value]="discount.percent">
+          {{discount.name}} {{100 * discount.percent}}%
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- total -->
+    <mat-form-field>
+      <mat-icon matPrefix>done</mat-icon>
+      <input matInput placeholder="Итого" [(ngModel)]="order.total">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-icon matPrefix>room</mat-icon>
+      <input matInput placeholder="Место" [(ngModel)]="order.location">
+    </mat-form-field>
+    <!-- commentary -->
+    <mat-form-field>
+      <textarea matInput placeholder="Коментарий" [(ngModel)]="order.commentary"></textarea>
+    </mat-form-field>
+  </div>
+
+</div>
+<div mat-dialog-actions style="display: block">
+  <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">Отмена</button>
+  <button mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>Добавить</button>
+</div>

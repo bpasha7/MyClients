@@ -36,5 +36,9 @@ namespace Data.EF.Entities
         /// Discounts
         /// </summary>
         public virtual ICollection<Discount> Discounts { get; set; }
+        /// <summary>
+        /// Orders
+        /// </summary>
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

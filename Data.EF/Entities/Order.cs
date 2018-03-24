@@ -14,6 +14,10 @@ namespace Data.EF.Entities
         public int Id { get; set; }
         [Required]
         public decimal Total { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime Date { get; set; }
+        public string Location { get; set; }
+        public string Commentary { get; set; }
         /// <summary>
         /// User
         /// </summary>

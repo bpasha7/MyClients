@@ -22,6 +22,7 @@ namespace MyClientsBase.Services
     User Create(User user, string password);
     void CreateProduct(Product product);
     void CreateDiscount(Discount discount);
+    void CreateOrder(Order order);
     IList<Product> GetProducts(int userId);
     IList<Discount> GetDiscounts(int userId);
   }
@@ -73,15 +74,21 @@ namespace MyClientsBase.Services
       _repository.Save();
     }
 
+    public void CreateOrder(Order order)
+    {
+      _repository.Find(u => u.Id == order.UserId, o => o.Orders).Orders.Add(order);
+      _repository.Save();
+    }
+
 
     public IList<Product> GetProducts(int userId)
     {
-      return _repository.Find(u => u.Id == userId, p => p.Products).Products.ToList();
+      return _repository.Find(u => u.Id == userId, p => p.Products).Products.OrderBy(o=>o.Name).ToList();
     }
 
     public IList<Discount> GetDiscounts(int userId)
     {
-      return _repository.Find(u => u.Id == userId, d => d.Discounts).Discounts.ToList();
+      return _repository.Find(u => u.Id == userId, d => d.Discounts).Discounts.OrderBy(o => o.Name).ToList();
     }
 
     public User Create(User user, string password)

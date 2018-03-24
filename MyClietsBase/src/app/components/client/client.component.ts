@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { ClientModalComponent } from '../modals/client/client.component';
 import { Client } from '../../models/index';
 import { ClientService } from '../../services/index';
+import { OrderModalComponent } from '../modals/order/order.component';
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'client',
@@ -38,5 +39,10 @@ export class ClientComponent {
     }
     loadClientHistory(id: number){
 
+    }
+    addOrder() {
+        const dialogRef = this.dialog.open(OrderModalComponent, {
+            data : {client: this.client}
+        });
     }
 }

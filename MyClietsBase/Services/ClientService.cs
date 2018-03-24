@@ -37,7 +37,7 @@ namespace MyClientsBase.Services
 
     public IList<Client> Get()
     {
-      return _repository.Query(c => c.UserId == 1).AsNoTracking().ToList();
+      return _repository.Query(c => c.UserId == 1).OrderBy(o => o.LastName).AsNoTracking().ToList();
     }
 
     public Client Get(int id)
@@ -48,5 +48,11 @@ namespace MyClientsBase.Services
       else
         return client;
     }
+
+    //public void CreateOrder(Order order)
+    //{
+    //  _repository.Find(c => c.Id ==  order.ClientId, o => o.).Discounts.Add(discount);
+    //  _repository.Save();
+    //}
   }
 }

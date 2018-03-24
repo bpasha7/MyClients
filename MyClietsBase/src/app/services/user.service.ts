@@ -1,7 +1,7 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { AppConfig } from '../app.config';
-import { User } from '../models/index';
+import { User, Product, Order } from '../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
 
 /**
@@ -20,9 +20,7 @@ export class UserService {
      * Add create and login functions here
      */
 
-    /**
-     * create authorization header with jwt token
-     */
+
     getProducts(userId: number) {
         return this.http.get(this.config.apiUrl + this.controller + '/' + userId + '/products');
     }
@@ -30,6 +28,20 @@ export class UserService {
     getDiscounts(userId: number) {
         return this.http.get(this.config.apiUrl + this.controller + '/' + userId + '/discounts');
     }
+
+    createProduct(userId: number, product: Product) {
+        return this.http.post(this.config.apiUrl + this.controller + '/' + userId + '/product', product);
+    }
+
+    createOrder(userId: number, order: Order) {
+        order.userId = 1;
+        return this.http.post(this.config.apiUrl + this.controller + '/' + userId + '/order', order);
+    }
+
+
+    /**
+     * create authorization header with jwt token
+     */
     private jwt() {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.token) {
