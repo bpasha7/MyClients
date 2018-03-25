@@ -31,6 +31,10 @@ export class ClientService {
     get(clientId: number) {
         return this.http.get(this.config.apiUrl + this.controller + '/' + clientId);
     }
+
+    getOrders(clientId: number) {
+        return this.http.get(this.config.apiUrl + this.controller + '/' + clientId + '/orders');
+    }
     /**
      * create authorization header with jwt token
      */

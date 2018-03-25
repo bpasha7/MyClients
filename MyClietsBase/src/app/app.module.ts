@@ -1,6 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule, Injectable } from '@angular/core';
+import { NgModule, Injectable, LOCALE_ID } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -160,7 +160,7 @@ export class CustomPaginator extends MatPaginatorIntl {
   ],
   bootstrap: [AppComponent],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
+    { provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
     { provide: MatPaginatorIntl, useClass: CustomPaginator },
      AppConfig, ClientService, UserService]
 })

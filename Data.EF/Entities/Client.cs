@@ -34,5 +34,9 @@ namespace Data.EF.Entities
         [ForeignKey("UserId")]
         public virtual User UserInfo { get; set; }
         public int? UserId { get; set; }
+        /// <summary>
+        /// Orders
+        /// </summary>
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

@@ -138,6 +138,30 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
+
+    [AllowAnonymous]
+    [HttpGet("{id}/orders")]
+    public IActionResult GetOrders(int id)
+    {
+      try
+      {
+        var orders = _clientService.GetOrders(id);
+        return Ok(new
+        {
+          Orders = _mapper.Map<OrderDto[]>(orders)
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
     /*    
               // POST: api/Clients
               [HttpPost]
