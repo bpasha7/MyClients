@@ -64,16 +64,24 @@
                     История
                 </mat-panel-title>
                 <mat-panel-description>
-                    <mat-spinner *ngIf="orders == null" diameter="15"></mat-spinner>
-                    <span *ngIf="orders != null">Всего {{orders.length}} записи</span>
+                    <mat-spinner *ngIf="orders.current == null || orders.old == null" diameter="15"></mat-spinner>
+                    <span *ngIf="orders.current != null || orders.old != null">Всего {{orders.current.length + orders.old.length }} записи</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
 
             <mat-list role="list">
-                <mat-list-item role="listitem" *ngFor="let order of orders"> 
-                        <mat-icon mat-list-icon>date_range</mat-icon>
-                        <h4 mat-line>{{ order.date | date:'mediumDate' }}</h4>
-                        <p mat-line> {{ order.total | currency :'RUB':'2.1'}} </p>
+                <h3 mat-subheader>Текущие</h3>
+                <mat-list-item role="listitem" *ngFor="let order of orders.current">
+                    <mat-icon mat-list-icon>date_range</mat-icon>
+                    <h4 mat-line>{{ order.date | date:'MMMM d, H:mm' }}</h4>
+                    <p mat-line> {{ order.total | currency :'RUB':'2.1'}} </p>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <h3 mat-subheader>Прошлые</h3>
+                <mat-list-item role="listitem" *ngFor="let order of orders.old">
+                    <mat-icon mat-list-icon>date_range</mat-icon>
+                    <h4 mat-line>{{ order.date | date:'mediumDate' }}</h4>
+                    <p mat-line> {{ order.total | currency :'RUB':'2.1'}} </p>
                 </mat-list-item>
             </mat-list>
         </mat-expansion-panel>

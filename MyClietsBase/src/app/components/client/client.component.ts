@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import {MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { ClientModalComponent } from '../modals/client/client.component';
-import { Client, Order } from '../../models/index';
+import { Client, Order, Orders } from '../../models/index';
 import { ClientService } from '../../services/index';
 import { OrderModalComponent } from '../modals/order/order.component';
 @Component({
@@ -17,13 +17,15 @@ import { OrderModalComponent } from '../modals/order/order.component';
 
 export class ClientComponent {
     client: Client = new Client();
-    orders: Order[] = null;
+    orders: Orders = new Orders();
     name: string;
     constructor(
         public snackBar: MatSnackBar,
         public dialog: MatDialog,
          private clientService: ClientService,
          private route: ActivatedRoute) {
+             this.orders.current = [];
+             this.orders.old = [];
              this.route.params.subscribe( params => {
                  this.loadClientInfo(params['id']);
                  this.loadClientHistory(params['id']);
@@ -44,7 +46,7 @@ export class ClientComponent {
     loadClientHistory(id: number) {
         this.clientService.getOrders(id).subscribe(
             data => {
-                this.orders = data.json().orders;
+                this.orders = data.json();
             },
             error => {
                 this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
@@ -56,6 +58,14 @@ export class ClientComponent {
     addOrder() {
         const dialogRef = this.dialog.open(OrderModalComponent, {
             data : {client: this.client}
+            
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result === 1) {
+                this.loadClientHistory(this.client.id);
+            }
         });
     }
+
+
 }

@@ -146,9 +146,12 @@ namespace MyClientsBase.Controllers
       try
       {
         var orders = _clientService.GetOrders(id);
+        var old = orders.Where(o => o.Date < DateTime.Now).ToList();
+        var current = orders.Where(o => o.Date >= DateTime.Now).ToList();
         return Ok(new
         {
-          Orders = _mapper.Map<OrderDto[]>(orders)
+          Old = _mapper.Map<OrderDto[]>(old),
+          Current = _mapper.Map<OrderDto[]>(current)
         });
       }
       catch (AppException ex)
