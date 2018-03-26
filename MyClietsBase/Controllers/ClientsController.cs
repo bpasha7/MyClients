@@ -165,6 +165,28 @@ namespace MyClientsBase.Controllers
       }
     }
 
+    [AllowAnonymous]
+    [HttpPatch("{id}/order/{orderId}")]
+    public IActionResult SetOrdersAsRemoved(int id, int orderId)
+    {
+      try
+      {
+        _clientService.SetOrderAsRemoved(id, orderId);
+        return Ok(new
+        {
+          
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
     /*    
               // POST: api/Clients
               [HttpPost]

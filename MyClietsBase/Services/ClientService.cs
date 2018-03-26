@@ -18,6 +18,7 @@ namespace MyClientsBase.Services
     Client Get(int id);
     IList<Client> Get();
     IList<Order> GetOrders(int clientId);
+    void SetOrderAsRemoved(int clientId, int orderId);
   }
   public class ClientService : IClientService
   {
@@ -55,6 +56,17 @@ namespace MyClientsBase.Services
     public IList<Order> GetOrders(int clientId)
     {
       return _repository.Find(c => c.Id == clientId, or => or.Orders).Orders.OrderByDescending(o => o.Date).ToList();
+    }
+
+    public void SetOrderAsRemoved(int clientId, int orderId)
+    {
+      //var client = _repository.Find(c => c.Id == clientId, or => or.Orders.Where(t=>t.Id == orderId).);
+      //_repository.Query()
+      //var order = client.Orders.Where(o => o.Id == orderId).Single();
+      //order.Removed = true;
+
+      //_repository.Update(client);
+      //_repository.Save();
     }
   }
 }

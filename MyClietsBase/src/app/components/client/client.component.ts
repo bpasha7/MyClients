@@ -79,4 +79,16 @@ export class ClientComponent {
         });
     }
 
+    removeOrder(id: number) {
+        this.clientService.removeOrder(1, id).subscribe(
+            data => {
+                //this.orders = data.json();
+            },
+            error => {
+                this.snackBar.open('Ошибка.', 'Закрыть', {
+                    duration: 2000,
+                  });
+            }
+        );
+    }
 }

@@ -35,6 +35,11 @@ export class ClientService {
     getOrders(clientId: number) {
         return this.http.get(this.config.apiUrl + this.controller + '/' + clientId + '/orders');
     }
+
+    removeOrder(clientId: number, id: number){
+        return this.http.patch(this.config.apiUrl + this.controller + '/' + clientId + '/order/' + id, null);
+    }
+
     /**
      * create authorization header with jwt token
      */

@@ -27,7 +27,7 @@ export class OrderModalComponent {
         private userService: UserService,
         public dialogRef: MatDialogRef<OrderModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
-            if (data.client != null && data.client == null) {
+            if (data.client != null && data.order == null) {
                 this.order = new Order();
                 this.client = data.client;
                 this.order.clientId = this.client.id;
