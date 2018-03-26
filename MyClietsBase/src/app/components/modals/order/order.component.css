@@ -26,3 +26,6 @@ mat-form-field mat-icon{
     margin-right: 5px;
     vertical-align: bottom;
 }
+.my-time-picker{
+    height: 18px;
+}

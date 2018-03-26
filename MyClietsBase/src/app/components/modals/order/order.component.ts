@@ -4,6 +4,7 @@ import {FormControl, Validators} from '@angular/forms';
 import { Order, Client, Product, Discount } from '../../../models/index';
 import { UserService } from '../../../services/index';
 import { error } from 'util';
+import * as moment from 'moment';
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'order-dialog',
@@ -14,6 +15,7 @@ import { error } from 'util';
 export class OrderModalComponent {
     public order: Order;
     public client: Client;
+    public time = "09:00";
     public selectedProduct: Product = new Product();
     public products: Product[] = [];
     public discounts: Discount[] = [];
@@ -25,13 +27,14 @@ export class OrderModalComponent {
         private userService: UserService,
         public dialogRef: MatDialogRef<OrderModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
-            if (data.client != null) {
+            if (data.client != null && data.client == null) {
                 this.order = new Order();
                 this.client = data.client;
                 this.order.clientId = this.client.id;
                 //this.title = 'Новая запись';
             } else {
                 this.order = data.order;
+                this.client = data.client;
             }
             this.title = this.client.firstName;
             
@@ -67,6 +70,15 @@ export class OrderModalComponent {
 
     create() {
         this.order.productId = this.selectedProduct.id;
+        var splitted = this.time.split(":", 2);
+        this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
+        this.order.date.setMinutes(parseInt(splitted[1]));
+        //this.order.date  moment(this.order.date).format('MMMM Do YYYY h:mm:ss a')
+        //var d = new Date();
+        // var userTimezoneOffset = this.order.date.getTimezoneOffset() * 60000;
+        // let d1 :Date = new Date(this.order.date.getTime());
+        //this.order.date = new Date();
+        //let d1 : Date = new Date(this.order.date.toLocaleString() );
         this.userService.createOrder(1, this.order).subscribe(
             data => {
                 this.snackBar.open(data.json().message, 'Закрыть', {

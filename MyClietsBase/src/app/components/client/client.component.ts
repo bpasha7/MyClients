@@ -57,7 +57,7 @@ export class ClientComponent {
     }
     addOrder() {
         const dialogRef = this.dialog.open(OrderModalComponent, {
-            data : {client: this.client}
+            data : {client: this.client, order: null}
             
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -67,5 +67,16 @@ export class ClientComponent {
         });
     }
 
+    editOrder(order: Order) {
+        const dialogRef = this.dialog.open(OrderModalComponent, {
+            data : {client: this.client, order: order}
+            
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result === 1) {
+                this.loadClientHistory(this.client.id);
+            }
+        });
+    }
 
 }

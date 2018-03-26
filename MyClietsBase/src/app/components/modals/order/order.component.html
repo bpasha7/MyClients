@@ -16,7 +16,7 @@
   <div class="container-row">
     <mat-form-field>
       <mat-icon matSuffix>access_time</mat-icon>
-      <input matInput placeholder="Время" value="09:50">
+      <input class="my-time-picker" matInput placeholder="Время" type="time" [(ngModel)]="time">
     </mat-form-field>
     <mat-form-field>
       <input matInput [matDatepicker]="picker" placeholder="Дата" [(ngModel)]="order.date">
