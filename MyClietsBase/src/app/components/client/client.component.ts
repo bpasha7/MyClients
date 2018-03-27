@@ -6,7 +6,7 @@ import {MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/m
 import { DatePipe } from '@angular/common';
 import { ClientModalComponent } from '../modals/client/client.component';
 import { Client, Order, Orders } from '../../models/index';
-import { ClientService } from '../../services/index';
+import { ClientService, UserService } from '../../services/index';
 import { OrderModalComponent } from '../modals/order/order.component';
 @Component({
     // tslint:disable-next-line:component-selector
@@ -23,6 +23,7 @@ export class ClientComponent {
         public snackBar: MatSnackBar,
         public dialog: MatDialog,
          private clientService: ClientService,
+         private userService: UserService,
          private route: ActivatedRoute) {
              this.orders.current = [];
              this.orders.old = [];
@@ -80,7 +81,7 @@ export class ClientComponent {
     }
 
     removeOrder(id: number) {
-        this.clientService.removeOrder(1, id).subscribe(
+        this.userService.removeOrder(id).subscribe(
             data => {
                 //this.orders = data.json();
             },

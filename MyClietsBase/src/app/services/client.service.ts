@@ -36,21 +36,17 @@ export class ClientService {
         return this.http.get(this.config.apiUrl + this.controller + '/' + clientId + '/orders');
     }
 
-    removeOrder(clientId: number, id: number){
-        return this.http.patch(this.config.apiUrl + this.controller + '/' + clientId + '/order/' + id, null);
-    }
-
     /**
      * create authorization header with jwt token
      */
     private jwt() {
-        let headers = new Headers({ 'Authorization': 'Bearer ' + '345' });
-        return new RequestOptions({ headers: headers });
+        // let headers = new Headers({ 'Authorization': 'Bearer ' + '345' });
+        // return new RequestOptions({ headers: headers });
         
         // let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         // if (currentUser && currentUser.token) {
-        //     let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-        //     return new RequestOptions({ headers: headers });
+             let headers = new Headers({ 'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1MjIxMTU2MDUsImV4cCI6MTUyMjIwMjAwNSwiaWF0IjoxNTIyMTE1NjA1fQ.rrVN6CmyE3FIwS2UQsOPNNox6mPS_ofYXyioFXCxUoY' });
+             return new RequestOptions({ headers: headers });
         // }
     }
 }

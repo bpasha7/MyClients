@@ -14,6 +14,7 @@ using MyClientsBase.Services;
 using NLog.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyClientsBase
 {
@@ -45,27 +46,37 @@ namespace MyClientsBase
           {
             options.TokenValidationParameters = new TokenValidationParameters
             {
-              ValidateIssuer = true,
-              ValidateAudience = true,
-              ValidateLifetime = true,
+              ValidateIssuer = false,
+              ValidateAudience = false,
+              //ValidateLifetime = false,
               ValidateIssuerSigningKey = true,
-              ValidIssuer = Configuration["Jwt:Issuer"],
-              ValidAudience = Configuration["Jwt:Issuer"],
-              IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+              //ValidIssuer = Configuration["Jwt:Issuer"],
+              //ValidAudience = Configuration["Jwt:Issuer"],
+              IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Jwt:Key"]))
             };
           });
+
+      services.AddAuthorization(auth => {
+        auth.DefaultPolicy = new AuthorizationPolicyBuilder()
+            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+            .RequireAuthenticatedUser()
+            .Build();
+      });
+
       //inject services
       services.AddScoped<IUserService, UserService>();
       services.AddScoped<IClientService, ClientService>();
-
+      services.AddScoped<IOrderService, OrderService>();
       services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
       {
         builder.AllowAnyOrigin()
                .AllowAnyMethod()
                .AllowCredentials()
-               .AllowAnyHeader();
+               .AllowAnyHeader()
+               .Build();
       }));
 
+      
       // Register the Swagger generator, defining one or more Swagger documents
       services.AddSwaggerGen(c =>
       {
@@ -103,7 +114,7 @@ namespace MyClientsBase
       {
         app.UseDeveloperExceptionPage();
       }
-      app.UseAuthentication();
+     
 
       app.UseSwagger();
       app.UseSwaggerUI(c =>
@@ -111,16 +122,14 @@ namespace MyClientsBase
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
       });
       app.UseCors("MyPolicy");
-      //app.UseCors(x => x
-      //        .AllowAnyOrigin()
-      //        .AllowAnyMethod()
-      //        .AllowAnyHeader()
-      //        .AllowCredentials());
 
       app.UseMvcWithDefaultRoute();
       app.UseDefaultFiles();
       app.UseStaticFiles();
+
+      app.UseAuthentication();
       app.UseMvc();
+      //app.UseResponseCompression();
     }
   }
 }

@@ -22,7 +22,7 @@ export class UserService {
 
 
     getProducts(userId: number) {
-        return this.http.get(this.config.apiUrl + this.controller + '/' + userId + '/products');
+        return this.http.get(this.config.apiUrl + this.controller + '/' + userId + '/products', this.jwt());
     }
 
     getDiscounts(userId: number) {
@@ -38,15 +38,18 @@ export class UserService {
         return this.http.post(this.config.apiUrl + this.controller + '/' + userId + '/order', order);
     }
 
+    removeOrder(id: number){
+        return this.http.patch(this.config.apiUrl + this.controller +'/order/' + id, null, this.jwt());
+    }
 
     /**
      * create authorization header with jwt token
      */
     private jwt() {
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (currentUser && currentUser.token) {
-            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
+       // let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+       // if (currentUser && currentUser.token) {
+            let headers = new Headers({ 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1MjIxMzQ3NTEsImV4cCI6MTUyMjIyMTE1MSwiaWF0IjoxNTIyMTM0NzUxfQ.VUTlMMaxJmdY3hY8o89Fhvki5gpcXrY0_Grg0N5sigk' });
             return new RequestOptions({ headers: headers });
-        }
+        //}
     }
 }
