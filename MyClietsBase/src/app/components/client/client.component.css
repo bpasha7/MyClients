@@ -35,3 +35,6 @@ mat-form-field mat-icon{
     float: right;
     bottom: 50px;
 }
+.removed-order{
+    background: pink;
+}

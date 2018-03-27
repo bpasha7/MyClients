@@ -46,6 +46,10 @@ export class OrderModalComponent {
         this.userService.getProducts(1).subscribe(
             data => {
                 this.products = data.json().products;
+                if(this.order.productId != null) {
+                    this.selectedProduct = this.products.find(p=>p.id=== this.order.productId);
+                }
+
             },
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
