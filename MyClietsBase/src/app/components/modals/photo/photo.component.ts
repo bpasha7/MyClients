@@ -55,7 +55,7 @@ export class PhotoModalComponent {
             this.file = event.target.files[0];
             reader.readAsDataURL(event.target.files[0]); // read file as data url
       
-            reader.onload = (event) => { // called once readAsDataURL is completed
+            reader.onload = (event: FileReaderEvent) => { // called once readAsDataURL is completed
                 this.src = event.target.result;
             }
           }
@@ -76,4 +76,13 @@ export class PhotoModalComponent {
     onNoClick(): void {
         this.dialogRef.close();
     }
+}
+
+interface FileReaderEventTarget extends EventTarget {
+    result:string
+}
+
+interface FileReaderEvent extends Event {
+    target: FileReaderEventTarget;
+    getMessage():string;
 }

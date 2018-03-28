@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using MyClientsBase.Helpers;
 using MyClientsBase.Services;
 using Microsoft.AspNetCore.Cors;
+//using System.IO;
 
 namespace MyClientsBase.Controllers
 {
@@ -168,8 +169,32 @@ namespace MyClientsBase.Controllers
     [HttpPost, DisableRequestSizeLimit, Route("{id}/photo")]
     public async Task UploadFiles(int id, IFormFile file)
     {
-      //your file stream
-      var stream = file.OpenReadStream();
+      try
+      {
+        //var n = User.Identity.Name;
+
+        var path = _appSettings.PhotoFolder + "1.jpg";//file.FileName;//$"{id}.
+
+        var stream1 = file.OpenReadStream();
+
+        using (var stream = new System.IO.FileStream(path, System.IO.FileMode.Create))
+        {
+          await file.CopyToAsync(stream);
+        }
+        //return Ok(new
+        //{
+
+        //});
+      }
+      catch (AppException ex)
+      {
+        //return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+       // return BadRequest("Service error!");
+      }
     }
     /*    
               // POST: api/Clients
