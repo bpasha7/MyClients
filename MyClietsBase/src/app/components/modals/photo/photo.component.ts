@@ -49,12 +49,12 @@ export class PhotoModalComponent {
         //     return;
         // var reader = new FileReader();
         // reader.readAsDataURL(file);
-        // this.src = 
         if (event.target.files && event.target.files[0]) {
-            var reader = new FileReader();
+            // tslint:disable-next-line:prefer-const
+            let reader = new FileReader();
             this.file = event.target.files[0];
             reader.readAsDataURL(event.target.files[0]); // read file as data url
-      
+
             reader.onload = (event: FileReaderEvent) => { // called once readAsDataURL is completed
                 this.src = event.target.result;
             }
@@ -67,10 +67,11 @@ export class PhotoModalComponent {
         formData.append(this.file.name, this.file);
 
         this.clientService.uploadPhoto(1, formData).subscribe(event => {
-            if (event.type === HttpEventType.UploadProgress)
+            if (event.type === HttpEventType.UploadProgress) {
                 this.progress = Math.round(100 * event.loaded / event.total);
-            else if (event instanceof HttpResponse)
+            } else if (event instanceof HttpResponse) {
                 console.log('Files uploaded!');
+                }
         });
     }
     onNoClick(): void {
@@ -79,10 +80,10 @@ export class PhotoModalComponent {
 }
 
 interface FileReaderEventTarget extends EventTarget {
-    result:string
+    result: string;
 }
 
 interface FileReaderEvent extends Event {
     target: FileReaderEventTarget;
-    getMessage():string;
+    getMessage(): string;
 }

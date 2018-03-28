@@ -48,7 +48,7 @@ export class UserService {
     private jwt() {
        // let currentUser = JSON.parse(localStorage.getItem('currentUser'));
        // if (currentUser && currentUser.token) {
-            let headers = new Headers({ 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1MjIxMzQ3NTEsImV4cCI6MTUyMjIyMTE1MSwiaWF0IjoxNTIyMTM0NzUxfQ.VUTlMMaxJmdY3hY8o89Fhvki5gpcXrY0_Grg0N5sigk' });
+            let headers = new Headers({ 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1MjIyNDc4OTksImV4cCI6MTUyMjMzNDI5OSwiaWF0IjoxNTIyMjQ3ODk5fQ.raDV3VomAbHjgeslwiZNatbUDoRJD3P0S9MxBl0wbgs' });
             return new RequestOptions({ headers: headers });
         //}
     }

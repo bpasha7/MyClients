@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using MyClientsBase.Helpers;
 using MyClientsBase.Services;
 using Microsoft.AspNetCore.Cors;
+using System.IO;
 //using System.IO;
 
 namespace MyClientsBase.Controllers
@@ -167,33 +168,36 @@ namespace MyClientsBase.Controllers
     }
 
     [HttpPost, DisableRequestSizeLimit, Route("{id}/photo")]
-    public async Task UploadFiles(int id, IFormFile file)
+    public async Task<IActionResult> UploadFiles(int id)
     {
       try
       {
-        //var n = User.Identity.Name;
+        var file = Request.Form.Files.FirstOrDefault();
+        if (file == null)
+          throw new AppException("Empty file!");
+        var claims = User.Claims;
+        var hash = AppFileSystem.GetUserMD5(1, User.Identity.Name);
+        var path = $"{Directory.GetCurrentDirectory()}{_appSettings.PhotoFolder}1.jpg";//file.FileName;//$"{id}.
 
-        var path = _appSettings.PhotoFolder + "1.jpg";//file.FileName;//$"{id}.
+       // var stream1 = file.OpenReadStream();
 
-        var stream1 = file.OpenReadStream();
-
-        using (var stream = new System.IO.FileStream(path, System.IO.FileMode.Create))
+        using (var stream = new FileStream(path, FileMode.Create))
         {
           await file.CopyToAsync(stream);
         }
-        //return Ok(new
-        //{
+        return Ok(new
+        {
 
-        //});
+        });
       }
       catch (AppException ex)
       {
-        //return BadRequest(ex.Message);
+        return BadRequest(ex.Message);
       }
       catch (Exception ex)
       {
         _logger.LogError($"{ex}");
-       // return BadRequest("Service error!");
+        return BadRequest("Service error!");
       }
     }
     /*    

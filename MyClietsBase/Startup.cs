@@ -115,6 +115,7 @@ namespace MyClientsBase
         app.UseDeveloperExceptionPage();
       }
      
+      
 
       app.UseSwagger();
       app.UseSwaggerUI(c =>

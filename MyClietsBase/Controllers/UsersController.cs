@@ -267,7 +267,8 @@ namespace MyClientsBase.Controllers
         {
           Subject = new ClaimsIdentity(new Claim[]
             {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes., user.Id.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             }),
           //Audience = _appSettings.IsUser,
           //Issuer = _appSettings.IsUser,
@@ -277,7 +278,7 @@ namespace MyClientsBase.Controllers
         //new JwtSecurityTokenHandler().WriteToken(tokenDescriptor); 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var tokenString = tokenHandler.WriteToken(token);
-        _logger.LogTrace($"User #{user.Id} was logged.");
+        _logger.LogInformation($"User #{user.Id} was logged.");
 
         return Ok(new
         {
