@@ -164,6 +164,13 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
+
+    [HttpPost, DisableRequestSizeLimit, Route("{id}/photo")]
+    public async Task UploadFiles(int id, IFormFile file)
+    {
+      //your file stream
+      var stream = file.OpenReadStream();
+    }
     /*    
               // POST: api/Clients
               [HttpPost]

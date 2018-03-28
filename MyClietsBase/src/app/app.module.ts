@@ -51,7 +51,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { AppComponent } from './app.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { ClientComponent } from './components/client/client.component';
-import { ClientModalComponent, ProductModalComponent, OrderModalComponent } from './components/modals/index';
+import { ClientModalComponent, ProductModalComponent, OrderModalComponent, PhotoModalComponent } from './components/modals/index';
 import { ProductsComponent } from './components/products/products.component';
 
 import { AppConfig } from './app.config';
@@ -148,7 +148,7 @@ export class CustomPaginator extends MatPaginatorIntl {
     MatTableModule,
     MatSortModule,
   ],
-  entryComponents: [ClientModalComponent, ProductModalComponent, OrderModalComponent],
+  entryComponents: [ClientModalComponent, ProductModalComponent, OrderModalComponent, PhotoModalComponent],
   declarations: [
     AppComponent,
     ClientsComponent,
@@ -156,6 +156,7 @@ export class CustomPaginator extends MatPaginatorIntl {
     ClientModalComponent,
     ProductModalComponent,
     OrderModalComponent,
+    PhotoModalComponent,
     ProductsComponent
   ],
   bootstrap: [AppComponent],

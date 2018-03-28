@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Новое фото</h1>
+<div mat-dialog-content>
+  <div *ngIf="src != null" class="container-column">
+    <img src="{{src}}" alt="" />
+  </div>
+
+  <div *ngIf="progress != 0" class="container-column">
+    <mat-progress-bar [color]="primary"  [value]="progress">
+    </mat-progress-bar>
+  </div>
+
+  <div class="container-column">
+    <input #file type="file" name="file" id="file" (change)="upload($event)" class="inputfile" />
+    <label for="file">
+      <mat-icon>file_upload</mat-icon>Выбрать файл</label>
+  </div>
+  <div *ngIf="src != null" class="container-column">
+
+  </div>
+</div>
+<div mat-dialog-actions style="display: block">
+  <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">Назад</button>
+  <button *ngIf="src != null || progress == 100" mat-button class="button-ok" (click)="update()" cdkFocusInitial>Загрузить</button>
+  <!-- <button mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>Обновить</button> -->
+</div>

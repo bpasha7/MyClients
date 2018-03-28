@@ -2,12 +2,12 @@
 import { Component, ViewChild, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import {MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { ClientModalComponent } from '../modals/client/client.component';
 import { Client, Order, Orders } from '../../models/index';
 import { ClientService, UserService } from '../../services/index';
-import { OrderModalComponent } from '../modals/order/order.component';
+import { OrderModalComponent, PhotoModalComponent } from '../modals/index';
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'client',
@@ -21,16 +21,17 @@ export class ClientComponent {
     name: string;
     constructor(
         public snackBar: MatSnackBar,
-        public dialog: MatDialog,
-         private clientService: ClientService,
-         private userService: UserService,
-         private route: ActivatedRoute) {
-             this.orders.current = [];
-             this.orders.old = [];
-             this.route.params.subscribe( params => {
-                 this.loadClientInfo(params['id']);
-                 this.loadClientHistory(params['id']);
-                });
+        public orderDialog: MatDialog,
+        public photoDialog: MatDialog,
+        private clientService: ClientService,
+        private userService: UserService,
+        private route: ActivatedRoute) {
+        this.orders.current = [];
+        this.orders.old = [];
+        this.route.params.subscribe(params => {
+            this.loadClientInfo(params['id']);
+            this.loadClientHistory(params['id']);
+        });
     }
     loadClientInfo(id: number) {
         this.clientService.get(id).subscribe(
@@ -40,7 +41,7 @@ export class ClientComponent {
             error => {
                 this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
     }
@@ -52,14 +53,14 @@ export class ClientComponent {
             error => {
                 this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
     }
     addOrder() {
-        const dialogRef = this.dialog.open(OrderModalComponent, {
-            data : {client: this.client, order: null}
-            
+        const dialogRef = this.orderDialog.open(OrderModalComponent, {
+            data: { client: this.client, order: null }
+
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
@@ -69,9 +70,9 @@ export class ClientComponent {
     }
 
     editOrder(order: Order) {
-        const dialogRef = this.dialog.open(OrderModalComponent, {
-            data : {client: this.client, order: order}
-            
+        const dialogRef = this.orderDialog.open(OrderModalComponent, {
+            data: { client: this.client, order: order }
+
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
@@ -88,8 +89,16 @@ export class ClientComponent {
             error => {
                 this.snackBar.open('Ошибка.', 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
+    }
+
+    addPhoto(){
+        const dialogRef = this.photoDialog.open(PhotoModalComponent, {
+            data: { client: this.client }
+
+        });
+        
     }
 }

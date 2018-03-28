@@ -1,8 +1,10 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { AppConfig } from '../app.config';
 import { Client } from '../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
+// import { HttpRequest } from 'selenium-webdriver/http';
 
 /**
  * Client Service
@@ -13,7 +15,9 @@ export class ClientService {
      * Rest controller
      */
     private controller: string = '/clients';
-    constructor(private http: Http,
+    constructor(
+        private http: Http,
+        private httpCleint: HttpClient,
         public config: AppConfig,
         private router: Router) { }
     /**
@@ -34,6 +38,17 @@ export class ClientService {
 
     getOrders(clientId: number) {
         return this.http.get(this.config.apiUrl + this.controller + '/' + clientId + '/orders');
+    }
+
+    uploadPhoto(clientId: number, form: FormData) {
+        let req = new HttpRequest('POST', 
+        this.config.apiUrl + this.controller + '/' + clientId + '/photo', 
+        form,
+        {
+            reportProgress: true,
+        });
+
+        return this.httpCleint.request(req);
     }
 
     /**
