@@ -22,7 +22,7 @@ namespace MyClientsBase.Controllers
   /// <summary>
   /// User Controller
   /// </summary>
-  //[Authorize]
+  //[Authorize(Policy)]
   [EnableCors("MyPolicy")]
   [Produces("application/json")]
   [Route("api/Users")]
@@ -32,6 +32,10 @@ namespace MyClientsBase.Controllers
     /// User Servise to work with database
     /// </summary>
     private IUserService _userService;
+    /// <summary>
+    /// Order Servise to work with database
+    /// </summary>
+    private IOrderService _orderService;
     /// <summary>
     /// Mapper
     /// </summary>
@@ -45,11 +49,12 @@ namespace MyClientsBase.Controllers
     /// </summary>
     private ILogger _logger;
 
-    public UsersController(IUserService userService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
+    public UsersController(IUserService userService, IOrderService orderService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
     {
       try
       {
         _userService = userService;
+        _orderService = orderService;
         _mapper = mapper;
         _appSettings = appSettings.Value;
         _logger = loggerFactory.CreateLogger(typeof(UsersController));
@@ -146,6 +151,30 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
+   // [AllowAnonymous]
+    [Authorize]
+    [HttpPatch("order/{id}")]
+    public IActionResult SetOrdersAsRemoved(int id)
+    {
+      try
+      {
+        var n = User.Identity.Name;
+        _orderService.SetAsRemoved(1, id);
+        return Ok(new
+        {
+
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
 
     [AllowAnonymous]
     [HttpGet("{id}/discounts")]
@@ -169,8 +198,8 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
-
-    [AllowAnonymous]
+    [Authorize]
+   // [AllowAnonymous]
     [HttpGet("{id}/products")]
     public IActionResult GetProducts(int id)
     {
@@ -180,6 +209,29 @@ namespace MyClientsBase.Controllers
         return Ok(new
         {
           Products = _mapper.Map<ProductDto[]>(products)
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+    [Authorize]
+    [HttpGet("orders/current")]
+    public IActionResult GetCurrentOrders()
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        var orders = _userService.GetCurrentOrders(userId);
+        return Ok(new
+        {
+          Orders = _mapper.Map<OrderDto[]>(orders)
         });
       }
       catch (AppException ex)
@@ -221,21 +273,35 @@ namespace MyClientsBase.Controllers
 
         if (user == null)
           throw new AppException("Неверный логин-пароль!");
-
+        var claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Name),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+               };
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = System.Text.Encoding.ASCII.GetBytes(_appSettings.Secret);
+        //var tokenDescriptor = new JwtSecurityToken(
+        //  "http://localhost:4200/",
+        //  _appSettings.IsUser,
+        //  claims,
+        //  expires: DateTime.Now.AddMinutes(30),
+        //  signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+        //  );
         var tokenDescriptor = new SecurityTokenDescriptor
         {
           Subject = new ClaimsIdentity(new Claim[]
             {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Login),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             }),
+          //Audience = _appSettings.IsUser,
+          //Issuer = _appSettings.IsUser,
           Expires = DateTime.UtcNow.AddDays(_appSettings.PassDaysExpired),
-          SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+          SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
         };
+        //new JwtSecurityTokenHandler().WriteToken(tokenDescriptor); 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var tokenString = tokenHandler.WriteToken(token);
-        _logger.LogError($"User #{user.Id} was logged.");
+        _logger.LogInformation($"User #{user.Id} was logged.");
 
         return Ok(new
         {

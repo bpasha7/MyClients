@@ -44,6 +44,7 @@ export class ProductModalComponent {
     update() {
 
     }
+    
     onNoClick(): void {
         this.dialogRef.close();
     }

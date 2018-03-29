@@ -6,6 +6,7 @@ using MyClientsBase.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MyClientsBase.Services
@@ -25,6 +26,8 @@ namespace MyClientsBase.Services
     void CreateOrder(Order order);
     IList<Product> GetProducts(int userId);
     IList<Discount> GetDiscounts(int userId);
+    IList<Order> GetCurrentOrders(int userId);
+    string GetMD5(int id, string login);
   }
   public class UserService : IUserService
   {
@@ -78,6 +81,14 @@ namespace MyClientsBase.Services
     {
       _repository.Find(u => u.Id == order.UserId, o => o.Orders).Orders.Add(order);
       _repository.Save();
+    }
+
+    public IList<Order> GetCurrentOrders(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, o => o.Orders)
+        .Orders.Where(e=>e.Date >= DateTime.Now.Date && e.Removed != true)
+        .OrderByDescending(o=>o.Date)
+        .ToList();
     }
 
 
@@ -139,6 +150,22 @@ namespace MyClientsBase.Services
       }
 
       return true;
+    }
+
+    public string GetMD5(int id, string login)
+    {
+      using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+      {
+        byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes($"{id}_{login}");
+        byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < hashBytes.Length; i++)
+        {
+          sb.Append(hashBytes[i].ToString("X2"));
+        }
+        return sb.ToString();
+      }
     }
     #endregion
   }

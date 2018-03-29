@@ -14,5 +14,6 @@ namespace Data.DTO.Entities
         public DateTime Date { get; set; }
         public string Location { get; set; }
         public string Commentary { get; set; }
+        public bool Removed { get; set; }
     }
 }

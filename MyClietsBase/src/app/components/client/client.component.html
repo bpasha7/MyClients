@@ -1,15 +1,7 @@
-<!-- <mat-grid-list cols="3" rowHeight="100px">
-    <mat-grid-tile [colspan]="2" [rowspan]="2" [style.background]="'green'">
-        Green
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="2" [style.background]="'red'">
-        Red
-    </mat-grid-tile>
-</mat-grid-list> -->
 <div class="client-container">
     <mat-card class="item-contaner">
         <div>
-            <img img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="">
+            <img img mat-card-image src="{{photo}}" alt="">
             <div class="client-menu-bar">
                 <button mat-mini-fab color="primary">
                     <mat-icon aria-label="">public</mat-icon>
@@ -41,10 +33,15 @@
         <mat-card-title>{{client.lastName}} {{client.firstName}}
         </mat-card-title>
         <button mat-icon-button class="edit-button">
-            <mat-icon aria-label="">mode_edit
-
+            <mat-icon aria-label="">
+                mode_edit
             </mat-icon>
         </button>
+        <button mat-icon-button class="edit-button" (click)="addPhoto()">
+                <mat-icon aria-label="">
+                    add_a_photo
+                </mat-icon>
+            </button>
         <mat-card-subtitle>Модель</mat-card-subtitle>
         <mat-card-content>
             <p>
@@ -71,20 +68,23 @@
 
             <mat-list role="list">
                 <h3 mat-subheader>Текущие</h3>
-                <mat-list-item role="listitem" *ngFor="let order of orders.current">
+                <mat-list-item role="listitem" [ngClass]="{'removed-order' : order.removed}" *ngFor="let order of orders.current">
                     <mat-icon mat-list-icon>date_range</mat-icon>
                     <h4 mat-line>{{ order.date | date:'MMMM d, H:mm' }}</h4>
                     <p mat-line> {{ order.total | currency :'RUB':'2.1'}} </p>
-                    <button mat-icon-button class="edit-button" style="bottom: 10px" (click)="removeOrder(order.id)" color="accent">
+                    <button mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="accent">
                         <mat-icon aria-label="">info outline</mat-icon>
                     </button>
                 </mat-list-item>
                 <mat-divider></mat-divider>
                 <h3 mat-subheader>Прошлые</h3>
-                <mat-list-item role="listitem" *ngFor="let order of orders.old">
+                <mat-list-item role="listitem" [ngClass]="{'removed-order' : order.removed}" *ngFor="let order of orders.old">
                     <mat-icon mat-list-icon>date_range</mat-icon>
                     <h4 mat-line>{{ order.date | date:'mediumDate' }}</h4>
                     <p mat-line> {{ order.total | currency :'RUB':'2.1'}} </p>
+                    <button mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="primary">
+                        <mat-icon aria-label="">info outline</mat-icon>
+                    </button>
                 </mat-list-item>
             </mat-list>
         </mat-expansion-panel>

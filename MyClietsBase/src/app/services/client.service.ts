@@ -1,8 +1,10 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { AppConfig } from '../app.config';
 import { Client } from '../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
+// import { HttpRequest } from 'selenium-webdriver/http';
 
 /**
  * Client Service
@@ -13,7 +15,9 @@ export class ClientService {
      * Rest controller
      */
     private controller: string = '/clients';
-    constructor(private http: Http,
+    constructor(
+        private http: Http,
+        private httpCleint: HttpClient,
         public config: AppConfig,
         private router: Router) { }
     /**
@@ -36,21 +40,31 @@ export class ClientService {
         return this.http.get(this.config.apiUrl + this.controller + '/' + clientId + '/orders');
     }
 
-    removeOrder(clientId: number, id: number){
-        return this.http.patch(this.config.apiUrl + this.controller + '/' + clientId + '/order/' + id, null);
+    uploadPhoto(clientId: number, form: FormData) { 
+        let req = new HttpRequest('POST', 
+        this.config.apiUrl + this.controller + '/' + clientId + '/photo', 
+        form,
+        {
+            reportProgress: true,
+            headers: new HttpHeaders({
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QiLCJuYW1laWQiOiIxIiwibmJmIjoxNTIyMjg5NTUxLCJleHAiOjE1MjIzNzU5NTEsImlhdCI6MTUyMjI4OTU1MX0.33SjLtMN1TkeElrVrWI4TyalLZdJDaASrRcuqxO58bA'
+            })
+        });
+        //req.headers = 
+        return this.httpCleint.request(req);
     }
 
     /**
      * create authorization header with jwt token
      */
     private jwt() {
-        let headers = new Headers({ 'Authorization': 'Bearer ' + '345' });
-        return new RequestOptions({ headers: headers });
+        // let headers = new Headers({ 'Authorization': 'Bearer ' + '345' });
+        // return new RequestOptions({ headers: headers });
         
         // let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         // if (currentUser && currentUser.token) {
-        //     let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-        //     return new RequestOptions({ headers: headers });
+             let headers = new Headers({ 'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QiLCJuYW1laWQiOiIxIiwibmJmIjoxNTIyMjg5NTUxLCJleHAiOjE1MjIzNzU5NTEsImlhdCI6MTUyMjI4OTU1MX0.33SjLtMN1TkeElrVrWI4TyalLZdJDaASrRcuqxO58bA' });
+             return new RequestOptions({ headers: headers });
         // }
     }
 }

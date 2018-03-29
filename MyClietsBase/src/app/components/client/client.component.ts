@@ -2,12 +2,13 @@
 import { Component, ViewChild, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import {MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { ClientModalComponent } from '../modals/client/client.component';
 import { Client, Order, Orders } from '../../models/index';
-import { ClientService } from '../../services/index';
-import { OrderModalComponent } from '../modals/order/order.component';
+import { ClientService, UserService } from '../../services/index';
+import { OrderModalComponent, PhotoModalComponent } from '../modals/index';
+import { AppConfig } from '../../app.config';
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'client',
@@ -18,28 +19,33 @@ import { OrderModalComponent } from '../modals/order/order.component';
 export class ClientComponent {
     client: Client = new Client();
     orders: Orders = new Orders();
+    photo: string = '';
     name: string;
     constructor(
+        public config: AppConfig,
         public snackBar: MatSnackBar,
-        public dialog: MatDialog,
-         private clientService: ClientService,
-         private route: ActivatedRoute) {
-             this.orders.current = [];
-             this.orders.old = [];
-             this.route.params.subscribe( params => {
-                 this.loadClientInfo(params['id']);
-                 this.loadClientHistory(params['id']);
-                });
+        public orderDialog: MatDialog,
+        public photoDialog: MatDialog,
+        private clientService: ClientService,
+        private userService: UserService,
+        private route: ActivatedRoute) {
+        this.orders.current = [];
+        this.orders.old = [];
+        this.route.params.subscribe(params => {
+            this.loadClientInfo(params['id']);
+            this.loadClientHistory(params['id']);
+        });
     }
     loadClientInfo(id: number) {
         this.clientService.get(id).subscribe(
             data => {
                 this.client = data.json().client;
+                this.photo = this.config.photoUrl+'671EF4298BF7FDA73A2EA72F963BF7EF'+'/'+this.client.id+'.jpg'
             },
             error => {
                 this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
     }
@@ -51,14 +57,14 @@ export class ClientComponent {
             error => {
                 this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
     }
     addOrder() {
-        const dialogRef = this.dialog.open(OrderModalComponent, {
-            data : {client: this.client, order: null}
-            
+        const dialogRef = this.orderDialog.open(OrderModalComponent, {
+            data: { client: this.client, order: null }
+
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
@@ -68,9 +74,9 @@ export class ClientComponent {
     }
 
     editOrder(order: Order) {
-        const dialogRef = this.dialog.open(OrderModalComponent, {
-            data : {client: this.client, order: order}
-            
+        const dialogRef = this.orderDialog.open(OrderModalComponent, {
+            data: { client: this.client, order: order }
+
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
@@ -80,15 +86,26 @@ export class ClientComponent {
     }
 
     removeOrder(id: number) {
-        this.clientService.removeOrder(1, id).subscribe(
+        this.userService.removeOrder(id).subscribe(
             data => {
                 //this.orders = data.json();
             },
             error => {
                 this.snackBar.open('Ошибка.', 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
+    }
+
+    addPhoto(){
+        const dialogRef = this.photoDialog.open(PhotoModalComponent, {
+            data: { clientId: this.client.id }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result === 0) {
+                this.photo = this.photo;
+            }
+        });
     }
 }

@@ -51,11 +51,13 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { AppComponent } from './app.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { ClientComponent } from './components/client/client.component';
-import { ClientModalComponent, ProductModalComponent, OrderModalComponent } from './components/modals/index';
+import { ClientModalComponent, ProductModalComponent, OrderModalComponent, PhotoModalComponent } from './components/modals/index';
 import { ProductsComponent } from './components/products/products.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 import { AppConfig } from './app.config';
 import { UserService, ClientService} from './services/index';
+
 
 
 
@@ -66,6 +68,7 @@ const appRoutes: Routes = [
   //{ path: 'cases', component: CasesForm },
   { path: 'clients', component: ClientsComponent },
   { path: 'products', component: ProductsComponent },
+  { path: 'orders', component: OrdersComponent },
   { path: 'client/:id', component: ClientComponent },
   // { path: '', component: LoginForm },
   //{ path: 'login', component: LoginForm }
@@ -107,7 +110,8 @@ const appRoutes: Routes = [
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-  ]
+  ],
+  declarations: []
 })
 export class DemoMaterialModule { }
 
@@ -148,7 +152,7 @@ export class CustomPaginator extends MatPaginatorIntl {
     MatTableModule,
     MatSortModule,
   ],
-  entryComponents: [ClientModalComponent, ProductModalComponent, OrderModalComponent],
+  entryComponents: [ClientModalComponent, ProductModalComponent, OrderModalComponent, PhotoModalComponent],
   declarations: [
     AppComponent,
     ClientsComponent,
@@ -156,7 +160,9 @@ export class CustomPaginator extends MatPaginatorIntl {
     ClientModalComponent,
     ProductModalComponent,
     OrderModalComponent,
-    ProductsComponent
+    PhotoModalComponent,
+    ProductsComponent,
+    OrdersComponent
   ],
   bootstrap: [AppComponent],
   providers: [
