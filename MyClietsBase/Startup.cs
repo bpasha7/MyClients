@@ -15,6 +15,7 @@ using NLog.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.FileProviders;
 
 namespace MyClientsBase
 {
@@ -127,6 +128,14 @@ namespace MyClientsBase
       app.UseMvcWithDefaultRoute();
       app.UseDefaultFiles();
       app.UseStaticFiles();
+
+      app.UseStaticFiles(new StaticFileOptions
+      {
+        FileProvider = new PhysicalFileProvider(
+           Path.Combine(Directory.GetCurrentDirectory(), "temp")),
+        RequestPath = "/photo"
+      });
+
 
       app.UseAuthentication();
       app.UseMvc();

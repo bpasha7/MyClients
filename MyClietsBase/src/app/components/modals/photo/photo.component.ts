@@ -14,19 +14,16 @@ export class PhotoModalComponent {
         public src = null;
         private file;
         public progress = 0;
+        private clientId = 0;
         public title: string;
     constructor(
         public snackBar: MatSnackBar,
         private clientService: ClientService,
         public dialogRef: MatDialogRef<PhotoModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
-            // if (data == null) {
-            //     this.product = new Product();
-            //     this.title = 'Новая услуга';
-            // } else {
-            //     this.product = data.product;
-            //     this.title = 'Обновление';
-            // }
+            if (data != null) {
+                this.clientId = data.clientId;
+            }
     }
 
     create() {
@@ -66,7 +63,7 @@ export class PhotoModalComponent {
         const formData = new FormData();
         formData.append(this.file.name, this.file);
 
-        this.clientService.uploadPhoto(1, formData).subscribe(event => {
+        this.clientService.uploadPhoto(this.clientId, formData).subscribe(event => {
             if (event.type === HttpEventType.UploadProgress) {
                 this.progress = Math.round(100 * event.loaded / event.total);
             } else if (event instanceof HttpResponse) {

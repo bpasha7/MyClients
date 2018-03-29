@@ -14,7 +14,7 @@ using MyClientsBase.Helpers;
 using MyClientsBase.Services;
 using Microsoft.AspNetCore.Cors;
 using System.IO;
-//using System.IO;
+using System.Security.Claims;
 
 namespace MyClientsBase.Controllers
 {
@@ -166,7 +166,7 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
-
+    [Authorize]
     [HttpPost, DisableRequestSizeLimit, Route("{id}/photo")]
     public async Task<IActionResult> UploadFiles(int id)
     {
@@ -175,15 +175,21 @@ namespace MyClientsBase.Controllers
         var file = Request.Form.Files.FirstOrDefault();
         if (file == null)
           throw new AppException("Empty file!");
-        var claims = User.Claims;
-        var hash = AppFileSystem.GetUserMD5(1, User.Identity.Name);
-        var path = $"{Directory.GetCurrentDirectory()}{_appSettings.PhotoFolder}1.jpg";//file.FileName;//$"{id}.
+        //combine path to user folder using md5 hash
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        var userName = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+        var hash = AppFileSystem.GetUserMD5(userId, User.Identity.Name);
+        //create directory in not exist
+        var path = $"{Directory.GetCurrentDirectory()}{_appSettings.PhotoFolder}{hash}";
+        if (!Directory.Exists(path))
+          Directory.CreateDirectory(path);
+        path += $"\\{id}.jpg";
 
-       // var stream1 = file.OpenReadStream();
-
-        using (var stream = new FileStream(path, FileMode.Create))
+        if (System.IO.File.Exists(path))
+          System.IO.File.Delete(path);
+        using (FileStream fstream = new FileStream(path, FileMode.Create))
         {
-          await file.CopyToAsync(stream);
+          await file.CopyToAsync(fstream);
         }
         return Ok(new
         {

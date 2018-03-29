@@ -1,6 +1,6 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { AppConfig } from '../app.config';
 import { Client } from '../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -40,14 +40,17 @@ export class ClientService {
         return this.http.get(this.config.apiUrl + this.controller + '/' + clientId + '/orders');
     }
 
-    uploadPhoto(clientId: number, form: FormData) {
+    uploadPhoto(clientId: number, form: FormData) { 
         let req = new HttpRequest('POST', 
         this.config.apiUrl + this.controller + '/' + clientId + '/photo', 
         form,
         {
             reportProgress: true,
+            headers: new HttpHeaders({
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QiLCJuYW1laWQiOiIxIiwibmJmIjoxNTIyMjg5NTUxLCJleHAiOjE1MjIzNzU5NTEsImlhdCI6MTUyMjI4OTU1MX0.33SjLtMN1TkeElrVrWI4TyalLZdJDaASrRcuqxO58bA'
+            })
         });
-
+        //req.headers = 
         return this.httpCleint.request(req);
     }
 
@@ -60,7 +63,7 @@ export class ClientService {
         
         // let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         // if (currentUser && currentUser.token) {
-             let headers = new Headers({ 'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1MjIyNDc4OTksImV4cCI6MTUyMjMzNDI5OSwiaWF0IjoxNTIyMjQ3ODk5fQ.raDV3VomAbHjgeslwiZNatbUDoRJD3P0S9MxBl0wbgs' });
+             let headers = new Headers({ 'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QiLCJuYW1laWQiOiIxIiwibmJmIjoxNTIyMjg5NTUxLCJleHAiOjE1MjIzNzU5NTEsImlhdCI6MTUyMjI4OTU1MX0.33SjLtMN1TkeElrVrWI4TyalLZdJDaASrRcuqxO58bA' });
              return new RequestOptions({ headers: headers });
         // }
     }

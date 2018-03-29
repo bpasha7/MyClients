@@ -8,6 +8,7 @@ import { ClientModalComponent } from '../modals/client/client.component';
 import { Client, Order, Orders } from '../../models/index';
 import { ClientService, UserService } from '../../services/index';
 import { OrderModalComponent, PhotoModalComponent } from '../modals/index';
+import { AppConfig } from '../../app.config';
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'client',
@@ -18,8 +19,10 @@ import { OrderModalComponent, PhotoModalComponent } from '../modals/index';
 export class ClientComponent {
     client: Client = new Client();
     orders: Orders = new Orders();
+    photo: string = '';
     name: string;
     constructor(
+        public config: AppConfig,
         public snackBar: MatSnackBar,
         public orderDialog: MatDialog,
         public photoDialog: MatDialog,
@@ -37,6 +40,7 @@ export class ClientComponent {
         this.clientService.get(id).subscribe(
             data => {
                 this.client = data.json().client;
+                this.photo = this.config.photoUrl+'671EF4298BF7FDA73A2EA72F963BF7EF'+'/'+this.client.id+'.jpg'
             },
             error => {
                 this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
@@ -96,9 +100,12 @@ export class ClientComponent {
 
     addPhoto(){
         const dialogRef = this.photoDialog.open(PhotoModalComponent, {
-            data: { client: this.client }
-
+            data: { clientId: this.client.id }
         });
-        
+        dialogRef.afterClosed().subscribe(result => {
+            if (result === 0) {
+                this.photo = this.photo;
+            }
+        });
     }
 }

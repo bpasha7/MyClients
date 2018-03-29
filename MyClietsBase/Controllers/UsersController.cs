@@ -221,6 +221,29 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
+    [Authorize]
+    [HttpGet("orders/current")]
+    public IActionResult GetCurrentOrders()
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        var orders = _userService.GetCurrentOrders(userId);
+        return Ok(new
+        {
+          Orders = _mapper.Map<OrderDto[]>(orders)
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
     //// GET: api/Users
     //[HttpGet]
     //public IEnumerable<string> Get()
@@ -267,7 +290,7 @@ namespace MyClientsBase.Controllers
         {
           Subject = new ClaimsIdentity(new Claim[]
             {
-                    new Claim(ClaimTypes., user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Login),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             }),
           //Audience = _appSettings.IsUser,

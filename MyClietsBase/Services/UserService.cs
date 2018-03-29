@@ -26,6 +26,7 @@ namespace MyClientsBase.Services
     void CreateOrder(Order order);
     IList<Product> GetProducts(int userId);
     IList<Discount> GetDiscounts(int userId);
+    IList<Order> GetCurrentOrders(int userId);
     string GetMD5(int id, string login);
   }
   public class UserService : IUserService
@@ -80,6 +81,14 @@ namespace MyClientsBase.Services
     {
       _repository.Find(u => u.Id == order.UserId, o => o.Orders).Orders.Add(order);
       _repository.Save();
+    }
+
+    public IList<Order> GetCurrentOrders(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, o => o.Orders)
+        .Orders.Where(e=>e.Date >= DateTime.Now.Date && e.Removed != true)
+        .OrderByDescending(o=>o.Date)
+        .ToList();
     }
 
 

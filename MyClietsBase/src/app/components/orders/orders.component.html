@@ -1,0 +1,10 @@
+<div class="orders-container">
+  <mat-list>
+    <h3 mat-subheader>Сегодня</h3>
+    <mat-list-item *ngFor="let order of orders">
+      <mat-icon mat-list-icon>work</mat-icon>
+      <h4 mat-line>{{order.location}}</h4>
+      <p mat-line> {{order.date | date:'mediumDate'}} </p>
+    </mat-list-item>
+  </mat-list>
+</div>
