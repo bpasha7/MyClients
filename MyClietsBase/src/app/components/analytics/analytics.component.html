@@ -1,0 +1,40 @@
+<div class="analynics-container">
+  <mat-card class="clients-search-card">
+    <mat-card-title>Выбор периода</mat-card-title>
+    <!-- <mat-card-content> -->
+      <div class="container-row">
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Месяц С">
+          <mat-datepicker-toggle matSuffix [for]="picker" mode="MONTH"></mat-datepicker-toggle>
+          <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="month" placeholder="Месяц По">
+          <!-- <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker> -->
+        </mat-form-field>
+      </div>
+    <!-- </mat-card-content> -->
+  </mat-card>
+</div>
+<div class="analynics-container">
+  <mat-card>
+    <mat-card-title>Отчет</mat-card-title>
+    <mat-card-subtitle>Январь-Март</mat-card-subtitle>
+    <mat-card-content>
+      <div style="display: block">
+        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Выручка по услугам</mat-card-title>
+    <mat-card-subtitle>Январь-Март</mat-card-subtitle>
+    <div style="display: block">
+      <canvas baseChart height="200" width="250" [data]="pieChartData" [options]="pieChartOptions" [labels]="pieChartLabels" [chartType]="pieChartType"
+        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    </div>
+  </mat-card>
+</div>

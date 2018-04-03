@@ -45,6 +45,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from 'ngx-clipboard';
+import { ChartsModule } from 'ng2-charts';
 /**
  * UI components
  */
@@ -54,9 +55,11 @@ import { ClientComponent } from './components/client/client.component';
 import { ClientModalComponent, ProductModalComponent, OrderModalComponent, PhotoModalComponent } from './components/modals/index';
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { AnalyticsComponent } from './components/analytics/analytics.component';
 
 import { AppConfig } from './app.config';
 import { UserService, ClientService} from './services/index';
+
 
 
 
@@ -70,6 +73,7 @@ const appRoutes: Routes = [
   { path: 'products', component: ProductsComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'client/:id', component: ClientComponent },
+  { path: 'analytics', component: AnalyticsComponent },
   // { path: '', component: LoginForm },
   //{ path: 'login', component: LoginForm }
 ]
@@ -151,6 +155,7 @@ export class CustomPaginator extends MatPaginatorIntl {
     ClipboardModule,
     MatTableModule,
     MatSortModule,
+    ChartsModule
   ],
   entryComponents: [ClientModalComponent, ProductModalComponent, OrderModalComponent, PhotoModalComponent],
   declarations: [
@@ -162,7 +167,8 @@ export class CustomPaginator extends MatPaginatorIntl {
     OrderModalComponent,
     PhotoModalComponent,
     ProductsComponent,
-    OrdersComponent
+    OrdersComponent,
+    AnalyticsComponent
   ],
   bootstrap: [AppComponent],
   providers: [

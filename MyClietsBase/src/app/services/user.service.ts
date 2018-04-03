@@ -52,7 +52,7 @@ export class UserService {
     private jwt() {
        // let currentUser = JSON.parse(localStorage.getItem('currentUser'));
        // if (currentUser && currentUser.token) {
-            let headers = new Headers({ 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QiLCJuYW1laWQiOiIxIiwibmJmIjoxNTIyMjg5NTUxLCJleHAiOjE1MjIzNzU5NTEsImlhdCI6MTUyMjI4OTU1MX0.33SjLtMN1TkeElrVrWI4TyalLZdJDaASrRcuqxO58bA' });
+            let headers = new Headers({ 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QiLCJuYW1laWQiOiIxIiwibmJmIjoxNTIyNzM0MDE0LCJleHAiOjE1MjUzMjYwMTQsImlhdCI6MTUyMjczNDAxNH0.ngZxp3bif9Nqu3YO2e-f6MesjKxYMKB5JL1gCB-Hpkg' });
             return new RequestOptions({ headers: headers });
         //}
     }

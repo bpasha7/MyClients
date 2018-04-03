@@ -1,0 +1,14 @@
+.analynics-container{
+    min-width: 370px;
+    margin: 0 3px 3px 3px;
+}
+.container-row{
+    display: flex;
+    flex-direction: row;
+}
+.container-row > * {
+    width: 48%;
+}
+.container-row :last-child {
+    margin-left: 2%;
+}

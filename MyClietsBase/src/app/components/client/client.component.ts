@@ -40,7 +40,7 @@ export class ClientComponent {
         this.clientService.get(id).subscribe(
             data => {
                 this.client = data.json().client;
-                this.photo = this.config.photoUrl+'671EF4298BF7FDA73A2EA72F963BF7EF'+'/'+this.client.id+'.jpg'
+                this.photo = this.config.photoUrl+'671EF4298BF7FDA73A2EA72F963BF7EF'+'/'+this.client.id+'.jpg';
             },
             error => {
                 this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
@@ -103,9 +103,21 @@ export class ClientComponent {
             data: { clientId: this.client.id }
         });
         dialogRef.afterClosed().subscribe(result => {
+            // let temp: string = this.photo;
+            // this.photo = this.config.photoUrl+'671EF4298BF7FDA73A2EA72F963BF7EF/t.jpg';
+            // setTimeout(()=>{ this.photo = temp;}, 2000);
+            // this.updatePhotoSrc().subscribe(data => {
+                
+            // })
+            //this.photo = temp;
             if (result === 0) {
+                this.photo = '';
                 this.photo = this.photo;
             }
         });
     }
+
+    // updatePhotoSrc(){
+    //     this.photo = this.config.photoUrl+'671EF4298BF7FDA73A2EA72F963BF7EF/t.jpg';
+    // }
 }

@@ -21,33 +21,37 @@
       </a>
       <a mat-list-item routerLink="/orders">
         <mat-icon mat-list-icon>work</mat-icon>
-        Заявки
+        Планы
       </a>
       <a mat-list-item routerLink="/">
+        <mat-icon mat-list-icon>shopping_basket</mat-icon>
+        Расходы
+      </a>
+      <a mat-list-item routerLink="/analytics">
         <mat-icon mat-list-icon>assessment</mat-icon>
         Статистика
       </a>
-      <div class="my-list-down-menu">
-        <mat-divider></mat-divider>
-        <h3 mat-subheader>Управление</h3>
-        <a mat-list-item (click)="setTitel('Настройки')" routerLink=".">
-          <mat-icon mat-list-icon>settings</mat-icon>
-          Настройки
-        </a>
-        <a mat-list-item (click)="setTitel('Настройки')" routerLink=".">
-          <mat-icon mat-list-icon>exit_to_app
-          </mat-icon>
-          Выход
-        </a>
-      </div>
+      <!-- <div class="my-list-down-menu"> -->
+      <mat-divider></mat-divider>
+      <h3 mat-subheader>Управление</h3>
+      <a mat-list-item (click)="setTitel('Настройки')" routerLink=".">
+        <mat-icon mat-list-icon>settings</mat-icon>
+        Настройки
+      </a>
+      <a mat-list-item (click)="setTitel('Настройки')" routerLink=".">
+        <mat-icon mat-list-icon>exit_to_app
+        </mat-icon>
+        Выход
+      </a>
+      <!-- </div> -->
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <!-- <div (click)="sidenav.isOpen ? sidenav.toggle() : skip()">{{sidenav.isOpen}} -->
-      <router-outlet>
+    <router-outlet>
 
-      </router-outlet>
+    </router-outlet>
     <!-- </div> -->
   </mat-sidenav-content>
 
