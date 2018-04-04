@@ -9,5 +9,6 @@ export class Order {
     total: number;
     userId: number;
     clientId: number;
+    removed: boolean;
     date: Date;
 }

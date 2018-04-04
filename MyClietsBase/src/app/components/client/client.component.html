@@ -38,10 +38,10 @@
             </mat-icon>
         </button>
         <button mat-icon-button class="edit-button" (click)="addPhoto()">
-                <mat-icon aria-label="">
-                    add_a_photo
-                </mat-icon>
-            </button>
+            <mat-icon aria-label="">
+                add_a_photo
+            </mat-icon>
+        </button>
         <mat-card-subtitle>Модель</mat-card-subtitle>
         <mat-card-content>
             <p>
@@ -72,8 +72,14 @@
                     <mat-icon mat-list-icon>date_range</mat-icon>
                     <h4 mat-line>{{ order.date | date:'MMMM d, H:mm' }}</h4>
                     <p mat-line> {{ order.total | currency :'RUB':'2.1'}} </p>
-                    <button mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="accent">
+                    <button *ngIf="!order.removed" mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="primary">
                         <mat-icon aria-label="">info outline</mat-icon>
+                    </button>
+                    <button *ngIf="!order.removed" (click)="removeOrder(order)" mat-icon-button color="warn">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <button *ngIf="order.removed" mat-icon-button color="primary">
+                            <mat-icon>refresh</mat-icon>
                     </button>
                 </mat-list-item>
                 <mat-divider></mat-divider>

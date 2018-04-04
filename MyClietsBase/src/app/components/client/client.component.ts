@@ -85,9 +85,11 @@ export class ClientComponent {
         });
     }
 
-    removeOrder(id: number) {
-        this.userService.removeOrder(id).subscribe(
+    removeOrder(order: Order) {
+        this.userService.removeOrder(order.id).subscribe(
             data => {
+                order.removed = true;
+               //let selectedOrder: Order= this.orders.find(p=>p.id=== this.order.productId);
                 //this.orders = data.json();
             },
             error => {

@@ -37,7 +37,6 @@ export class OrderModalComponent {
                 this.client = data.client;
             }
             this.title = this.client.firstName;
-            
             this.loadProducts();
             this.loadDiscounts();
     }
@@ -46,8 +45,8 @@ export class OrderModalComponent {
         this.userService.getProducts(1).subscribe(
             data => {
                 this.products = data.json().products;
-                if(this.order.productId != null) {
-                    this.selectedProduct = this.products.find(p=>p.id=== this.order.productId);
+                if (this.order.productId != null) {
+                    this.selectedProduct = this.products.find(p => p.id === this.order.productId);
                 }
 
             },
@@ -74,15 +73,9 @@ export class OrderModalComponent {
 
     create() {
         this.order.productId = this.selectedProduct.id;
-        var splitted = this.time.split(":", 2);
+        var splitted = this.time.split(':', 2);
         this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
         this.order.date.setMinutes(parseInt(splitted[1]));
-        //this.order.date  moment(this.order.date).format('MMMM Do YYYY h:mm:ss a')
-        //var d = new Date();
-        // var userTimezoneOffset = this.order.date.getTimezoneOffset() * 60000;
-        // let d1 :Date = new Date(this.order.date.getTime());
-        //this.order.date = new Date();
-        //let d1 : Date = new Date(this.order.date.toLocaleString() );
         this.userService.createOrder(1, this.order).subscribe(
             data => {
                 this.snackBar.open(data.json().message, 'Закрыть', {
