@@ -2,18 +2,21 @@
   <mat-card class="clients-search-card">
     <mat-card-title>Выбор периода</mat-card-title>
     <!-- <mat-card-content> -->
-      <div class="container-row">
-        <mat-form-field>
-          <input matInput [matDatepicker]="picker" placeholder="Месяц С">
-          <mat-datepicker-toggle matSuffix [for]="picker" mode="MONTH"></mat-datepicker-toggle>
-          <mat-datepicker #picker startView="multi-year"></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput type="month" placeholder="Месяц По">
-          <!-- <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-          <mat-datepicker #picker1></mat-datepicker> -->
-        </mat-form-field>
-      </div>
+    <div class="container-row data-pickers-block">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Дата с" [(ngModel)]="begin">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi="true" #picker startView="year"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker2" placeholder="Дата по" [(ngModel)]="end">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker touchUi="true" #picker2 startView="year"></mat-datepicker>
+      </mat-form-field>
+      <button [disabled]="begin == null || end == null" mat-icon-button color="accent">
+          <mat-icon aria-label="">update</mat-icon>
+        </button>
+    </div>
     <!-- </mat-card-content> -->
   </mat-card>
 </div>

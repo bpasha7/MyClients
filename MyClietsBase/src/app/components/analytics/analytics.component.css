@@ -7,8 +7,15 @@
     flex-direction: row;
 }
 .container-row > * {
-    width: 48%;
+    /* width: 48%; */
+    width: 110px;
+    margin: auto;
 }
 .container-row :last-child {
+    width: 40px;
     margin-left: 2%;
+}
+.data-pickers-block{
+    width: 300px;
+    margin: auto;
 }
