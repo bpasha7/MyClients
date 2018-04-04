@@ -17,14 +17,14 @@ export class ProductsComponent implements OnInit {
     dataSource: MatTableDataSource<Product> = null;
     products: Product[] = [];
     ngOnInit() {
-        this.loadProducts();
+        
     }
     // tslint:disable-next-line:member-ordering
     @ViewChild(MatPaginator) paginator: MatPaginator;
     // tslint:disable-next-line:member-ordering
     @ViewChild(MatSort) sort: MatSort;
     constructor(public dialog: MatDialog, private userService: UserService) {
-
+        this.loadProducts();
     }
 
 

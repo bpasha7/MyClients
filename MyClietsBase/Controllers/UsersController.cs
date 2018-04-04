@@ -229,9 +229,12 @@ namespace MyClientsBase.Controllers
       {
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         var orders = _userService.GetCurrentOrders(userId);
+        var feature = orders.Where(o => o.Date.Date > DateTime.Now.Date).OrderBy(d=>d.Date);
+        var current = orders.Where(o => o.Date.Date == DateTime.Now.Date).OrderBy(d => d.Date);
         return Ok(new
         {
-          Orders = _mapper.Map<OrderDto[]>(orders)
+          Feature = _mapper.Map<OrderDto[]>(feature),
+          Current = _mapper.Map<OrderDto[]>(current)
         });
       }
       catch (AppException ex)

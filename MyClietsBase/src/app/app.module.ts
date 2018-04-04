@@ -56,6 +56,8 @@ import { ClientModalComponent, ProductModalComponent, OrderModalComponent, Photo
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { AnalyticsComponent } from './components/analytics/analytics.component';
+import { OutgoingsComponent } from './components/outgoings/outgoings.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 import { AppConfig } from './app.config';
 import { UserService, ClientService} from './services/index';
@@ -64,11 +66,11 @@ import { UserService, ClientService} from './services/index';
 
 
 
+
 /*Routes */
 const appRoutes: Routes = [
-  //{ path: 'desk', component: InputForm },
-  //{ path: 'users', component: UsersForm },
-  //{ path: 'cases', component: CasesForm },
+  { path: 'settings', component: SettingsComponent },
+  { path: 'outgoing', component: OutgoingsComponent },
   { path: 'clients', component: ClientsComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'orders', component: OrdersComponent },
@@ -168,6 +170,8 @@ export class CustomPaginator extends MatPaginatorIntl {
     PhotoModalComponent,
     ProductsComponent,
     OrdersComponent,
+    OutgoingsComponent,
+    SettingsComponent,
     AnalyticsComponent
   ],
   bootstrap: [AppComponent],

@@ -23,7 +23,7 @@
         <mat-icon mat-list-icon>work</mat-icon>
         Планы
       </a>
-      <a mat-list-item routerLink="/">
+      <a mat-list-item routerLink="/outgoing">
         <mat-icon mat-list-icon>shopping_basket</mat-icon>
         Расходы
       </a>
@@ -34,11 +34,11 @@
       <!-- <div class="my-list-down-menu"> -->
       <mat-divider></mat-divider>
       <h3 mat-subheader>Управление</h3>
-      <a mat-list-item (click)="setTitel('Настройки')" routerLink=".">
+      <a mat-list-item routerLink="/settings">
         <mat-icon mat-list-icon>settings</mat-icon>
         Настройки
       </a>
-      <a mat-list-item (click)="setTitel('Настройки')" routerLink=".">
+      <a mat-list-item routerLink=".">
         <mat-icon mat-list-icon>exit_to_app
         </mat-icon>
         Выход

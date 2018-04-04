@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Order } from '../../models/index';
+import { Orders } from '../../models/index';
 import { UserService } from '../../services/index';
 @Component({
   selector: 'app-orders',
@@ -7,7 +7,7 @@ import { UserService } from '../../services/index';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
-  orders: Order[] = [];
+  orders: Orders = null;
   constructor(
     private userService: UserService
   ) { }
@@ -19,7 +19,7 @@ export class OrdersComponent implements OnInit {
   loadCurrnetOrders() {
     this.userService.getCurrentOrders().subscribe(
       data => {
-        this.orders = data.json().orders;
+        this.orders = data.json();
       },
       error => {
         // this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
