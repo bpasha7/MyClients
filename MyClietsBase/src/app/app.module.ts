@@ -52,7 +52,7 @@ import { ChartsModule } from 'ng2-charts';
 import { AppComponent } from './app.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { ClientComponent } from './components/client/client.component';
-import { ClientModalComponent, ProductModalComponent, OrderModalComponent, PhotoModalComponent } from './components/modals/index';
+import { ClientModalComponent, ProductModalComponent, OrderModalComponent, PhotoModalComponent, DiscountModalComponent } from './components/modals/index';
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { AnalyticsComponent } from './components/analytics/analytics.component';
@@ -60,7 +60,7 @@ import { OutgoingsComponent } from './components/outgoings/outgoings.component';
 import { SettingsComponent } from './components/settings/settings.component';
 
 import { AppConfig } from './app.config';
-import { UserService, ClientService} from './services/index';
+import { UserService, ClientService } from './services/index';
 
 
 
@@ -159,7 +159,13 @@ export class CustomPaginator extends MatPaginatorIntl {
     MatSortModule,
     ChartsModule
   ],
-  entryComponents: [ClientModalComponent, ProductModalComponent, OrderModalComponent, PhotoModalComponent],
+  entryComponents: [
+    ClientModalComponent,
+    ProductModalComponent,
+    OrderModalComponent,
+    PhotoModalComponent,
+    DiscountModalComponent
+  ],
   declarations: [
     AppComponent,
     ClientsComponent,
@@ -168,6 +174,7 @@ export class CustomPaginator extends MatPaginatorIntl {
     ProductModalComponent,
     OrderModalComponent,
     PhotoModalComponent,
+    DiscountModalComponent,
     ProductsComponent,
     OrdersComponent,
     OutgoingsComponent,
@@ -176,8 +183,8 @@ export class CustomPaginator extends MatPaginatorIntl {
   ],
   bootstrap: [AppComponent],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
+    { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     { provide: MatPaginatorIntl, useClass: CustomPaginator },
-     AppConfig, ClientService, UserService]
+    AppConfig, ClientService, UserService]
 })
 export class AppModule { }

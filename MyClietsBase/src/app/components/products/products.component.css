@@ -27,3 +27,20 @@ mat-form-field mat-icon{
     bottom: 50px;
     right: 15px;
 }
+.search-fixed-button{
+    position: fixed;
+    bottom: 50px;
+    right: 65px;
+}
+.mat-tab-labels{
+    justify-content: center; /* align items in Main Axis */
+}
+::ng-deep .mat-tab-labels{
+    justify-content: center; /* align items in Main Axis */
+}
+.pressed{
+    color: red;
+}
+.unpressed{
+    color: green;
+}

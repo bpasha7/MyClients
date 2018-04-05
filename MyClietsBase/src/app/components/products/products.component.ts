@@ -1,10 +1,10 @@
-import { Component, ViewChild, Inject, OnInit } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
+import { Component, ViewChild, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl, MatTabChangeEvent } from '@angular/material';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Product } from '../../models/index';
+import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Product, Discount } from '../../models/index';
 import { UserService } from '../../services/index';
-import { ProductModalComponent } from '../modals';
+import { ProductModalComponent, DiscountModalComponent } from '../modals';
 
 @Component({
     selector: 'products',
@@ -13,18 +13,31 @@ import { ProductModalComponent } from '../modals';
 })
 export class ProductsComponent implements OnInit {
     [x: string]: any;
-    displayedColumns = ['name', 'price'];
-    dataSource: MatTableDataSource<Product> = null;
-    products: Product[] = [];
+    public displayedProductColumns = ['name', 'price'];
+    public displayedDiscountColumns = ['name', 'percent'];
+    public productDataSorce: MatTableDataSource<Product> = null;
+    public discountDataSorce: MatTableDataSource<Discount> = null;
+    public products: Product[] = [];
+    public discounts: Discount[] = [];
+    public showFilter: boolean = false;
+    public currentTabPosition: number = 0;
     ngOnInit() {
-        
+
     }
     // tslint:disable-next-line:member-ordering
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatPaginator) paginatorProducts: MatPaginator;
     // tslint:disable-next-line:member-ordering
-    @ViewChild(MatSort) sort: MatSort;
-    constructor(public dialog: MatDialog, private userService: UserService) {
+    @ViewChild(MatSort) sortProducts: MatSort;
+    // tslint:disable-next-line:member-ordering
+    @ViewChild(MatPaginator) paginatorDiscounts: MatPaginator;
+    // tslint:disable-next-line:member-ordering
+    @ViewChild(MatSort) sortDiscounts: MatSort;
+    constructor(
+        public snackBar: MatSnackBar,
+        public dialog: MatDialog,
+        private userService: UserService) {
         this.loadProducts();
+        this.loadDiscounts();
     }
 
 
@@ -32,33 +45,66 @@ export class ProductsComponent implements OnInit {
         this.userService.getProducts(1).subscribe(
             data => {
                 this.products = data.json().products;
-                // this.resultsLength = this.clients.length;
-                this.dataSource = new MatTableDataSource(this.products);
-                this.ngAfterViewInit();
+                this.productDataSorce = new MatTableDataSource(this.products);
+                if (this.productDataSorce != null) {
+                    this.productDataSorce.paginator = this.paginatorProducts;
+                    this.productDataSorce.sort = this.sortProducts;
+                }
             },
             error => {
-                console.error(error._body);
+                this.snackBar.open(error._body, 'Закрыть', {
+                    duration: 2000,
+                });
             }
         );
     }
 
-    // tslint:disable-next-line:use-life-cycle-interface
-    ngAfterViewInit() {
-        if (this.dataSource != null) {
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-        }
+    loadDiscounts() {
+        this.userService.getDiscounts(1).subscribe(
+            data => {
+                this.discounts = data.json().discounts;
+                this.discountDataSorce = new MatTableDataSource(this.discounts);
+                if (this.discountDataSorce != null) {
+                    this.discountDataSorce.paginator = this.paginatorDiscounts;
+                    this.discountDataSorce.sort = this.sortDiscounts;
+                }
+            },
+            error => {
+                this.snackBar.open(error._body, 'Закрыть', {
+                    duration: 2000,
+                });
+            }
+        );
     }
 
+    selectedTabChange(tabChangeEvent: MatTabChangeEvent) {
+        this.currentTabPosition = tabChangeEvent.index;
+    }
+    /**
+     * Show or hide filter card
+     */
+    showHideFilter() {
+        this.showFilter = ! this.showFilter;
+    }
+    /**
+     * Applay filter for current data sorce
+     * @param filterValue 
+     */
     applyFilter(filterValue: string) {
         filterValue = filterValue.trim(); // Remove whitespace
         filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-        this.dataSource.filter = filterValue;
+        if(this.currentTabPosition === 0) {
+            this.productDataSorce.filter = filterValue;
+        }
+        if(this.currentTabPosition === 1) {
+            this.discountDataSorce.filter = filterValue;
+        }
+        
     }
 
     openDialog(): void {
+        
         const dialogRef = this.dialog.open(ProductModalComponent, {
-
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -67,9 +113,10 @@ export class ProductsComponent implements OnInit {
             }
         });
     }
+
     openEditDialog(selectedProduct: Product): void {
         const dialogRef = this.dialog.open(ProductModalComponent, {
-            data : {product: selectedProduct}
+            data: { product: selectedProduct }
         });
 
         dialogRef.afterClosed().subscribe(result => {
