@@ -19,30 +19,44 @@ export class DiscountModalComponent {
         @Inject(MAT_DIALOG_DATA) public data: any) {
             if (data == null) {
                 this.discount = new Discount();
-                this.title = 'Новая услуга';
+                this.title = 'Новая скидка';
             } else {
                 this.discount = data.discount;
+                this.discount.percent *= 100;
                 this.title = 'Обновление';
             }
     }
 
     create() {
-        // this.userService.createProduct(1, this.discount).subscribe(
-        //     data => {
-        //         this.snackBar.open('Услуга добавлена.', 'Закрыть', {
-        //             duration: 2000,
-        //           });
-        //     },
-        //     error => {
-        //         this.snackBar.open(error._body, 'Закрыть', {
-        //             duration: 2000,
-        //           });
-        //     }
-        // );
+        this.userService.createDiscount(this.discount).subscribe(
+            data => {
+                this.snackBar.open(data.json().message, 'Закрыть', {
+                    duration: 2000,
+                  });
+            },
+            error => {
+                this.snackBar.open(error._body, 'Закрыть', {
+                    duration: 2000,
+                  });
+            }
+        );
     }
 
     update() {
-
+        this.userService.updateDiscount(this.discount).subscribe(
+            data => {
+                this.snackBar.open(data.json().message, 'Закрыть', {
+                    duration: 2000,
+                  });
+                  return 1;
+            },
+            error => {
+                this.snackBar.open(error._body, 'Закрыть', {
+                    duration: 2000,
+                  });
+                  return 0;
+            }
+        );
     }
     
     onNoClick(): void {

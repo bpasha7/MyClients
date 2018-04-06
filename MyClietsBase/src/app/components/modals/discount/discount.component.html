@@ -3,16 +3,17 @@
   <div class="container-column">
       <mat-form-field>
           <!-- <mat-icon matPrefix>message</mat-icon> -->
-        <input matInput placeholder="Название" [(ngModel)]="product.name" >
+        <input matInput placeholder="Название" [(ngModel)]="discount.name" >
       </mat-form-field>
       <mat-form-field>
           <!-- <mat-icon matPrefix>photo library</mat-icon> -->
-        <input matInput placeholder="Цена" [(ngModel)]="product.price" >
+        <input matInput placeholder="Величина" [(ngModel)]="discount.percent" >
       </mat-form-field>
     </div>
 </div>
 <div mat-dialog-actions style="display: block">
   <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">Отмена</button>
-  <button mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>Добавить</button>
+  <button *ngIf="discount.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>Обновить</button>
+  <button *ngIf="discount == null" mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>Добавить</button>
   <!-- <button mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>Обновить</button> -->
 </div>

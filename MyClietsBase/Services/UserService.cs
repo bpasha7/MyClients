@@ -22,6 +22,8 @@ namespace MyClientsBase.Services
     User Authenticate(string login, string password);
     User Create(User user, string password);
     void CreateProduct(Product product);
+    void UpdateProduct(Product product);
+    void UpdateDiscount(Discount discount);
     void CreateDiscount(Discount discount);
     void CreateOrder(Order order);
     IList<Product> GetProducts(int userId);
@@ -39,86 +41,14 @@ namespace MyClientsBase.Services
 
     private IRepository<Product> _productsRepository;
 
+    private IRepository<Discount> _discountsRepository;
+
     public UserService(ApplicationDbContext context)
     {
       _unitOfWork = new UnitOfWork(context);
       _repository = _unitOfWork.EfRepository<User>();
       _productsRepository = _unitOfWork.EfRepository<Product>();
-    }
-
-    public User Authenticate(string login, string password)
-    {
-      if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
-        return null;
-
-      var user = _repository.Find(x => x.Login == login);
-
-      // check if username exists
-      if (user == null)
-        return null;
-
-      // check if password is correct
-      if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-        return null;
-
-      // authentication successful
-      return user;
-    }
-
-    public void CreateProduct(Product product)
-    {
-      _repository.Find(u => u.Id == product.UserId, p=>p.Products).Products.Add(product);
-      _repository.Save();
-    }
-
-    public void CreateDiscount(Discount discount)
-    {
-      _repository.Find(u => u.Id == discount.UserId, d => d.Discounts).Discounts.Add(discount);
-      _repository.Save();
-    }
-
-    public void CreateOrder(Order order)
-    {
-      _repository.Find(u => u.Id == order.UserId, o => o.Orders).Orders.Add(order);
-      _repository.Save();
-    }
-
-    public IList<Order> GetCurrentOrders(int userId)
-    {
-      return _repository.Find(u => u.Id == userId, o => o.Orders)
-        .Orders.Where(e=>e.Date >= DateTime.Now.Date && e.Removed != true)
-        .OrderByDescending(o=>o.Date)
-        .ToList();
-    }
-
-
-    public IList<Product> GetProducts(int userId)
-    {
-      return _repository.Find(u => u.Id == userId, p => p.Products).Products.OrderBy(o=>o.Name).ToList();
-    }
-
-    public IList<Discount> GetDiscounts(int userId)
-    {
-      return _repository.Find(u => u.Id == userId, d => d.Discounts).Discounts.OrderBy(o => o.Name).ToList();
-    }
-
-    public User Create(User user, string password)
-    {
-      // validation
-      if (string.IsNullOrWhiteSpace(password))
-        throw new AppException("Password is required");
-
-      if (_repository.Count(x => x.Login == user.Login) != 0)
-        throw new AppException("Login " + user.Login + " is already taken!");
-
-      byte[] passwordHash, passwordSalt;
-      CreatePasswordHash(password, out passwordHash, out passwordSalt);
-
-      user.PasswordHash = passwordHash;
-      user.PasswordSalt = passwordSalt;
-      _repository.Add(user);
-
-      return user;
+      _discountsRepository = _unitOfWork.EfRepository<Discount>();
     }
     #region Password Methods
     private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -168,5 +98,90 @@ namespace MyClientsBase.Services
       }
     }
     #endregion
+    public User Authenticate(string login, string password)
+    {
+      if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+        return null;
+
+      var user = _repository.Find(x => x.Login == login);
+
+      // check if username exists
+      if (user == null)
+        return null;
+
+      // check if password is correct
+      if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+        return null;
+
+      // authentication successful
+      return user;
+    }
+
+    public void CreateProduct(Product product)
+    {
+      _repository.Find(u => u.Id == product.UserId, p => p.Products).Products.Add(product);
+      _repository.Save();
+    }
+
+    public void CreateDiscount(Discount discount)
+    {
+      _repository.Find(u => u.Id == discount.UserId, d => d.Discounts).Discounts.Add(discount);
+      _repository.Save();
+    }
+
+    public void CreateOrder(Order order)
+    {
+      _repository.Find(u => u.Id == order.UserId, o => o.Orders).Orders.Add(order);
+      _repository.Save();
+    }
+
+    public IList<Order> GetCurrentOrders(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, o => o.Orders)
+        .Orders.Where(e => e.Date >= DateTime.Now.Date && e.Removed != true)
+        .OrderByDescending(o => o.Date)
+        .ToList();
+    }
+
+
+    public IList<Product> GetProducts(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, p => p.Products).Products.OrderBy(o => o.Name).ToList();
+    }
+
+    public IList<Discount> GetDiscounts(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, d => d.Discounts).Discounts.OrderBy(o => o.Name).ToList();
+    }
+
+    public User Create(User user, string password)
+    {
+      // validation
+      if (string.IsNullOrWhiteSpace(password))
+        throw new AppException("Password is required");
+
+      if (_repository.Count(x => x.Login == user.Login) != 0)
+        throw new AppException("Login " + user.Login + " is already taken!");
+
+      byte[] passwordHash, passwordSalt;
+      CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+      user.PasswordHash = passwordHash;
+      user.PasswordSalt = passwordSalt;
+      _repository.Add(user);
+
+      return user;
+    }
+    public void UpdateProduct(Product product)
+    {
+      _productsRepository.Update(product);
+      _repository.Save();
+    }
+
+    public void UpdateDiscount(Discount discount)
+    {
+      _discountsRepository.Update(discount);
+      _repository.Save();
+    }
   }
 }

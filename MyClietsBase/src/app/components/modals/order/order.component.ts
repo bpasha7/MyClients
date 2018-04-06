@@ -42,7 +42,7 @@ export class OrderModalComponent {
     }
 
     loadProducts() {
-        this.userService.getProducts(1).subscribe(
+        this.userService.getProducts().subscribe(
             data => {
                 this.products = data.json().products;
                 if (this.order.productId != null) {
@@ -59,7 +59,7 @@ export class OrderModalComponent {
     }
 
     loadDiscounts() {
-        this.userService.getDiscounts(1).subscribe(
+        this.userService.getDiscounts().subscribe(
             data => {
                 this.discounts = data.json().discounts;
             },
@@ -76,7 +76,7 @@ export class OrderModalComponent {
         var splitted = this.time.split(':', 2);
         this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
         this.order.date.setMinutes(parseInt(splitted[1]));
-        this.userService.createOrder(1, this.order).subscribe(
+        this.userService.createOrder(this.order).subscribe(
             data => {
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,

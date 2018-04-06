@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using Data.DTO.Entities;
 using Data.EF.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -22,11 +19,11 @@ namespace MyClientsBase.Controllers
   /// <summary>
   /// User Controller
   /// </summary>
-  //[Authorize(Policy)]
+  [Authorize]
   [EnableCors("MyPolicy")]
   [Produces("application/json")]
   [Route("api/Users")]
-  public class UsersController : Controller
+  public partial class UsersController : Controller
   {
     /// <summary>
     /// User Servise to work with database
@@ -65,67 +62,8 @@ namespace MyClientsBase.Controllers
       }
     }
 
-    [AllowAnonymous]
-    [HttpPost("{id}/product")]
-    public IActionResult CreateProduct(int id, [FromBody]ProductDto productDto)
-    {
-      try
-      {
-        var product = _mapper.Map<Product>(productDto);
-
-        if (product == null)
-          throw new AppException("Неверный данные!");
-
-        product.UserId = id;
-        _userService.CreateProduct(product);
-        return Ok(new
-        {
-          Message = "Услуга добавлена!"
-        });
-      }
-      catch (AppException ex)
-      {
-        return BadRequest(ex.Message);
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError($"{ex}");
-        return BadRequest("Service error!");
-      }
-    }
-
-    [AllowAnonymous]
-    [HttpPost("{id}/discount")]
-    public IActionResult CreateDiscount(int id, [FromBody]DiscountDto discounttDto)
-    {
-      try
-      {
-        var discount = _mapper.Map<Discount>(discounttDto);
-
-        if (discount == null)
-          throw new AppException("Неверный данные!");
-
-        discount.UserId = id;
-        _userService.CreateDiscount(discount);
-        return Ok(new
-        {
-          Message = "Скидка добавлена!"
-        });
-      }
-      catch (AppException ex)
-      {
-        return BadRequest(ex.Message);
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError($"{ex}");
-        return BadRequest("Service error!");
-      }
-    }
-
-    [AllowAnonymous]
-    [HttpPost("{id}/order")]
-    public IActionResult CreateOrder(int id, [FromBody]OrderDto ordertDto)
+    [HttpPost("order")]
+    public IActionResult CreateOrder([FromBody]OrderDto ordertDto)
     {
       try
       {
@@ -134,7 +72,9 @@ namespace MyClientsBase.Controllers
         if (order == null)
           throw new AppException("Неверный данные!");
 
-        order.UserId = id;
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        order.UserId = userId;
+
         _userService.CreateOrder(order);
         return Ok(new
         {
@@ -151,15 +91,16 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
-   // [AllowAnonymous]
-    [Authorize]
+
     [HttpPatch("order/{id}")]
     public IActionResult SetOrdersAsRemoved(int id)
     {
       try
       {
-        var n = User.Identity.Name;
-        _orderService.SetAsRemoved(1, id);
+
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        _orderService.SetAsRemoved(userId, id);
         return Ok(new
         {
 
@@ -176,52 +117,6 @@ namespace MyClientsBase.Controllers
       }
     }
 
-    [AllowAnonymous]
-    [HttpGet("{id}/discounts")]
-    public IActionResult GetDiscounts(int id)
-    {
-      try
-      {
-        var discounts = _userService.GetDiscounts(id);
-        return Ok(new
-        {
-          Discounts = _mapper.Map<DiscountDto[]>(discounts)
-        });
-      }
-      catch (AppException ex)
-      {
-        return BadRequest(ex.Message);
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError($"{ex}");
-        return BadRequest("Service error!");
-      }
-    }
-    [Authorize]
-   // [AllowAnonymous]
-    [HttpGet("{id}/products")]
-    public IActionResult GetProducts(int id)
-    {
-      try
-      {
-        var products = _userService.GetProducts(id);
-        return Ok(new
-        {
-          Products = _mapper.Map<ProductDto[]>(products)
-        });
-      }
-      catch (AppException ex)
-      {
-        return BadRequest(ex.Message);
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError($"{ex}");
-        return BadRequest("Service error!");
-      }
-    }
-    [Authorize]
     [HttpGet("orders/current")]
     public IActionResult GetCurrentOrders()
     {
@@ -324,7 +219,7 @@ namespace MyClientsBase.Controllers
       }
     }
 
-    //[AllowAnonymous]
+    [AllowAnonymous]
     [HttpPost]
     [HttpPost("register")]
     public IActionResult Register([FromBody]UserDto userDto)

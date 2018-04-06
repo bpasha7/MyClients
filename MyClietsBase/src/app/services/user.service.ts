@@ -1,41 +1,50 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { AppConfig } from '../app.config';
-import { User, Product, Order } from '../models/index';
+import { User, Product, Order, Discount } from '../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AppService } from './app.service'
 
 /**
  * Сервис для работы с контроллером Users
  */
 @Injectable()
-export class UserService {
-    /**
-     * Rest controller
-     */
-    private controller: string = '/users';
+export class UserService extends AppService {
     constructor(private http: Http,
         public config: AppConfig,
-        private router: Router) { }
+        private router: Router) {
+            super();
+            this.controller = '/users';
+         }
     /**#toDo
      * Add create and login functions here
      */
 
-
-    getProducts(userId: number) {
-        return this.http.get(this.config.apiUrl + this.controller + '/' + userId + '/products', this.jwt());
+    getProducts() {
+        return this.http.get(this.config.apiUrl + this.controller + '/products', this.jwt());
     }
 
-    getDiscounts(userId: number) {
-        return this.http.get(this.config.apiUrl + this.controller + '/' + userId + '/discounts');
+    createProduct(product: Product) {
+        return this.http.post(this.config.apiUrl + this.controller + '/product', product, this.jwt());
     }
 
-    createProduct(userId: number, product: Product) {
-        return this.http.post(this.config.apiUrl + this.controller + '/' + userId + '/product', product);
+    updateProduct(product: Product) {
+        return this.http.put(this.config.apiUrl + this.controller + '/product', product, this.jwt());
     }
 
-    createOrder(userId: number, order: Order) {
-        order.userId = 1;
-        return this.http.post(this.config.apiUrl + this.controller + '/' + userId + '/order', order);
+    getDiscounts() {
+        return this.http.get(this.config.apiUrl + this.controller + '/discounts', this.jwt());
+    }
+    createDiscount(discount: Discount) {
+        return this.http.post(this.config.apiUrl + this.controller + '/discount', discount, this.jwt());
+    }
+
+    updateDiscount(discount: Discount) {
+        return this.http.put(this.config.apiUrl + this.controller + '/discount', discount, this.jwt());
+    }
+
+    createOrder(order: Order) {
+        return this.http.post(this.config.apiUrl + this.controller + '/order', order, this.jwt());
     }
 
     removeOrder(id: number){
@@ -44,16 +53,5 @@ export class UserService {
 
     getCurrentOrders() {
         return this.http.get(this.config.apiUrl + this.controller + '/orders/current', this.jwt());
-    }
-
-    /**
-     * create authorization header with jwt token
-     */
-    private jwt() {
-       // let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-       // if (currentUser && currentUser.token) {
-            let headers = new Headers({ 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QiLCJuYW1laWQiOiIxIiwibmJmIjoxNTIyNzM0MDE0LCJleHAiOjE1MjUzMjYwMTQsImlhdCI6MTUyMjczNDAxNH0.ngZxp3bif9Nqu3YO2e-f6MesjKxYMKB5JL1gCB-Hpkg' });
-            return new RequestOptions({ headers: headers });
-        //}
     }
 }

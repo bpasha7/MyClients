@@ -31,7 +31,7 @@ export class ProductsComponent implements OnInit {
     // tslint:disable-next-line:member-ordering
     @ViewChild(MatPaginator) paginatorDiscounts: MatPaginator;
     // tslint:disable-next-line:member-ordering
-    @ViewChild(MatSort) sortDiscounts: MatSort;
+    //@ViewChild(MatSort) sortDiscounts: MatSort;
     constructor(
         public snackBar: MatSnackBar,
         public dialog: MatDialog,
@@ -42,13 +42,13 @@ export class ProductsComponent implements OnInit {
 
 
     loadProducts() {
-        this.userService.getProducts(1).subscribe(
+        this.userService.getProducts().subscribe(
             data => {
                 this.products = data.json().products;
                 this.productDataSorce = new MatTableDataSource(this.products);
                 if (this.productDataSorce != null) {
                     this.productDataSorce.paginator = this.paginatorProducts;
-                    this.productDataSorce.sort = this.sortProducts;
+                    //this.productDataSorce.sort = this.sortProducts;
                 }
             },
             error => {
@@ -60,7 +60,7 @@ export class ProductsComponent implements OnInit {
     }
 
     loadDiscounts() {
-        this.userService.getDiscounts(1).subscribe(
+        this.userService.getDiscounts().subscribe(
             data => {
                 this.discounts = data.json().discounts;
                 this.discountDataSorce = new MatTableDataSource(this.discounts);
@@ -84,7 +84,7 @@ export class ProductsComponent implements OnInit {
      * Show or hide filter card
      */
     showHideFilter() {
-        this.showFilter = ! this.showFilter;
+        this.showFilter = !this.showFilter;
     }
     /**
      * Applay filter for current data sorce
@@ -93,28 +93,39 @@ export class ProductsComponent implements OnInit {
     applyFilter(filterValue: string) {
         filterValue = filterValue.trim(); // Remove whitespace
         filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-        if(this.currentTabPosition === 0) {
+        if (this.currentTabPosition === 0) {
             this.productDataSorce.filter = filterValue;
         }
-        if(this.currentTabPosition === 1) {
+        if (this.currentTabPosition === 1) {
             this.discountDataSorce.filter = filterValue;
         }
-        
+
     }
 
     openDialog(): void {
-        
-        const dialogRef = this.dialog.open(ProductModalComponent, {
-        });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result === 1) {
-                this.loadProducts();
-            }
-        });
+        if (this.currentTabPosition === 1) {
+            const dialogRef = this.dialog.open(DiscountModalComponent, {
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if (result === 1) {
+                    this.loadDiscounts();
+                }
+            });
+        } else {
+            const dialogRef = this.dialog.open(ProductModalComponent, {
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if (result === 1) {
+                    this.loadProducts();
+                }
+            });
+        }
     }
 
-    openEditDialog(selectedProduct: Product): void {
+    openEditProductDialog(selectedProduct: Product): void {
         const dialogRef = this.dialog.open(ProductModalComponent, {
             data: { product: selectedProduct }
         });
@@ -126,4 +137,15 @@ export class ProductsComponent implements OnInit {
         });
     }
 
+    openEditDiscountDialog(selectedDiscount: Discount): void {
+        const dialogRef = this.dialog.open(DiscountModalComponent, {
+            data: { discount: selectedDiscount }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result === 1) {
+                this.loadDiscounts();
+            }
+        });
+    }
 }

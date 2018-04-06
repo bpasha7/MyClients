@@ -14,7 +14,7 @@
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Наименование </mat-header-cell>
-          <mat-cell *matCellDef="let product" (click)="openEditDialog(product)"> {{product.name}} </mat-cell>
+          <mat-cell *matCellDef="let product" (click)="openEditProductDialog(product)"> {{product.name}} </mat-cell>
         </ng-container>
 
         <!-- Price Column -->
@@ -39,17 +39,17 @@
   </mat-tab>
   <mat-tab label="Скидки">
       <div class="table-container">
-          <mat-table [dataSource]="discountDataSorce" matSort>
+          <mat-table [dataSource]="discountDataSorce">
     
             <!-- Name Column -->
             <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Описание</mat-header-cell>
-              <mat-cell *matCellDef="let discount" (click)="openEditDialog(discount)"> {{discount.name}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef >Описание</mat-header-cell>
+              <mat-cell *matCellDef="let discount" (click)="openEditDiscountDialog(discount)"> {{discount.name}} </mat-cell>
             </ng-container>
     
             <!-- Discount Column -->
             <ng-container matColumnDef="percent">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Величина</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef >Величина</mat-header-cell>
               <mat-cell *matCellDef="let discount"> {{discount.percent * 100}} %</mat-cell>
             </ng-container>
     

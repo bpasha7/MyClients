@@ -27,9 +27,9 @@ export class ProductModalComponent {
     }
 
     create() {
-        this.userService.createProduct(1, this.product).subscribe(
+        this.userService.createProduct(this.product).subscribe(
             data => {
-                this.snackBar.open('Услуга добавлена.', 'Закрыть', {
+                this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
                   });
             },
@@ -42,7 +42,18 @@ export class ProductModalComponent {
     }
 
     update() {
-
+        this.userService.updateProduct(this.product).subscribe(
+            data => {
+                this.snackBar.open(data.json().message, 'Закрыть', {
+                    duration: 2000,
+                  });
+            },
+            error => {
+                this.snackBar.open(error._body, 'Закрыть', {
+                    duration: 2000,
+                  });
+            }
+        );
     }
     
     onNoClick(): void {
