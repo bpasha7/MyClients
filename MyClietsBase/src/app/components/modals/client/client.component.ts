@@ -18,8 +18,12 @@ export class ClientModalComponent {
         private clientService: ClientService,
         public dialogRef: MatDialogRef<ClientModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
-            this.client = new Client();
-            this.client.birthday = new Date(1990, 0, 1);
+            if (data == null) {
+                this.client = new Client();
+                this.client.birthday = new Date(1990, 0, 1);
+            } else {
+                this.client = data.client;
+            }
     }
 
     create() {
@@ -37,6 +41,8 @@ export class ClientModalComponent {
             }
         );
     }
+
+    
     onNoClick(): void {
         this.dialogRef.close();
     }

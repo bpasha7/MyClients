@@ -4,10 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DatePipe } from '@angular/common';
-import { ClientModalComponent } from '../modals/client/client.component';
 import { Client, Order, Orders } from '../../models/index';
 import { ClientService, UserService } from '../../services/index';
-import { OrderModalComponent, PhotoModalComponent } from '../modals/index';
+import { OrderModalComponent, PhotoModalComponent, ClientModalComponent } from '../modals/index';
 import { AppConfig } from '../../app.config';
 @Component({
     // tslint:disable-next-line:component-selector
@@ -105,13 +104,6 @@ export class ClientComponent {
             data: { clientId: this.client.id }
         });
         dialogRef.afterClosed().subscribe(result => {
-            // let temp: string = this.photo;
-            // this.photo = this.config.photoUrl+'671EF4298BF7FDA73A2EA72F963BF7EF/t.jpg';
-            // setTimeout(()=>{ this.photo = temp;}, 2000);
-            // this.updatePhotoSrc().subscribe(data => {
-                
-            // })
-            //this.photo = temp;
             if (result === 0) {
                 this.photo = '';
                 this.photo = this.photo;
@@ -119,7 +111,14 @@ export class ClientComponent {
         });
     }
 
-    // updatePhotoSrc(){
-    //     this.photo = this.config.photoUrl+'671EF4298BF7FDA73A2EA72F963BF7EF/t.jpg';
-    // }
+    editProfile() {
+        const dialogRef = this.photoDialog.open(ClientModalComponent, {
+            data: { client: this.client }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result === 0) {
+
+            }
+        });
+    }
 }
