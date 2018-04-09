@@ -36,5 +36,18 @@ mat-form-field mat-icon{
     bottom: 50px;
 }
 .removed-order{
-    background: pink;
+    /* background: pink; */
+    color: red;
+    text-decoration: line-through;
+}
+mat-sidenav-content{
+    background:  white;
+}
+mat-sidenav{
+    
+    overflow: unset;
+}
+.slide-menu-container{
+    /* background: lightgrey; */
+    padding-top: 16px;
 }

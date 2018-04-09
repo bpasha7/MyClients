@@ -68,20 +68,31 @@
 
             <mat-list role="list">
                 <h3 mat-subheader>Текущие</h3>
-                <mat-list-item role="listitem" [ngClass]="{'removed-order' : order.removed}" *ngFor="let order of orders.current">
-                    <mat-icon mat-list-icon>date_range</mat-icon>
-                    <h4 mat-line>{{ order.date | date:'MMMM d, H:mm' }}</h4>
-                    <p mat-line> {{ order.total | currency :'RUB':'2.1'}} </p>
-                    <button *ngIf="!order.removed" mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="primary">
-                        <mat-icon aria-label="">info outline</mat-icon>
-                    </button>
-                    <button *ngIf="!order.removed" (click)="removeOrder(order)" mat-icon-button color="warn">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                    <button *ngIf="order.removed" mat-icon-button color="primary">
-                            <mat-icon>refresh</mat-icon>
-                    </button>
-                </mat-list-item>
+                <!-- <div> -->
+                <mat-sidenav-container *ngFor="let order of orders.current">
+                    <mat-sidenav-content>
+                        <mat-list-item class="order-item" (click)="sidenav.toggle()" role="list" [ngClass]="{'removed-order' : order.removed}" >
+                            <mat-icon mat-list-icon >date_range</mat-icon>
+                            <h4 mat-line>{{ order.date | date:'MMMM d, H:mm' }}</h4>
+                            <p mat-line> {{ order.total | currency :'RUB':'2.1'}} </p>
+                        </mat-list-item>
+                    </mat-sidenav-content>
+                    <mat-sidenav #sidenav mode="side" position="end">
+                        <div class="slide-menu-container">
+                            <button *ngIf="!order.removed" mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="primary">
+                                <mat-icon aria-label="">info outline</mat-icon>
+                            </button>
+                            <button *ngIf="!order.removed" (click)="removeOrder(order)" mat-icon-button color="warn">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                            <button *ngIf="order.removed" mat-icon-button color="primary">
+                                <mat-icon>refresh</mat-icon>
+                            </button>
+                        </div>
+                        </mat-sidenav>
+                </mat-sidenav-container>
+
+                <!-- </div> -->
                 <mat-divider></mat-divider>
                 <h3 mat-subheader>Прошлые</h3>
                 <mat-list-item role="listitem" [ngClass]="{'removed-order' : order.removed}" *ngFor="let order of orders.old">
