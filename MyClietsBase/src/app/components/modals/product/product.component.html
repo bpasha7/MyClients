@@ -13,8 +13,8 @@
   </div>
 </div>
 <div mat-dialog-actions style="display: block">
-  <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">Отмена</button>
-  <button *ngIf="product.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>Обновить</button>
-  <button *ngIf="product == null" mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>Добавить</button>
+  <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">ОТМЕНА</button>
+  <button *ngIf="product.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
+  <button *ngIf="product == null" mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>ДОБАВИТЬ</button>
   <!-- <button mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>Обновить</button> -->
 </div>
