@@ -9,4 +9,5 @@ export class Client {
     birthday: Date;
     link: string;
     linkPhoto: string;
+    userId: number;
 }

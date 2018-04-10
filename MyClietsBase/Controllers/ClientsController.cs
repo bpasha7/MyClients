@@ -18,6 +18,7 @@ using System.Security.Claims;
 
 namespace MyClientsBase.Controllers
 {
+  [Authorize]
   [EnableCors("MyPolicy")]
   [Produces("application/json")]
   [Route("api/Clients")]
@@ -59,7 +60,6 @@ namespace MyClientsBase.Controllers
     /// </summary>
     /// <param name="clientDto"></param>
     /// <returns></returns>
-    [AllowAnonymous]
     [HttpPost("create")]
     public IActionResult Create([FromBody]ClientDto clientDto)
     {
@@ -69,7 +69,14 @@ namespace MyClientsBase.Controllers
 
         if (client == null)
           throw new AppException("Не удалось создать нового клиента!");
-        client.UserId = 1;
+
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        if (userId <= 0)
+          throw new AppException("Запрещено создать нового клиента!");
+
+        client.UserId = userId;
+
         _clientService.Create(client);
         return Ok(new
         {
@@ -87,17 +94,55 @@ namespace MyClientsBase.Controllers
       }
     }
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="clientDto"></param>
+    /// <returns></returns>
+    [HttpPut("update")]
+    public IActionResult UpdateClient([FromBody]ClientDto clientDto)
+    {
+      try
+      {
+        var client = _mapper.Map<Client>(clientDto);
+
+        if (client == null)
+          throw new AppException("Не удалось обновить клиента!");
+
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        if(client.UserId != userId)
+          throw new AppException("Запрещено обновить клиента!");
+
+        _clientService.Update(client);
+        return Ok(new
+        {
+          Message = "Данные клиента обновлены!"
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    /// <summary>
     /// Get all clients
     /// </summary>
     /// <returns></returns>
     // GET: api/Clients
-    [AllowAnonymous]
     [HttpGet]
     public IActionResult Get()
     {
       try
       {
-        var clients = _clientService.Get();
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        var clients = _clientService.GetClients(userId);
         return Ok(new
         {
           Clients = clients

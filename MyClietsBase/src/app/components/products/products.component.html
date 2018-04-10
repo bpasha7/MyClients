@@ -8,7 +8,7 @@
 </div>
 <mat-tab-group class="demo-tab-group" color="primary" headerPosition="center" (selectedTabChange)="selectedTabChange($event)" >
   <mat-tab label="Услуги">
-    <div class="table-container">
+    <div class="table-container"  *ngIf="products?.length > 0">
       <mat-table [dataSource]="productDataSorce" matSort>
 
         <!-- Name Column -->
@@ -38,7 +38,7 @@
     </button> -->
   </mat-tab>
   <mat-tab label="Скидки">
-      <div class="table-container">
+      <div class="table-container"  *ngIf="discount?.length > 0">
           <mat-table [dataSource]="discountDataSorce">
     
             <!-- Name Column -->

@@ -25,15 +25,16 @@ export class ClientService extends AppService {
      * @param client Client
      */
     create(client: Client) {
-        // let headers = new Headers({ 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' });
-        // let options = new RequestOptions({ headers: headers });
-        return this.http.post(this.config.apiUrl + this.controller + '/create', client);//, options);
+        return this.http.post(this.config.apiUrl + this.controller + '/create', client,this.jwt());//, options);
+    }
+    update(client: Client) {
+        return this.http.put(this.config.apiUrl + this.controller + '/update', client, this.jwt());//, options);
     }
     getAll() {
-        return this.http.get(this.config.apiUrl + this.controller);
+        return this.http.get(this.config.apiUrl + this.controller, this.jwt());
     }
     get(clientId: number) {
-        return this.http.get(this.config.apiUrl + this.controller + '/' + clientId);
+        return this.http.get(this.config.apiUrl + this.controller + '/' + clientId, this.jwt());
     }
 
     getOrders(clientId: number) {

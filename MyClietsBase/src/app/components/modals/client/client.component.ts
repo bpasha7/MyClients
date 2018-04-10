@@ -30,7 +30,23 @@ export class ClientModalComponent {
         this.client.birthday.setHours(-this.client.birthday.getTimezoneOffset() / 60 );
         this.clientService.create(this.client).subscribe(
             data => {
-                this.snackBar.open('Клиент добавлен.', 'Закрыть', {
+                this.snackBar.open(data.json().message, 'Закрыть', {
+                    duration: 2000,
+                  });
+            },
+            error => {
+                this.snackBar.open(error._body, 'Закрыть', {
+                    duration: 2000,
+                  });
+            }
+        );
+    }
+
+    update() {
+        this.client.birthday.setHours(-this.client.birthday.getTimezoneOffset() / 60 );
+        this.clientService.update(this.client).subscribe(
+            data => {
+                this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
                   });
             },

@@ -15,8 +15,9 @@ namespace MyClientsBase.Services
   public interface IClientService
   {
     void Create(Client client);
+    void Update(Client client);
     Client Get(int id);
-    IList<Client> Get();
+    IList<Client> GetClients(int userId);
     IList<Order> GetOrders(int clientId);
   }
   public class ClientService : IClientService
@@ -36,9 +37,9 @@ namespace MyClientsBase.Services
       _repository.Save();
     }
 
-    public IList<Client> Get()
+    public IList<Client> GetClients(int userId)
     {
-      return _repository.Query(c => c.UserId == 1).OrderBy(o => o.LastName).AsNoTracking().ToList();
+      return _repository.Query(c => c.UserId == userId).OrderBy(o => o.LastName).AsNoTracking().ToList();
     }
 
 
@@ -55,6 +56,12 @@ namespace MyClientsBase.Services
     public IList<Order> GetOrders(int clientId)
     {
       return _repository.Find(c => c.Id == clientId, or => or.Orders).Orders.OrderByDescending(o => o.Date).ToList();
+    }
+
+    public void Update(Client client)
+    {
+      _repository.Update(client);
+      _repository.Save();
     }
   }
 }
