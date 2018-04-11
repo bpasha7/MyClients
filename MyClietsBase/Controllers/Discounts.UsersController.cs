@@ -37,7 +37,8 @@ namespace MyClientsBase.Controllers
         _userService.CreateDiscount(discount);
         return Ok(new
         {
-          Message = "Скидка добавлена!"
+          Message = "Скидка добавлена!",
+          DiscountId = discount.Id
         });
       }
       catch (AppException ex)

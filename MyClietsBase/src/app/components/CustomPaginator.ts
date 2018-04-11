@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 
 const RangeLabel = (page: number, pageSize: number, length: number) => {
-  if (length === 0 || pageSize === 0) { return '0 из ${length}'; }
+  if (length === 0 || pageSize === 0) { return ''; }
 
   length = Math.max(length, 0);
 

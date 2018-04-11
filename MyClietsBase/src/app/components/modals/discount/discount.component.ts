@@ -19,6 +19,7 @@ export class DiscountModalComponent {
         @Inject(MAT_DIALOG_DATA) public data: any) {
             if (data == null) {
                 this.discount = new Discount();
+                this.discount.id = 0;
                 this.title = 'Новая скидка';
             } else {
                 this.discount = data.discount;
@@ -30,9 +31,11 @@ export class DiscountModalComponent {
     create() {
         this.userService.createDiscount(this.discount).subscribe(
             data => {
+                this.discount.id = data.json().clientId;
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
-                  });
+                });
+                this.dialogRef.close(this.discount);
             },
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {

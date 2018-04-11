@@ -58,16 +58,24 @@ export class ProductsComponent implements OnInit {
             }
         );
     }
-
-    loadDiscounts() {
+    /**
+     * Init paginator and sort for discount data source
+     */
+    private initDiscountSourceTable() {
+        if (this.discountDataSorce != null) {
+            this.discountDataSorce.paginator = this.paginatorDiscounts;
+            this.discountDataSorce.sort = this.sortDiscounts;
+        }
+    }
+    /**
+     * Loading user discounts and create data source
+     */
+    private loadDiscounts() {
         this.userService.getDiscounts().subscribe(
             data => {
                 this.discounts = data.json().discounts;
                 this.discountDataSorce = new MatTableDataSource(this.discounts);
-                if (this.discountDataSorce != null) {
-                    this.discountDataSorce.paginator = this.paginatorDiscounts;
-                    this.discountDataSorce.sort = this.sortDiscounts;
-                }
+                this.initDiscountSourceTable();
             },
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
@@ -76,7 +84,10 @@ export class ProductsComponent implements OnInit {
             }
         );
     }
-
+    /**
+     * Needs to know which tab is current
+     * @param tabChangeEvent 
+     */
     selectedTabChange(tabChangeEvent: MatTabChangeEvent) {
         this.currentTabPosition = tabChangeEvent.index;
     }
@@ -87,7 +98,7 @@ export class ProductsComponent implements OnInit {
         this.showFilter = !this.showFilter;
     }
     /**
-     * Applay filter for current data sorce
+     * Applay filter for selected tab
      * @param filterValue 
      */
     applyFilter(filterValue: string) {
@@ -101,22 +112,27 @@ export class ProductsComponent implements OnInit {
         }
 
     }
-
+    /**
+     * Open modal dialog for creating new discount or product
+     */
     openDialog(): void {
-
+        // 1 - discount tab index
         if (this.currentTabPosition === 1) {
             const dialogRef = this.dialog.open(DiscountModalComponent, {
             });
-
+            // Waiting closing discount modal dialog
             dialogRef.afterClosed().subscribe(result => {
-                if (result === 1) {
-                    this.loadDiscounts();
+                if (result.id !== 0) {
+                    result.percent /= 100;
+                    this.discountDataSorce.data.push(result);
+                    this.initDiscountSourceTable();
+                    //this.loadDiscounts();
                 }
             });
-        } else {
+        } else { // 0 - product tab index
             const dialogRef = this.dialog.open(ProductModalComponent, {
             });
-
+            // Waiting closing product modal dialog
             dialogRef.afterClosed().subscribe(result => {
                 if (result === 1) {
                     this.loadProducts();
@@ -131,8 +147,10 @@ export class ProductsComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            if (result === 1) {
-                this.loadProducts();
+            if (result.id !== 0) {
+                this.discountDataSorce.data.push(result);
+
+                //this.loadProducts();
             }
         });
     }

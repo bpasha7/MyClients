@@ -18,47 +18,44 @@ export class ClientModalComponent {
         private clientService: ClientService,
         public dialogRef: MatDialogRef<ClientModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
-            if (data == null) {
-                this.client = new Client();
-                this.client.birthday = new Date(1990, 0, 1);
-            } else {
-                this.client = data.client;
-            }
+        this.client = data.client;
     }
 
     create() {
-        this.client.birthday.setHours(-this.client.birthday.getTimezoneOffset() / 60 );
+        this.client.birthday.setHours(-this.client.birthday.getTimezoneOffset() / 60);
         this.clientService.create(this.client).subscribe(
             data => {
+                this.client.id = data.json().clientId;
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
-                  });
+                });
+                this.dialogRef.close(this.client);
             },
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
     }
 
     update() {
-        this.client.birthday.setHours(-this.client.birthday.getTimezoneOffset() / 60 );
+        this.client.birthday.setHours(-this.client.birthday.getTimezoneOffset() / 60);
         this.clientService.update(this.client).subscribe(
             data => {
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             },
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
     }
 
-    
+
     onNoClick(): void {
         this.dialogRef.close();
     }

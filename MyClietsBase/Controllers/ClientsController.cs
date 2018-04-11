@@ -80,7 +80,8 @@ namespace MyClientsBase.Controllers
         _clientService.Create(client);
         return Ok(new
         {
-          Message = "Клиент добавлен!"
+          Message = "Клиент добавлен!",
+          ClientId = client.Id
         });
       }
       catch (AppException ex)

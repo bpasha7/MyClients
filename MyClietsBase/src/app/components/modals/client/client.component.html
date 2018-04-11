@@ -36,5 +36,5 @@
   <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">ОТМЕНА</button>
   <!-- <button mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>ДОБАВИТЬ</button> -->
   <button *ngIf="client.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
-  <button *ngIf="client == null" mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>ДОБАВИТЬ</button>
+  <button *ngIf="client.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
 </div>
