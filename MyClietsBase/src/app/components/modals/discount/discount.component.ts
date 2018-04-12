@@ -31,7 +31,7 @@ export class DiscountModalComponent {
     create() {
         this.userService.createDiscount(this.discount).subscribe(
             data => {
-                this.discount.id = data.json().clientId;
+                this.discount.id = data.json().discountId;
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
                 });

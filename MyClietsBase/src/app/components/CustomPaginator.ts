@@ -18,6 +18,7 @@ const RangeLabel = (page: number, pageSize: number, length: number) => {
 };
 @Injectable()
 export class CustomPaginator extends MatPaginatorIntl {
+  nextPageLabel = "Следующая";
   itemsPerPageLabel = 'Показать:';
   getRangeLabel = RangeLabel;
 }

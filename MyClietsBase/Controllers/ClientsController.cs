@@ -194,8 +194,8 @@ namespace MyClientsBase.Controllers
       try
       {
         var orders = _clientService.GetOrders(id);
-        var old = orders.Where(o => o.Date < DateTime.Now).ToList();
-        var current = orders.Where(o => o.Date >= DateTime.Now).ToList();
+        var old = orders.Where(o => o.Date < DateTime.Now.Date).ToList();
+        var current = orders.Where(o => o.Date >= DateTime.Now.Date).ToList();
         return Ok(new
         {
           Old = _mapper.Map<OrderDto[]>(old),

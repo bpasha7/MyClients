@@ -19,6 +19,7 @@ export class ProductModalComponent {
         @Inject(MAT_DIALOG_DATA) public data: any) {
             if (data == null) {
                 this.product = new Product();
+                this.product.id = 0;
                 this.title = 'Новая услуга';
             } else {
                 this.product = data.product;
@@ -29,9 +30,11 @@ export class ProductModalComponent {
     create() {
         this.userService.createProduct(this.product).subscribe(
             data => {
+                this.product.id = data.json().productId;
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
-                  });
+                });
+                this.dialogRef.close(this.product);
             },
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {

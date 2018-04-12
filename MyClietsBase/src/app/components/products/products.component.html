@@ -10,7 +10,7 @@
   <mat-tab label="Услуги">
       <!-- *ngIf="products?.length > 0" -->
     <div class="table-container" >
-      <mat-table [dataSource]="productDataSorce" matSort>
+      <mat-table [dataSource]="productDataSorce" #sortProducts="matSort" matSort>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
@@ -29,7 +29,7 @@
         </mat-row>
       </mat-table>
 
-      <mat-paginator [length]="products.length" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+      <mat-paginator #paginatorProducts [length]="products.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
     </div>
     <!-- <button mat-mini-fab color="primary" class="search-fixed-button" (click)="openDialog()">
       <mat-icon aria-label="">search</mat-icon>
@@ -41,17 +41,17 @@
   <mat-tab label="Скидки">
       <!-- *ngIf="discounts?.length > 0" -->
       <div class="table-container"  >
-          <mat-table [dataSource]="discountDataSorce">
+          <mat-table [dataSource]="discountDataSorce" #sortDiscounts="matSort" matSort>
     
             <!-- Name Column -->
             <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef >Описание</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Описание</mat-header-cell>
               <mat-cell *matCellDef="let discount" (click)="openEditDiscountDialog(discount)"> {{discount.name}} </mat-cell>
             </ng-container>
     
             <!-- Discount Column -->
             <ng-container matColumnDef="percent">
-              <mat-header-cell *matHeaderCellDef >Величина</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Величина</mat-header-cell>
               <mat-cell *matCellDef="let discount"> {{discount.percent * 100}} %</mat-cell>
             </ng-container>
     
@@ -60,7 +60,7 @@
             </mat-row>
           </mat-table>
     
-          <mat-paginator [length]="discounts.length" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+          <mat-paginator #paginatorDiscounts [length]="discounts.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
         </div>
         <!-- <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
           <mat-icon aria-label="">add</mat-icon>

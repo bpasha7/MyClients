@@ -25,13 +25,13 @@ export class ProductsComponent implements OnInit {
 
     }
     // tslint:disable-next-line:member-ordering
-    @ViewChild(MatPaginator) paginatorProducts: MatPaginator;
+    @ViewChild('paginatorProducts') paginatorProducts: MatPaginator;
     // tslint:disable-next-line:member-ordering
-    @ViewChild(MatSort) sortProducts: MatSort;
+    @ViewChild('sortProducts') sortProducts: MatSort;
     // tslint:disable-next-line:member-ordering
-    @ViewChild(MatPaginator) paginatorDiscounts: MatPaginator;
+    @ViewChild('paginatorDiscounts') paginatorDiscounts: MatPaginator;
     // tslint:disable-next-line:member-ordering
-    //@ViewChild(MatSort) sortDiscounts: MatSort;
+    @ViewChild('sortDiscounts') sortDiscounts: MatSort;
     constructor(
         public snackBar: MatSnackBar,
         public dialog: MatDialog,
@@ -39,17 +39,15 @@ export class ProductsComponent implements OnInit {
         this.loadProducts();
         this.loadDiscounts();
     }
-
-
+    /**
+     * Load client product list and init data source
+     */
     loadProducts() {
         this.userService.getProducts().subscribe(
             data => {
                 this.products = data.json().products;
                 this.productDataSorce = new MatTableDataSource(this.products);
-                if (this.productDataSorce != null) {
-                    this.productDataSorce.paginator = this.paginatorProducts;
-                    //this.productDataSorce.sort = this.sortProducts;
-                }
+                this.initProductSourceTable();
             },
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
@@ -65,6 +63,15 @@ export class ProductsComponent implements OnInit {
         if (this.discountDataSorce != null) {
             this.discountDataSorce.paginator = this.paginatorDiscounts;
             this.discountDataSorce.sort = this.sortDiscounts;
+        }
+    }
+    /**
+     * Init paginator and sort for discount data source
+     */
+    private initProductSourceTable() {
+        if (this.productDataSorce != null) {
+            this.productDataSorce.paginator = this.paginatorProducts;
+            this.productDataSorce.sort = this.sortProducts;
         }
     }
     /**
@@ -134,8 +141,10 @@ export class ProductsComponent implements OnInit {
             });
             // Waiting closing product modal dialog
             dialogRef.afterClosed().subscribe(result => {
-                if (result === 1) {
-                    this.loadProducts();
+                if (result.id !== 0) {
+                    this.productDataSorce.data.push(result);
+                    this.initDiscountSourceTable();
+                    //this.loadDiscounts();
                 }
             });
         }
