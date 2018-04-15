@@ -13,7 +13,7 @@ export class AppService {
 
         // let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         // if (currentUser && currentUser.token) {
-        let headers = new Headers({ 'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QiLCJuYW1laWQiOiIxIiwibmJmIjoxNTIyNzM0MDE0LCJleHAiOjE1MjUzMjYwMTQsImlhdCI6MTUyMjczNDAxNH0.ngZxp3bif9Nqu3YO2e-f6MesjKxYMKB5JL1gCB-Hpkg' });
+        const headers = new Headers({ 'Authorization': 'Bearer ' + localStorage.getItem('currentUser') });
         return new RequestOptions({ headers: headers });
         // }
     }

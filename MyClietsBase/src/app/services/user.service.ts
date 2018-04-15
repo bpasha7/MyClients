@@ -3,7 +3,7 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { AppConfig } from '../app.config';
 import { User, Product, Order, Discount } from '../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AppService } from './app.service'
+import { AppService } from './app.service';
 
 /**
  * Сервис для работы с контроллером Users
@@ -19,7 +19,17 @@ export class UserService extends AppService {
     /**#toDo
      * Add create and login functions here
      */
+    login(user: User) {
+        return this.http.post(this.config.apiUrl + this.controller + '/authenticate', user);
+    }
 
+    setToken(token: string) {
+        localStorage.setItem('currentUser', token);
+    }
+
+    logout() {
+        localStorage.clear();
+    }
     getProducts() {
         return this.http.get(this.config.apiUrl + this.controller + '/products', this.jwt());
     }
@@ -47,8 +57,8 @@ export class UserService extends AppService {
         return this.http.post(this.config.apiUrl + this.controller + '/order', order, this.jwt());
     }
 
-    removeOrder(id: number){
-        return this.http.patch(this.config.apiUrl + this.controller +'/order/' + id, null, this.jwt());
+    removeOrder(id: number) {
+        return this.http.patch(this.config.apiUrl + this.controller + '/order/' + id, null, this.jwt());
     }
 
     getCurrentOrders() {

@@ -1,0 +1,17 @@
+.input-field{
+    width: 85%;
+    margin-left: 2%;
+}
+.icon-field{
+    vertical-align: middle;
+}
+.login-form{
+    width: 300px;
+    margin: auto;
+}
+#md-card-content{
+    font-size: 16px;
+}
+.login-progress{
+    display: block;
+}

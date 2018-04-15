@@ -52,15 +52,22 @@ import { ChartsModule } from 'ng2-charts';
 import { AppComponent } from './app.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { ClientComponent } from './components/client/client.component';
-import { ClientModalComponent, ProductModalComponent, OrderModalComponent, PhotoModalComponent, DiscountModalComponent } from './components/modals/index';
+import {
+  ClientModalComponent,
+  ProductModalComponent,
+  OrderModalComponent,
+  PhotoModalComponent,
+  DiscountModalComponent } from './components/modals/index';
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { OutgoingsComponent } from './components/outgoings/outgoings.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { LoginComponent } from './components/login/login.component';
 
 import { AppConfig } from './app.config';
 import { UserService, ClientService } from './services/index';
+
 
 
 
@@ -74,6 +81,7 @@ const appRoutes: Routes = [
   { path: 'clients', component: ClientsComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'orders', component: OrdersComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'client/:id', component: ClientComponent },
   { path: 'analytics', component: AnalyticsComponent },
   // { path: '', component: LoginForm },
@@ -178,6 +186,7 @@ export class CustomPaginator extends MatPaginatorIntl {
     ProductsComponent,
     OrdersComponent,
     OutgoingsComponent,
+    LoginComponent,
     SettingsComponent,
     AnalyticsComponent
   ],
