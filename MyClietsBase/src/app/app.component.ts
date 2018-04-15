@@ -13,11 +13,17 @@ export class AppComponent {
   title = this.appName;
   public constructor(private titleService: Title ) { }
 
-  skip(){
-    
+  isLogined() {
+    const user = localStorage.getItem('currentUser');
+    if (user) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  setTitel(section: string){
-    this.title = this.appName + this.separator + section;
-  }
+  // setTitel(section: string){
+  //   this.title = this.appName + this.separator + section;
+  // }
 }

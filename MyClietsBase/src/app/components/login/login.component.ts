@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   /**
    * Flag for shoing progress bar
    */
-  private loading = false;
+  public loading = false;
   /**
    * Url for redirecting after succes logining
    */
