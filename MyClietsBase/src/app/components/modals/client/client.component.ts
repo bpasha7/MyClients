@@ -40,7 +40,11 @@ export class ClientModalComponent {
     }
 
     update() {
-        this.client.birthday.setHours(-this.client.birthday.getTimezoneOffset() / 60);
+        this.client.birthday = new Date(this.client.birthday);
+        const offset = this.client.birthday.getTimezoneOffset();
+        if (offset) {
+            this.client.birthday.setHours(-offset / 60);
+        }
         this.clientService.update(this.client).subscribe(
             data => {
                 this.snackBar.open(data.json().message, 'Закрыть', {
