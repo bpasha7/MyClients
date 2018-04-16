@@ -39,7 +39,7 @@ export class ClientComponent {
         this.clientService.get(id).subscribe(
             data => {
                 this.client = data.json().client;
-                this.photo = this.config.photoUrl+'671EF4298BF7FDA73A2EA72F963BF7EF'+'/'+this.client.id+'.jpg';
+                this.photo = this.config.photoUrl+ localStorage.getItem('userHash') + '/' + this.client.id+'.jpg';
             },
             error => {
                 this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {

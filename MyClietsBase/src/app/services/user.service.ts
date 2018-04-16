@@ -13,54 +13,88 @@ export class UserService extends AppService {
     constructor(private http: Http,
         public config: AppConfig,
         private router: Router) {
-            super();
-            this.controller = '/users';
-         }
-    /**#toDo
-     * Add create and login functions here
+        super();
+        this.controller = '/users';
+    }
+    /**
+     * Authenticate user
+     * @param user 
      */
     login(user: User) {
         return this.http.post(this.config.apiUrl + this.controller + '/authenticate', user);
     }
-
-    setToken(token: string) {
+    /**
+     * Set data to local storage
+     * @param token 
+     * @param hash 
+     */
+    setToken(token: string, hash: string) {
         localStorage.setItem('currentUser', token);
+        localStorage.setItem('userHash', hash);
     }
-
+    /**
+     * Logout - clear local storage
+     */
     logout() {
         localStorage.clear();
     }
+    /**
+     * Get user product list
+     */
     getProducts() {
         return this.http.get(this.config.apiUrl + this.controller + '/products', this.jwt());
     }
-
+    /**
+     * Create user product
+     * @param product 
+     */
     createProduct(product: Product) {
         return this.http.post(this.config.apiUrl + this.controller + '/product', product, this.jwt());
     }
-
+    /**
+     * Update user product
+     * @param product 
+     */
     updateProduct(product: Product) {
         return this.http.put(this.config.apiUrl + this.controller + '/product', product, this.jwt());
     }
-
+    /**
+     * Get user discount list
+     */
     getDiscounts() {
         return this.http.get(this.config.apiUrl + this.controller + '/discounts', this.jwt());
     }
+    /**
+     * Create user discount
+     * @param discount 
+     */
     createDiscount(discount: Discount) {
         return this.http.post(this.config.apiUrl + this.controller + '/discount', discount, this.jwt());
     }
-
+    /**
+     * Update user discount
+     * @param discount
+     */
     updateDiscount(discount: Discount) {
         return this.http.put(this.config.apiUrl + this.controller + '/discount', discount, this.jwt());
     }
-
+    /**
+     * Create user order
+     * @param order
+     */
     createOrder(order: Order) {
         return this.http.post(this.config.apiUrl + this.controller + '/order', order, this.jwt());
     }
-
+    /**
+     * Mark as removed user order
+     * @param id 
+     */
     removeOrder(id: number) {
         return this.http.patch(this.config.apiUrl + this.controller + '/order/' + id, null, this.jwt());
     }
-
+    /**
+     * Get current user orders 
+     */
     getCurrentOrders() {
         return this.http.get(this.config.apiUrl + this.controller + '/orders/current', this.jwt());
     }

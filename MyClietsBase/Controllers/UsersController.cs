@@ -200,12 +200,11 @@ namespace MyClientsBase.Controllers
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var tokenString = tokenHandler.WriteToken(token);
         _logger.LogInformation($"User #{user.Id} was logged.");
-
+        var hash = AppFileSystem.GetUserMD5(user.Id, user.Login);
         return Ok(new
         {
-          Id = user.Id,
-          Name = user.Name,
           Token = tokenString,
+          Hash = hash
         });
       }
       catch (AppException ex)

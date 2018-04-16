@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
       data => {
         const user = data.json();
         if (user && user.token) {
-          this.userService.setToken(user.token);
+          this.userService.setToken(user.token, user.hash);
           this.router.navigate([this.returnUrl]);
         }
       },
