@@ -13,7 +13,7 @@
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker touchUi="true" #picker2 startView="year"></mat-datepicker>
       </mat-form-field>
-      <button [disabled]="begin == null || end == null" mat-icon-button color="accent">
+      <button [disabled]="begin == null || end == null" mat-icon-button color="accent" (click)="getReport()">
           <mat-icon aria-label="">update</mat-icon>
         </button>
     </div>
@@ -21,23 +21,24 @@
   </mat-card>
 </div>
 <div class="analynics-container">
-  <mat-card>
+  <!-- <mat-card>
     <mat-card-title>Отчет</mat-card-title>
     <mat-card-subtitle>Январь-Март</mat-card-subtitle>
     <mat-card-content>
       <div style="display: block">
         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [legend]="barChartLegend"
-          [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          [chartType]="barChartType" (chartHover)="chartHovered($event)"></canvas>
       </div>
     </mat-card-content>
-  </mat-card>
+  </mat-card> -->
 
   <mat-card>
     <mat-card-title>Выручка по услугам</mat-card-title>
     <mat-card-subtitle>Январь-Март</mat-card-subtitle>
     <div style="display: block">
       <canvas baseChart height="200" width="250" [data]="pieChartData" [options]="pieChartOptions" [labels]="pieChartLabels" [chartType]="pieChartType"
-        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        (chartHover)="chartHovered($event)" ></canvas>
+        <!-- (chartClick)="chartClicked($event)" -->
     </div>
   </mat-card>
 </div>

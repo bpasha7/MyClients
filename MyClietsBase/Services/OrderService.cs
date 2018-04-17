@@ -1,6 +1,7 @@
 using Data.EF;
 using Data.EF.Entities;
 using Data.EF.UnitOfWork;
+using Data.Reports;
 using Domain.Interfaces.Repositories;
 using Microsoft.Extensions.Options;
 using MyClientsBase.Helpers;
@@ -14,6 +15,7 @@ namespace MyClientsBase.Services
   public interface IOrderService
   {
     void SetAsRemoved(int userId, int orderId);
+    IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd);
   }
   public class OrderService : IOrderService
   {
@@ -34,5 +36,33 @@ namespace MyClientsBase.Services
       _repository.Update(order);
       _repository.Save();
     }
+
+    public IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd)
+    {
+      return _repository.Query(
+        order => order.UserId == userId &&
+        order.Removed != true &&
+        order.Date >= dateStart.Date && order.Date <= dateEnd.Date,
+        p => p.ProductInfo
+        )
+        .Select(
+        field => new
+        {
+          ProductId = field.ProductId,
+          ProductName = field.ProductInfo.Name,
+          Total = field.Total
+        })
+        .GroupBy(g => new { g.ProductId, g.ProductName })
+        .Select(rep =>
+         new ProductsReport
+         {
+           ProductName = rep.Key.ProductName,
+           Sum = rep.Sum(s => s.Total)
+         }
+        )
+        .ToList();
+      //return report;
+    }
+    
   }
 }

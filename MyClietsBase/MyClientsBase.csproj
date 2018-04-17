@@ -31,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Data.DTO\Data.DTO.csproj" />
     <ProjectReference Include="..\Data.EF\Data.EF.csproj" />
+    <ProjectReference Include="..\Data.Reports\Data.Reports.csproj" />
   </ItemGroup>
 
   <ItemGroup>

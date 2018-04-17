@@ -142,6 +142,30 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
+
+    [HttpGet("orders/report")]
+    public IActionResult GetOrdersReport([FromQuery]DateTime start, [FromQuery]DateTime end)
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        //var orders =
+        var report = _orderService.GenerateProductReport(userId, start, end);
+        return Ok(new
+        {
+          Report = report
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
     //// GET: api/Users
     //[HttpGet]
     //public IEnumerable<string> Get()

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Data.DTO.Entities;
 using Data.EF.Entities;
+using Data.Reports;
 
 namespace MyClientsBase.Helpers
 {
@@ -22,6 +23,9 @@ namespace MyClientsBase.Helpers
 
       CreateMap<Order, OrderDto>();
       CreateMap<OrderDto, Order>();
+
+      CreateMap<ProductsReport, ProductsReportDto>();
+      CreateMap<ProductsReportDto, ProductsReport>();
     }
   }
 }
