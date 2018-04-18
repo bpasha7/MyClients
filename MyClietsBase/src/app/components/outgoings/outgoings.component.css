@@ -1,0 +1,26 @@
+.outgoings-container{
+    min-width: 320px;
+    margin: 0 3px 3px 3px;
+}
+.add-fixed-button{
+    position: fixed;
+    bottom: 50px;
+    right: 15px;
+}
+.data-pickers-block{
+    width: 300px;
+    margin: auto;
+}
+.container-row{
+    display: flex;
+    flex-direction: row;
+}
+.container-row > * {
+    /* width: 48%; */
+    width: 110px;
+    margin: auto;
+}
+.container-row :last-child {
+    width: 40px;
+    margin-left: 2%;
+}

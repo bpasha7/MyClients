@@ -144,13 +144,13 @@ namespace MyClientsBase.Controllers
     }
 
     [HttpGet("orders/report")]
-    public IActionResult GetOrdersReport([FromQuery]DateTime start, [FromQuery]DateTime end)
+    public IActionResult GetOrdersReport([FromQuery]DateTime begin, [FromQuery]DateTime end)
     {
       try
       {
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         //var orders =
-        var report = _orderService.GenerateProductReport(userId, start, end);
+        var report = _orderService.GenerateProductReport(userId, begin, end);
         return Ok(new
         {
           Report = report
@@ -191,7 +191,6 @@ namespace MyClientsBase.Controllers
     {
       try
       {
-        _logger.LogInformation($"Start Logining");
         var user = _userService.Authenticate(userDto.Login, userDto.Password);
 
         if (user == null)
