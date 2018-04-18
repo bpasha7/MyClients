@@ -6,6 +6,9 @@
     <mat-icon>lock</mat-icon>
   </button>
   <h1>{{title}}</h1>
+  <button *ngIf="isLogined()" style="margin-left: auto;"  routerLink="/messages" mat-icon-button>
+    <mat-icon>notifications</mat-icon>
+  </button>
 </mat-toolbar>
 
 <mat-sidenav-container class="my-container">
@@ -26,7 +29,7 @@
         <mat-icon mat-list-icon>work</mat-icon>
         Планы
       </a>
-      <a mat-list-item routerLink="/outgoing">
+      <a mat-list-item routerLink="/outgoings">
         <mat-icon mat-list-icon>shopping_basket</mat-icon>
         Расходы
       </a>

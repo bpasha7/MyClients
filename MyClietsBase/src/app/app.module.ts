@@ -58,36 +58,31 @@ import {
   OrderModalComponent,
   PhotoModalComponent,
   OutgoingModalComponent,
-  DiscountModalComponent } from './components/modals/index';
+  DiscountModalComponent
+} from './components/modals/index';
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { OutgoingsComponent } from './components/outgoings/outgoings.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { LoginComponent } from './components/login/login.component';
+import { MessagesComponent } from './components/messages/messages.component';
 
 import { AppConfig } from './app.config';
 import { UserService, ClientService } from './services/index';
-
-
-
-
-
-
-
 /*Routes */
 const appRoutes: Routes = [
   { path: 'settings', component: SettingsComponent },
-  { path: 'outgoing', component: OutgoingsComponent },
+  { path: 'outgoings', component: OutgoingsComponent },
   { path: 'clients', component: ClientsComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'login', component: LoginComponent },
   { path: 'client/:id', component: ClientComponent },
   { path: 'analytics', component: AnalyticsComponent },
-  // { path: '', component: LoginForm },
-  //{ path: 'login', component: LoginForm }
-]
+  { path: '', component: LoginComponent },
+  { path: 'messages', component: MessagesComponent },
+];
 /*Routes */
 
 @NgModule({
@@ -187,6 +182,7 @@ export class CustomPaginator extends MatPaginatorIntl {
     DiscountModalComponent,
     OutgoingModalComponent,
     ProductsComponent,
+    MessagesComponent,
     OrdersComponent,
     OutgoingsComponent,
     LoginComponent,

@@ -143,6 +143,60 @@ namespace MyClientsBase.Controllers
       }
     }
 
+    [AllowAnonymous]
+    [HttpPost("message")]
+    public IActionResult CreateOrder([FromBody]MessageDto messageDto)
+    {
+      try
+      {
+        var message = _mapper.Map<Message>(messageDto);
+
+        if (message == null)
+          throw new AppException("Неверный данные!");
+
+        //var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        //order.UserId = userId;
+
+        _userService.AddMessage(message, "test");
+        return Ok(new
+        {
+          Message = "Запись добавлена!"
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    [HttpGet("messages")]
+    public IActionResult GetMessages()
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        var messages = _userService.GetMessages(userId);
+        return Ok(new
+        {
+          Messages = _mapper.Map<MessageDto[]>(messages),
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
     [HttpGet("orders/report")]
     public IActionResult GetOrdersReport([FromQuery]DateTime begin, [FromQuery]DateTime end)
     {

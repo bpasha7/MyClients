@@ -40,5 +40,13 @@ namespace Data.EF.Entities
         /// Orders
         /// </summary>
         public virtual ICollection<Order> Orders { get; set; }
+        /// <summary>
+        /// Orders
+        /// </summary>
+        public virtual ICollection<Message> Messages { get; set; }
+        /// <summary>
+        /// Orders
+        /// </summary>
+        public virtual ICollection<Outgoing> Outgoings { get; set; }
     }
 }

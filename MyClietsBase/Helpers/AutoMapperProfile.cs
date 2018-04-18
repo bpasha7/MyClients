@@ -29,6 +29,9 @@ namespace MyClientsBase.Helpers
 
       CreateMap<OutgoingDto, Outgoing>();
       CreateMap<Outgoing, OutgoingDto>();
+
+      CreateMap<Message, MessageDto>();
+      CreateMap<MessageDto, Message>();
     }
   }
 }

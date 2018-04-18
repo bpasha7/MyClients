@@ -10,7 +10,7 @@ mat-form-field mat-icon{
     vertical-align: bottom;
 }
 .client-container{
-    min-width: 320px;
+    min-width: 317px;
     margin: 0 3px 3px 3px;
 }
 .clients-search-card{
@@ -31,10 +31,10 @@ mat-form-field mat-icon{
     position: relative;
     bottom: 70px;
 }
-.edit-button{
+/* .edit-button{
     float: right;
     bottom: 50px;
-}
+} */
 .removed-order{
     /* background: pink; */
     color: red;

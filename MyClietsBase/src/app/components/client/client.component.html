@@ -74,7 +74,7 @@
                         <mat-list-item class="order-item" (click)="sidenav.toggle()" role="list" [ngClass]="{'removed-order' : order.removed}" >
                             <mat-icon mat-list-icon >date_range</mat-icon>
                             <h4 mat-line>{{ order.date | date:'MMMM d, H:mm' }}</h4>
-                            <p mat-line> {{ order.total | currency :'RUB':'2.1'}} </p>
+                            <p mat-line> {{ order.total }} &#x20bd;</p>
                         </mat-list-item>
                     </mat-sidenav-content>
                     <mat-sidenav #sidenav mode="over" position="end">

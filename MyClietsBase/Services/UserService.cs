@@ -27,9 +27,11 @@ namespace MyClientsBase.Services
     void CreateDiscount(Discount discount);
     void CreateOrder(Order order);
     void CreateOutgoing(Outgoing outgoing);
+    void AddMessage(Message message, string login);
     IList<Product> GetProducts(int userId);
     IList<Discount> GetDiscounts(int userId);
     IList<Order> GetCurrentOrders(int userId);
+    IList<Message> GetMessages(int userId);
     IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
     string GetMD5(int id, string login);
   }
@@ -202,6 +204,18 @@ namespace MyClientsBase.Services
         )
         .OrderByDescending(o=>o.Date)
         .ToList();
+    }
+
+    public IList<Message> GetMessages(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.OrderByDescending(o => o.Date).ToList();
+    }
+
+    public void AddMessage(Message message, string login)
+    {
+      message.Date = DateTime.Now;
+      _repository.Find(u => u.Login == login, m => m.Messages).Messages.Add(message);
+      _repository.Save();
     }
   }
 }

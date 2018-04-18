@@ -111,10 +111,17 @@ export class UserService extends AppService {
      * @param end date end report
      */
     getReport(begin: Date, end: Date) {
-        return this.http.get(this.config.apiUrl + this.controller + '/orders/report?begin=' + begin.toDateString() + '&end=' + end.toDateString(), this.jwt());
+        return this.http.get(
+            this.config.apiUrl + this.controller + '/orders/report?begin=' +
+            begin.toDateString() + '&end=' + end.toDateString(), this.jwt());
     }
 
     getOutgoings(begin: Date, end: Date) {
-        return this.http.get(this.config.apiUrl + this.controller + '/outgoings/report?begin=' + begin.toDateString() + '&end=' + end.toDateString(), this.jwt());
+        return this.http.get(this.config.apiUrl + this.controller + '/outgoings/report?begin=' +
+        begin.toDateString() + '&end=' + end.toDateString(), this.jwt());
+    }
+
+    getMessages() {
+        return this.http.get(this.config.apiUrl + this.controller + '/messages', this.jwt());
     }
 }

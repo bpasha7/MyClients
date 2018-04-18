@@ -1,0 +1,23 @@
+<div class="message-container">
+  <mat-list>
+    <div>
+        <!-- *ngIf="outgoings.length" -->
+      <!-- <h3 mat-subheader>Траты</h3> -->
+      <mat-list-item *ngFor="let message of messages">
+        <mat-icon *ngIf="message.type == 1" mat-list-icon>mail_outline</mat-icon>
+        <mat-icon *ngIf="message.type == 2" mat-list-icon>person_outline</mat-icon>
+
+        <h4 mat-line>{{message.from}} {{message.date | date:'MMMM d, H:mm'}}</h4>
+        <p mat-line>{{message.text}}</p>
+        <button mat-icon-button style="bottom: 0px" (click)="editOrder(order)" color="warn">
+          <mat-icon aria-label="">
+            fiber new
+          </mat-icon>
+      </button>
+      </mat-list-item>
+    </div>
+  </mat-list>
+  <!-- <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
+    <mat-icon aria-label="">add</mat-icon>
+  </button> -->
+</div>
