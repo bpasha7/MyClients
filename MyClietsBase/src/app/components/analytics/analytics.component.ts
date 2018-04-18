@@ -12,15 +12,15 @@ import { AppConfig } from '../../app.config';
 })
 export class AnalyticsComponent implements OnInit {
 
-  public begin: Date = null;
-  public end: Date = null;
+  public end: Date = new Date();
+  public begin: Date = new Date(this.end.getFullYear(), this.end.getMonth(), 1);
   public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
 
   // Pie
   public pieChartLabels: string[] = ["123", "333"];
-  public pieChartData: number[] = [1, 2];
+  public pieChartData: Array<any>;//number[] = [1, 2];
   //public lineChartData: Array<any> [];
   public pieChartType: string = 'pie';
   public pieChartOptions: any = {
@@ -40,21 +40,22 @@ export class AnalyticsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getReport();
   }
-
+  /**
+   * loading report
+   */
   public getReport() {
     this.userService.getReport(this.begin, this.end).subscribe(
       data => {
         const productReport = data.json().report;
-        let _pieChartLabels = new Array(4);
-        let _pieChartData = new Array(4);
-        //this.lineChartData = new Array(4);
+        let _pieChartLabels = new Array();
+        let _pieChartData = new Array();
         productReport.forEach(element => {
-          //_pieChartData[0] = {data: element['sum'], label: element['sum']};
           _pieChartLabels.push(element['productName']);
           _pieChartData.push(element['sum']);
         });
-        this.pieChartData = _pieChartData;
+        this.pieChartData = [{ data: _pieChartData}];
         this.pieChartLabels = _pieChartLabels;
       }, 
       error => {

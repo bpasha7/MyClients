@@ -98,7 +98,11 @@ export class UserService extends AppService {
     getCurrentOrders() {
         return this.http.get(this.config.apiUrl + this.controller + '/orders/current', this.jwt());
     }
-
+    /**
+     * Get user report by dates
+     * @param begin date begin report
+     * @param end date end report
+     */
     getReport(begin: Date, end: Date) {
         return this.http.get(this.config.apiUrl + this.controller + '/orders/report?start=' + begin.toDateString() + '&end=' + end.toDateString(), this.jwt());
     }

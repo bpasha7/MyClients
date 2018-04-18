@@ -45,7 +45,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from 'ngx-clipboard';
-import { ChartsModule } from 'ng2-charts';
+import { ChartsModule } from 'ng2-charts-x';
 /**
  * UI components
  */

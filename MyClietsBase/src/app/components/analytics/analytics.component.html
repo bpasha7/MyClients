@@ -21,7 +21,7 @@
   </mat-card>
 </div>
 <div class="analynics-container">
-  <!-- <mat-card>
+  <mat-card>
     <mat-card-title>Отчет</mat-card-title>
     <mat-card-subtitle>Январь-Март</mat-card-subtitle>
     <mat-card-content>
@@ -30,13 +30,13 @@
           [chartType]="barChartType" (chartHover)="chartHovered($event)"></canvas>
       </div>
     </mat-card-content>
-  </mat-card> -->
+  </mat-card>
 
   <mat-card>
     <mat-card-title>Выручка по услугам</mat-card-title>
     <mat-card-subtitle>Январь-Март</mat-card-subtitle>
     <div style="display: block">
-      <canvas baseChart height="200" width="250" [data]="pieChartData" [options]="pieChartOptions" [labels]="pieChartLabels" [chartType]="pieChartType"
+      <canvas baseChart height="200" width="250" [datasets]="pieChartData" [options]="pieChartOptions" [labels]="pieChartLabels" [chartType]="pieChartType"
         (chartHover)="chartHovered($event)" ></canvas>
         <!-- (chartClick)="chartClicked($event)" -->
     </div>
