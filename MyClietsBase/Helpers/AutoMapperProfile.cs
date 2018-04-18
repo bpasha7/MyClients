@@ -26,6 +26,9 @@ namespace MyClientsBase.Helpers
 
       CreateMap<ProductsReport, ProductsReportDto>();
       CreateMap<ProductsReportDto, ProductsReport>();
+
+      CreateMap<OutgoingDto, Outgoing>();
+      CreateMap<Outgoing, OutgoingDto>();
     }
   }
 }

@@ -19,6 +19,8 @@ namespace Data.EF
         public virtual DbSet<Discount> Discounts { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Outgoing> Outgoings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

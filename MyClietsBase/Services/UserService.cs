@@ -26,9 +26,11 @@ namespace MyClientsBase.Services
     void UpdateDiscount(Discount discount);
     void CreateDiscount(Discount discount);
     void CreateOrder(Order order);
+    void CreateOutgoing(Outgoing outgoing);
     IList<Product> GetProducts(int userId);
     IList<Discount> GetDiscounts(int userId);
     IList<Order> GetCurrentOrders(int userId);
+    IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
     string GetMD5(int id, string login);
   }
   public class UserService : IUserService
@@ -42,6 +44,7 @@ namespace MyClientsBase.Services
     private IRepository<Product> _productsRepository;
 
     private IRepository<Discount> _discountsRepository;
+    private IRepository<Outgoing> _outgoingsRepository;
 
     public UserService(ApplicationDbContext context)
     {
@@ -49,6 +52,7 @@ namespace MyClientsBase.Services
       _repository = _unitOfWork.EfRepository<User>();
       _productsRepository = _unitOfWork.EfRepository<Product>();
       _discountsRepository = _unitOfWork.EfRepository<Discount>();
+      _outgoingsRepository = _unitOfWork.EfRepository<Outgoing>();
     }
     #region Password Methods
     private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -182,6 +186,22 @@ namespace MyClientsBase.Services
     {
       _discountsRepository.Update(discount);
       _repository.Save();
+    }
+
+    public void CreateOutgoing(Outgoing outgoing)
+    {
+      _outgoingsRepository.Add(outgoing);
+      _outgoingsRepository.Save();
+    }
+
+    public IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end)
+    {
+      return _outgoingsRepository.Query(
+         outgoing => outgoing.UserId == userId &&
+         outgoing.Date >= begin.Date && outgoing.Date <= end.Date
+        )
+        .OrderByDescending(o=>o.Date)
+        .ToList();
     }
   }
 }

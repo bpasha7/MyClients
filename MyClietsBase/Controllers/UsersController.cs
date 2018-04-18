@@ -191,6 +191,7 @@ namespace MyClientsBase.Controllers
     {
       try
       {
+        _logger.LogInformation($"Start Logining");
         var user = _userService.Authenticate(userDto.Login, userDto.Password);
 
         if (user == null)
@@ -223,8 +224,8 @@ namespace MyClientsBase.Controllers
         //new JwtSecurityTokenHandler().WriteToken(tokenDescriptor); 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var tokenString = tokenHandler.WriteToken(token);
-        _logger.LogInformation($"User #{user.Id} was logged.");
         var hash = AppFileSystem.GetUserMD5(user.Id, user.Login);
+        _logger.LogInformation($"User #{user.Id} was logged.");
         return Ok(new
         {
           Token = tokenString,

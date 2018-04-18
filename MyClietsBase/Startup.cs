@@ -91,9 +91,9 @@ namespace MyClientsBase
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
     {
-      loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-      loggerFactory.AddDebug();
-      loggerFactory.AddNLog();
+      //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+      //loggerFactory.AddDebug();
+      //loggerFactory.AddNLog();
       //#if DEBUG
       //      loggerFactory.AddNLogWeb();
             //loggerFactory.AddFile("Logs/ts-{Date}");

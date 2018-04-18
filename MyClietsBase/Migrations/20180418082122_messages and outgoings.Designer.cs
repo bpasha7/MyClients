@@ -10,9 +10,10 @@ using System;
 namespace MyClientsBase.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180418082122_messages and outgoings")]
+    partial class messagesandoutgoings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,10 +86,6 @@ namespace MyClientsBase.Migrations
                     b.Property<string>("From")
                         .IsRequired()
                         .HasMaxLength(64);
-
-                    b.Property<bool?>("IsRead");
-
-                    b.Property<bool?>("IsRemoved");
 
                     b.Property<string>("Text")
                         .IsRequired()

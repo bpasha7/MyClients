@@ -28,6 +28,8 @@ namespace Data.EF.Entities
         public string Link { get; set; }
         [MaxLength(128)]
         public string LinkPhoto { get; set; }
+        [MaxLength(128)]
+        public string Commentary { get; set; }
         /// <summary>
         /// User
         /// </summary>
