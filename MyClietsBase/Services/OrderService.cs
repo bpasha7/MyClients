@@ -15,7 +15,7 @@ namespace MyClientsBase.Services
   public interface IOrderService
   {
     void SetAsRemoved(int userId, int orderId);
-    IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd);
+    IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd, out List<MonthReport> monthReport);
   }
   public class OrderService : IOrderService
   {
@@ -37,9 +37,27 @@ namespace MyClientsBase.Services
       _repository.Save();
     }
 
-    public IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd)
+    public IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd, out List<MonthReport> monthReport)
     {
-      return _repository.Query(
+      //var monthReport = _repository.Query(
+      //  order => order.UserId == userId &&
+      //  order.Removed != true &&
+      //  order.Date >= dateStart.Date && order.Date <= dateEnd.Date,
+      //  p => p.ProductInfo
+      //  )
+      //  .Select(
+      //    field => new
+      //    {
+      //      //ProductId = field.ProductId,
+      //      //ProductName = field.ProductInfo.Name,
+      //      Total = field.Total,
+      //      Date = field.Date
+      //    }
+      //   )
+
+      //  .ToList();
+      //return
+      var data = _repository.Query(
         order => order.UserId == userId &&
         order.Removed != true &&
         order.Date >= dateStart.Date && order.Date <= dateEnd.Date,
@@ -50,8 +68,40 @@ namespace MyClientsBase.Services
         {
           ProductId = field.ProductId,
           ProductName = field.ProductInfo.Name,
-          Total = field.Total
+          Total = field.Total,
+          Date = field.Date
         })
+        //.GroupBy(g => new { g.ProductId, g.ProductName })
+        //.Select(rep =>
+        // new ProductsReport
+        // {
+        //   ProductName = rep.Key.ProductName,
+        //   Sum = rep.Sum(s => s.Total)
+        // }
+        //)
+        .ToList();
+      monthReport = data
+             .GroupBy(g => new
+             {
+               Y = g.Date.Year,
+               M = g.Date.Month,
+               Month = $"{g.Date:MMM}",
+               MonthNumber = g.Date.Month,
+             }
+        )
+        .Select(rep =>
+         new MonthReport
+         {
+           Year = rep.Key.Y,
+           Month = rep.Key.Month,
+           MonthNumber = rep.Key.MonthNumber,
+           Total = rep.Sum(s => s.Total)
+         }
+        )
+        //.OrderBy(m => m.Year)
+        .ToList();
+
+      var report = data
         .GroupBy(g => new { g.ProductId, g.ProductName })
         .Select(rep =>
          new ProductsReport
@@ -61,8 +111,8 @@ namespace MyClientsBase.Services
          }
         )
         .ToList();
-      //return report;
+      return report;
     }
-    
+
   }
 }

@@ -1,6 +1,7 @@
 using Data.EF;
 using Data.EF.Entities;
 using Data.EF.UnitOfWork;
+using Data.Reports;
 using Domain.Interfaces.Repositories;
 using MyClientsBase.Helpers;
 using System;
@@ -28,11 +29,13 @@ namespace MyClientsBase.Services
     void CreateOrder(Order order);
     void CreateOutgoing(Outgoing outgoing);
     void AddMessage(Message message, string login);
+    void SetMessageAsRead(int userId, int messageId);
     IList<Product> GetProducts(int userId);
     IList<Discount> GetDiscounts(int userId);
     IList<Order> GetCurrentOrders(int userId);
     IList<Message> GetMessages(int userId);
     IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
+    IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd);
     string GetMD5(int id, string login);
   }
   public class UserService : IUserService
@@ -215,6 +218,49 @@ namespace MyClientsBase.Services
     {
       message.Date = DateTime.Now;
       _repository.Find(u => u.Login == login, m => m.Messages).Messages.Add(message);
+      _repository.Save();
+    }
+
+    public IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd)
+    {
+      return _repository.Find(u => u.Id ==userId, o => o.Outgoings).Outgoings
+        .Where( outgoing =>
+          outgoing.Date >= dateStart.Date && outgoing.Date <= dateEnd.Date
+         )
+        .Select(
+        field => new
+        {
+          Total = field.Total,
+          Date = field.Date
+        })
+        .GroupBy(g => new
+        {
+          Y = g.Date.Year,
+          M = g.Date.Month,
+          MonthNumber = g.Date.Month,
+          Month = $"{g.Date:MMM}"
+        }
+        )
+        .Select(rep =>
+         new MonthReport
+         {
+           Year = rep.Key.Y,
+           Month = rep.Key.Month,
+           MonthNumber = rep.Key.MonthNumber,
+           Outgoings = rep.Sum(s => s.Total)
+         }
+        )
+        //.OrderBy(m => m.Year)
+        .ToList();
+    }
+
+    public void SetMessageAsRead(int userId, int messageId)
+    {
+      var message = _repository.Find(u => u.Id == userId, m => m.Messages).Messages
+        .FirstOrDefault(m => m.Id == messageId);
+      if (message == null)
+        throw new AppException("Сообщение не найдено!");
+      message.IsRead = true;
       _repository.Save();
     }
   }

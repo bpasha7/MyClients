@@ -2,3 +2,19 @@
     min-width: 317px;
     margin: 0 3px 3px 3px;
 }
+.time-span-label{
+    float: right;
+    font-size: 12px;
+}
+.message-fab{
+    vertical-align: middle;
+}
+/* .button:not(:active) {
+    transition: background-color 300ms step-end;
+    transition: opacity 100ms step-end;
+}
+
+.button:active {
+    background: black;
+    opacity: 0;
+} */

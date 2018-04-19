@@ -13,15 +13,15 @@
         <mat-datepicker touchUi="true" #picker2 startView="year"></mat-datepicker>
       </mat-form-field>
       <button [disabled]="begin == null || end == null" mat-icon-button color="accent" (click)="loadOutgoings()">
-          <mat-icon aria-label="">update</mat-icon>
-        </button>
+        <mat-icon aria-label="">update</mat-icon>
+      </button>
     </div>
   </mat-card>
 </div>
 <div class="outgoings-container">
   <mat-list>
     <div>
-        <!-- *ngIf="outgoings.length" -->
+      <!-- *ngIf="outgoings.length" -->
       <!-- <h3 mat-subheader>Траты</h3> -->
       <mat-list-item *ngFor="let outgoing of outgoings">
         <mat-icon mat-list-icon>shopping_cart</mat-icon>
@@ -30,7 +30,8 @@
         <button mat-icon-button style="bottom: 0px" (click)="editOrder(order)" color="warn">
           <mat-icon aria-label="">close
           </mat-icon>
-      </button>
+        </button>
+        <mat-divider></mat-divider>
       </mat-list-item>
     </div>
   </mat-list>

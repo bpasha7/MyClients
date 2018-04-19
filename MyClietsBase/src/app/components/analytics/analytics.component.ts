@@ -14,24 +14,24 @@ export class AnalyticsComponent implements OnInit {
 
   public end: Date = new Date();
   public begin: Date = new Date(this.end.getFullYear(), this.end.getMonth(), 1);
-  public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  //Bar
+  public barChartLabels: string[] = [];//'2006', '2007', '2008', '2009', '2010', '2011', '2012'
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
-
+  public barChartData: any[] = [
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Выручка' },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Расходы' }
+  ];
   // Pie
   public pieChartLabels: string[] = ["123", "333"];
-  public pieChartData: Array<any>;//number[] = [1, 2];
-  //public lineChartData: Array<any> [];
+  public pieChartData: Array<any>;
   public pieChartType: string = 'pie';
   public pieChartOptions: any = {
     responsive: true
     //maintainAspectRatio: false
   };
 
-  public barChartData: any[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Выручка' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Расходы' }
-  ];
+
 
   constructor(
     public snackBar: MatSnackBar,
@@ -49,6 +49,7 @@ export class AnalyticsComponent implements OnInit {
     this.userService.getReport(this.begin, this.end).subscribe(
       data => {
         const productReport = data.json().report;
+        const monthReport = data.json().monthReport;
         let _pieChartLabels = new Array();
         let _pieChartData = new Array();
         productReport.forEach(element => {
@@ -57,6 +58,21 @@ export class AnalyticsComponent implements OnInit {
         });
         this.pieChartData = [{ data: _pieChartData}];
         this.pieChartLabels = _pieChartLabels;
+
+        let _barChartLabels = new Array();
+        let _barChartOrders = new Array();
+        let _barChartOutgoings = new Array();
+        monthReport.forEach(element => {
+          _barChartLabels.push(element['month']);
+          _barChartOrders.push(element['total']);
+          _barChartOutgoings.push(element['outgoings']);
+        });
+        
+        this.barChartLabels = _barChartLabels;
+        this.barChartData = [
+          { data: _barChartOrders, label: 'Выручка' },
+          { data: _barChartOutgoings, label: 'Расходы' }
+        ];
       }, 
       error => {
           this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {

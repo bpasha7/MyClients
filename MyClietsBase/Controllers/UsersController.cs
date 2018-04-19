@@ -13,6 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using MyClientsBase.Helpers;
 using MyClientsBase.Services;
 using Microsoft.AspNetCore.Cors;
+using Data.Reports;
+using System.Collections.Generic;
 
 namespace MyClientsBase.Controllers
 {
@@ -174,6 +176,32 @@ namespace MyClientsBase.Controllers
       }
     }
 
+
+    [HttpPatch("message/{id}")]
+    public IActionResult SetMessageAsRead(int id)
+    {
+      try
+      {
+
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        _userService.SetMessageAsRead(userId, id);
+        return Ok(new
+        {
+
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
     [HttpGet("messages")]
     public IActionResult GetMessages()
     {
@@ -197,17 +225,32 @@ namespace MyClientsBase.Controllers
       }
     }
 
-    [HttpGet("orders/report")]
+    [HttpGet("report")]
     public IActionResult GetOrdersReport([FromQuery]DateTime begin, [FromQuery]DateTime end)
     {
       try
       {
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-        //var orders =
-        var report = _orderService.GenerateProductReport(userId, begin, end);
+
+        List<MonthReport> monthOrdersReport = null;
+        var productsReport = _orderService.GenerateProductReport(userId, begin, end, out monthOrdersReport);
+        var outgoingsMonth = _userService.GenerateOutgoingsReport(userId, begin, end);
+
+        var dict = monthOrdersReport.ToDictionary(p => $"{p.Year}-{p.Month}");
+        string key = "";
+        foreach (var item in outgoingsMonth)
+        {
+          key = $"{item.Year}-{item.Month}";
+          if (dict.ContainsKey(key))
+            dict[key].Outgoings = item.Outgoings;
+          else
+            dict.Add(key, item);
+        }
+
         return Ok(new
         {
-          Report = report
+          Report = productsReport,
+          MonthReport = dict.Values.OrderBy(o => o.MonthNumber / 10.0 + o.Year).ToList()
         });
       }
       catch (AppException ex)

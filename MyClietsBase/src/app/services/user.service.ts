@@ -112,7 +112,7 @@ export class UserService extends AppService {
      */
     getReport(begin: Date, end: Date) {
         return this.http.get(
-            this.config.apiUrl + this.controller + '/orders/report?begin=' +
+            this.config.apiUrl + this.controller + '/report?begin=' +
             begin.toDateString() + '&end=' + end.toDateString(), this.jwt());
     }
 
@@ -123,5 +123,9 @@ export class UserService extends AppService {
 
     getMessages() {
         return this.http.get(this.config.apiUrl + this.controller + '/messages', this.jwt());
+    }
+
+    readMessage(id: number) {
+        return this.http.patch(this.config.apiUrl + this.controller + '/message/' + id, null, this.jwt());
     }
 }

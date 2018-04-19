@@ -1,21 +1,33 @@
 <div class="message-container">
   <mat-list>
-    <div>
-        <!-- *ngIf="outgoings.length" -->
-      <!-- <h3 mat-subheader>Траты</h3> -->
-      <mat-list-item *ngFor="let message of messages">
-        <mat-icon *ngIf="message.type == 1" mat-list-icon>mail_outline</mat-icon>
-        <mat-icon *ngIf="message.type == 2" mat-list-icon>person_outline</mat-icon>
 
-        <h4 mat-line>{{message.from}} {{message.date | date:'MMMM d, H:mm'}}</h4>
-        <p mat-line>{{message.text}}</p>
-        <button mat-icon-button style="bottom: 0px" (click)="editOrder(order)" color="warn">
-          <mat-icon aria-label="">
-            fiber new
-          </mat-icon>
-      </button>
-      </mat-list-item>
-    </div>
+    <!-- *ngIf="outgoings.length" -->
+    <!-- <h3 mat-subheader>Траты</h3> -->
+    <mat-list-item class="button" *ngFor="let message of messages" (click)="messageClick(message)">
+
+      <mat-icon *ngIf="message.type == 1" color="primary" mat-list-icon>info</mat-icon>
+      <mat-icon *ngIf="message.type == 2" mat-list-icon>person_outline</mat-icon>
+
+      <h4 mat-line>
+        <mat-icon *ngIf="checkStatus(message) == 0" class="message-fab" color="warn" aria-label="Новое сообщение">
+          fiber_new
+        </mat-icon>
+        <mat-icon *ngIf="checkStatus(message) == 1" class="message-fab" style="font-size: 15px; height: 20px;" color="primary" aria-label="Непрочитанное сообщение">
+          fiber_manual_record
+        </mat-icon>
+        <mat-icon *ngIf="checkStatus(message) == 2" class="message-fab" style="color: green" color="primary" aria-label="Непрочитанное сообщение">
+          done
+        </mat-icon>
+        {{message.from}}
+        <span class="time-span-label">{{message.date | date:'MMMM d'}}</span>
+      </h4>
+      <p mat-line>{{message.text}}</p>
+      <!-- <button *ngIf="message.isRead != 1" mat-icon-button style="bottom: 0px" color="warn">
+         
+        </button> -->
+      <mat-divider></mat-divider>
+    </mat-list-item>
+
   </mat-list>
   <!-- <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
     <mat-icon aria-label="">add</mat-icon>
