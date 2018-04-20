@@ -24,7 +24,7 @@ export class AppService {
         return new RequestOptions({ headers: headers });
         // }
     }
-    protected notifyMenu(message: string) {
+    public notifyMenu(message: string) {
         this.messageSource.next(message);
     }
 }

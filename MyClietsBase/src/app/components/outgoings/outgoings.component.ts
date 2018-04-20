@@ -20,6 +20,7 @@ export class OutgoingsComponent implements OnInit {
 
   ngOnInit() {
     this.loadOutgoings();
+    this.userService.notifyMenu("Расходы");
   }
   /**
    * Load outgoings

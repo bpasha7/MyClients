@@ -14,6 +14,7 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit() {
     this.loadCurrnetOrders();
+    this.userService.notifyMenu("Планы");
   }
 
   loadCurrnetOrders() {

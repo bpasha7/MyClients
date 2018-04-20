@@ -34,13 +34,13 @@
         </button>
         <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="editProfile()">
-                <mat-icon style="color: black;" > 
+                <mat-icon style="color: black;">
                     mode_edit
                 </mat-icon>
                 <span>Изменить</span>
             </button>
-            <button mat-menu-item (click)="addPhoto()">
-                <mat-icon style="color: black;" >
+            <button mat-menu-item (click)="openPhotoDialog()">
+                <mat-icon style="color: black;">
                     add_a_photo
                 </mat-icon>
                 <span>Фото</span>
@@ -53,7 +53,7 @@
             </p>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button color="primary" (click)="addOrder()">Записать</button>
+            <button mat-raised-button color="primary" (click)="openNewOrderDialog()">Записать</button>
         </mat-card-actions>
     </mat-card>
 </div>
@@ -70,7 +70,6 @@
                 <span *ngIf="orders.current != null || orders.old != null">Всего {{orders.current.length + orders.old.length }} записи</span>
             </mat-panel-description>
         </mat-expansion-panel-header>
-        <div>
         <mat-list>
             <h3 mat-subheader>Текущие</h3>
             <!-- <div> -->
@@ -84,7 +83,7 @@
                 </mat-sidenav-content>
                 <mat-sidenav #sidenav mode="over" position="end">
                     <div class="slide-menu-container">
-                        <button *ngIf="!order.removed" mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="primary">
+                        <button *ngIf="!order.removed" mat-icon-button class="edit-button" style="bottom: 0px" (click)="openEditOrderDialog(order)" color="primary">
                             <mat-icon aria-label="">info outline</mat-icon>
                         </button>
                         <button *ngIf="!order.removed" (click)="removeOrder(order)" mat-icon-button color="warn">
@@ -109,7 +108,6 @@
                 </button>
             </mat-list-item>
         </mat-list>
-    </div>
     </mat-expansion-panel>
     <!-- </mat-accordion> -->
 </div>

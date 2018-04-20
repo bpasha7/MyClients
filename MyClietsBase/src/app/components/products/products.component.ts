@@ -22,7 +22,9 @@ export class ProductsComponent implements OnInit {
     public showFilter: boolean = false;
     public currentTabPosition: number = 0;
     ngOnInit() {
-
+        this.loadProducts();
+        this.loadDiscounts();
+        this.userService.notifyMenu("Услуги");
     }
     // tslint:disable-next-line:member-ordering
     @ViewChild('paginatorProducts') paginatorProducts: MatPaginator;
@@ -36,8 +38,6 @@ export class ProductsComponent implements OnInit {
         public snackBar: MatSnackBar,
         public dialog: MatDialog,
         private userService: UserService) {
-        this.loadProducts();
-        this.loadDiscounts();
     }
     /**
      * Load client product list and init data source

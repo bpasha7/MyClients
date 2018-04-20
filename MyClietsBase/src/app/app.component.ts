@@ -35,6 +35,9 @@ export class AppComponent implements OnInit {
       case '0':
         this.isLogined = false;
         break;
+      default: 
+        this.title = message;
+        break;
     }
   }
 

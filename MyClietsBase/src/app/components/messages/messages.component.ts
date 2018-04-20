@@ -20,6 +20,7 @@ export class MessagesComponent implements OnInit {
     const now = new Date();
     this.today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     this.loadMessages();
+    this.userService.notifyMenu("Новости");
     //this.unread = this.countUnread();
   }
 

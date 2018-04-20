@@ -1,5 +1,5 @@
 
-import { Component, ViewChild, Inject } from '@angular/core';
+import { Component, ViewChild, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -15,11 +15,10 @@ import { AppConfig } from '../../app.config';
     templateUrl: './client.component.html',
 })
 
-export class ClientComponent {
-    client: Client = new Client();
-    orders: Orders = new Orders();
-    photo: string = '';
-    name: string;
+export class ClientComponent implements OnInit{
+    public client: Client = new Client();
+    public orders: Orders = new Orders();
+    public photo: string = '';
     constructor(
         public config: AppConfig,
         public snackBar: MatSnackBar,
@@ -28,17 +27,27 @@ export class ClientComponent {
         private clientService: ClientService,
         private userService: UserService,
         private route: ActivatedRoute) {
+
+    }
+
+    ngOnInit(){
         this.orders.current = [];
         this.orders.old = [];
         this.route.params.subscribe(params => {
             this.loadClientInfo(params['id']);
             this.loadClientHistory(params['id']);
         });
+        this.userService.notifyMenu("Клиент");        
     }
+    /**
+     * Load client data by id
+     * @param id client id
+     */
     loadClientInfo(id: number) {
         this.clientService.get(id).subscribe(
             data => {
                 this.client = data.json().client;
+                // concat photo url
                 this.photo = this.config.photoUrl+ localStorage.getItem('userHash') + '/' + this.client.id+'.jpg';
             },
             error => {
@@ -48,6 +57,10 @@ export class ClientComponent {
             }
         );
     }
+    /**
+     * Load client order history
+     * @param id client id
+     */
     loadClientHistory(id: number) {
         this.clientService.getOrders(id).subscribe(
             data => {
@@ -60,7 +73,10 @@ export class ClientComponent {
             }
         );
     }
-    addOrder() {
+    /**
+     * Open new order dialog
+     */
+    openNewOrderDialog() {
         const dialogRef = this.orderDialog.open(OrderModalComponent, {
             data: { client: this.client, order: null }
 
@@ -71,8 +87,11 @@ export class ClientComponent {
             }
         });
     }
-
-    editOrder(order: Order) {
+    /**
+     * Open order dialog for editing data
+     * @param order client order
+     */
+    openEditOrderDialog(order: Order) {
         const dialogRef = this.orderDialog.open(OrderModalComponent, {
             data: { client: this.client, order: order }
 
@@ -83,7 +102,10 @@ export class ClientComponent {
             }
         });
     }
-
+    /**
+     * Mark order as removed
+     * @param order Order
+     */
     removeOrder(order: Order) {
         this.userService.removeOrder(order.id).subscribe(
             data => {
@@ -98,8 +120,10 @@ export class ClientComponent {
             }
         );
     }
-
-    addPhoto(){
+    /**
+     * Open dialog for uploading new client photo
+     */
+    openPhotoDialog (){
         const dialogRef = this.photoDialog.open(PhotoModalComponent, {
             data: { clientId: this.client.id }
         });
