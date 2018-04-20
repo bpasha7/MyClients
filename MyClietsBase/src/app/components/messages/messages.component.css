@@ -9,12 +9,3 @@
 .message-fab{
     vertical-align: middle;
 }
-/* .button:not(:active) {
-    transition: background-color 300ms step-end;
-    transition: opacity 100ms step-end;
-}
-
-.button:active {
-    background: black;
-    opacity: 0;
-} */

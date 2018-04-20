@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Cors;
 
 namespace MyClientsBase.Controllers
 {
-
+  [Authorize]
   public partial class UsersController : Controller
   {
 

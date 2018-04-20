@@ -32,12 +32,12 @@
                             <span>Звонок</span>
                         </a>
                     </button>
-                    <button mat-menu-item>
+                    <!-- <button mat-menu-item>
                         <a class="link-text" href="sms:{{row.phone}}?body=Здравствуйте">
                             <mat-icon>textsms</mat-icon>
                             <span>Сообщение</span>
                         </a>
-                    </button>
+                    </button> -->
                     <button mat-menu-item ngxClipboard [cbContent]="row.phone">
                         <mat-icon>content_copy
                         </mat-icon>

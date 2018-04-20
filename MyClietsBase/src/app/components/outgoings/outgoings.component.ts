@@ -21,7 +21,9 @@ export class OutgoingsComponent implements OnInit {
   ngOnInit() {
     this.loadOutgoings();
   }
-
+  /**
+   * Load outgoings
+   */
   loadOutgoings() {
     this.userService.getOutgoings(this.begin, this.end).subscribe(
       data => {
@@ -34,7 +36,29 @@ export class OutgoingsComponent implements OnInit {
       }
     );
   }
-
+  /**
+   * Outgoings sum
+   */
+  sum() {
+    let count: number = 0;
+    this.outgoings.forEach(outgoing => {
+        count+=outgoing.total;
+    });
+    return count;
+  }
+  /**
+   * Delete outgoing
+   * @param outgoing
+   */
+  delete(outgoing: Outgoing) {
+    const index: number = this.outgoings.indexOf(outgoing);
+    if (index !== -1) {
+        this.outgoings.splice(index, 1);
+    }  
+  }
+  /**
+   * Open new outgoing dialog
+   */
   openDialog(): void {
     const dialogRef = this.dialog.open(OutgoingModalComponent, {
       // data: {  }

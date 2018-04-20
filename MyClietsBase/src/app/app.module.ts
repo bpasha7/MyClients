@@ -80,7 +80,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'client/:id', component: ClientComponent },
   { path: 'analytics', component: AnalyticsComponent },
-  { path: '', component: LoginComponent },
+  { path: '', component: MessagesComponent },
   { path: 'messages', component: MessagesComponent },
 ];
 /*Routes */

@@ -19,22 +19,19 @@
   </mat-card>
 </div>
 <div class="outgoings-container">
-  <mat-list>
-    <div>
-      <!-- *ngIf="outgoings.length" -->
-      <!-- <h3 mat-subheader>Траты</h3> -->
-      <mat-list-item *ngFor="let outgoing of outgoings">
-        <mat-icon mat-list-icon>shopping_cart</mat-icon>
-        <h4 mat-line>{{outgoing.name}}</h4>
-        <p mat-line>{{outgoing.total}} &#x20bd;. {{outgoing.date | date:'MMMM d'}} </p>
-        <button mat-icon-button style="bottom: 0px" (click)="editOrder(order)" color="warn">
-          <mat-icon aria-label="">close
-          </mat-icon>
-        </button>
-        <mat-divider></mat-divider>
-      </mat-list-item>
-    </div>
-  </mat-list>
+  <mat-nav-list class="my-list-menu">
+    <h3 mat-subheader>Всего: {{sum()}}</h3>
+    <mat-list-item *ngFor="let outgoing of outgoings">
+      <mat-icon mat-list-icon>shopping_cart</mat-icon>
+      <h4 mat-line>{{outgoing.name}}</h4>
+      <p mat-line>{{outgoing.total}} &#x20bd;. {{outgoing.date | date:'MMMM d'}} </p>
+      <button mat-icon-button style="bottom: 0px" (click)="delete(outgoing)" color="warn">
+        <mat-icon aria-label="">close
+        </mat-icon>
+      </button>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-nav-list>
   <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
     <mat-icon aria-label="">add</mat-icon>
   </button>

@@ -9,6 +9,7 @@ import { UserService } from '../../services/index';
 })
 export class MessagesComponent implements OnInit {
   public messages: Message[] = [];
+  public unread: number = 0;//this.countUnread();;
   public today: Date;
   constructor(
     private userService: UserService,
@@ -19,6 +20,17 @@ export class MessagesComponent implements OnInit {
     const now = new Date();
     this.today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     this.loadMessages();
+    //this.unread = this.countUnread();
+  }
+
+  countUnread() {
+    let count: number = 0;
+    this.messages.forEach(message => {
+      if (!message.isRead) 
+        count++;
+    });
+    this.unread = count;
+    return count;
   }
 
   checkStatus(message: Message) {

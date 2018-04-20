@@ -31,12 +31,14 @@ export class UserService extends AppService {
     setToken(token: string, hash: string) {
         localStorage.setItem('currentUser', token);
         localStorage.setItem('userHash', hash);
+        this.notifyMenu('1');
     }
     /**
      * Logout - clear local storage
      */
     logout() {
         localStorage.clear();
+        this.notifyMenu('0');
     }
     /**
      * Get user product list

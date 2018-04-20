@@ -3,23 +3,19 @@
         <div>
             <img img mat-card-image [src]="photo" alt="">
             <div class="client-menu-bar">
-                <button mat-mini-fab color="primary">
-                    <mat-icon aria-label="">public</mat-icon>
+                <button mat-mini-fab style="vertical-align: bottom;" color="primary">
+                    <a class="link-text" href="{{client.link}}" target="blank">
+                        <mat-icon aria-label="">public</mat-icon>
+                    </a>
                 </button>
                 <button mat-mini-fab color="warn" [matMenuTriggerFor]="contactMenu">
                     <mat-icon aria-label="">phone</mat-icon>
                 </button>
                 <mat-menu #contactMenu="matMenu">
                     <button mat-menu-item>
-                        <a class="link-text" href="tel:{{client.phone}}">
+                        <a class="phone-text" href="tel:{{client.phone}}">
                             <mat-icon>phone</mat-icon>
                             <span>Звонок</span>
-                        </a>
-                    </button>
-                    <button mat-menu-item>
-                        <a class="link-text" href="sms:{{client.phone}}">
-                            <mat-icon>textsms</mat-icon>
-                            <span>Сообщение</span>
                         </a>
                     </button>
                     <button mat-menu-item ngxClipboard [cbContent]="client.phone">
@@ -31,18 +27,26 @@
             </div>
         </div>
         <mat-card-title>{{client.lastName}} {{client.firstName}}
+
         </mat-card-title>
-        <button mat-icon-button class="edit-button" (click)="editProfile()">
-            <mat-icon aria-label="">
-                mode_edit
-            </mat-icon>
+        <button mat-icon-button class="edit-button" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
         </button>
-        <button mat-icon-button class="edit-button" (click)="addPhoto()">
-            <mat-icon aria-label="">
-                add_a_photo
-            </mat-icon>
-        </button>
-        <mat-card-subtitle>Модель</mat-card-subtitle>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editProfile()">
+                <mat-icon style="color: black;" > 
+                    mode_edit
+                </mat-icon>
+                <span>Изменить</span>
+            </button>
+            <button mat-menu-item (click)="addPhoto()">
+                <mat-icon style="color: black;" >
+                    add_a_photo
+                </mat-icon>
+                <span>Фото</span>
+            </button>
+        </mat-menu>
+        <mat-card-subtitle>{{client.commentary}}</mat-card-subtitle>
         <mat-card-content>
             <p>
                 День рождения: {{client.birthday | date:'longDate'}}
@@ -52,58 +56,60 @@
             <button mat-raised-button color="primary" (click)="addOrder()">Записать</button>
         </mat-card-actions>
     </mat-card>
-    <!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->
-    <mat-accordion>
+</div>
+<!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->
+<div class="client-container">
+    <!-- <mat-accordion> -->
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                История
+            </mat-panel-title>
+            <mat-panel-description>
+                <mat-spinner *ngIf="orders.current == null || orders.old == null" diameter="15"></mat-spinner>
+                <span *ngIf="orders.current != null || orders.old != null">Всего {{orders.current.length + orders.old.length }} записи</span>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div>
+        <mat-list>
+            <h3 mat-subheader>Текущие</h3>
+            <!-- <div> -->
+            <mat-sidenav-container *ngFor="let order of orders.current">
+                <mat-sidenav-content>
+                    <mat-list-item class="order-item" (click)="sidenav.toggle()" [ngClass]="{'removed-order' : order.removed}">
+                        <mat-icon mat-list-icon>date_range</mat-icon>
+                        <h4 mat-line>{{ order.date | date:'MMMM d, H:mm' }}</h4>
+                        <p mat-line> {{ order.total }} &#x20bd;</p>
+                    </mat-list-item>
+                </mat-sidenav-content>
+                <mat-sidenav #sidenav mode="over" position="end">
+                    <div class="slide-menu-container">
+                        <button *ngIf="!order.removed" mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="primary">
+                            <mat-icon aria-label="">info outline</mat-icon>
+                        </button>
+                        <button *ngIf="!order.removed" (click)="removeOrder(order)" mat-icon-button color="warn">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                        <button *ngIf="order.removed" mat-icon-button color="primary">
+                            <mat-icon>refresh</mat-icon>
+                        </button>
+                    </div>
+                </mat-sidenav>
+            </mat-sidenav-container>
 
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    История
-                </mat-panel-title>
-                <mat-panel-description>
-                    <mat-spinner *ngIf="orders.current == null || orders.old == null" diameter="15"></mat-spinner>
-                    <span *ngIf="orders.current != null || orders.old != null">Всего {{orders.current.length + orders.old.length }} записи</span>
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <mat-list role="list">
-                <h3 mat-subheader>Текущие</h3>
-                <!-- <div> -->
-                <mat-sidenav-container *ngFor="let order of orders.current">
-                    <mat-sidenav-content>
-                        <mat-list-item class="order-item" (click)="sidenav.toggle()" role="list" [ngClass]="{'removed-order' : order.removed}" >
-                            <mat-icon mat-list-icon >date_range</mat-icon>
-                            <h4 mat-line>{{ order.date | date:'MMMM d, H:mm' }}</h4>
-                            <p mat-line> {{ order.total }} &#x20bd;</p>
-                        </mat-list-item>
-                    </mat-sidenav-content>
-                    <mat-sidenav #sidenav mode="over" position="end">
-                        <div class="slide-menu-container">
-                            <button *ngIf="!order.removed" mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="primary">
-                                <mat-icon aria-label="">info outline</mat-icon>
-                            </button>
-                            <button *ngIf="!order.removed" (click)="removeOrder(order)" mat-icon-button color="warn">
-                                <mat-icon>cancel</mat-icon>
-                            </button>
-                            <button *ngIf="order.removed" mat-icon-button color="primary">
-                                <mat-icon>refresh</mat-icon>
-                            </button>
-                        </div>
-                        </mat-sidenav>
-                </mat-sidenav-container>
-
-                <!-- </div> -->
-                <mat-divider></mat-divider>
-                <h3 mat-subheader>Прошлые</h3>
-                <mat-list-item role="listitem" [ngClass]="{'removed-order' : order.removed}" *ngFor="let order of orders.old">
-                    <mat-icon mat-list-icon>date_range</mat-icon>
-                    <h4 mat-line>{{ order.date | date:'mediumDate' }}</h4>
-                    <p mat-line> {{ order.total | currency :'RUB':'2.1'}} </p>
-                    <button mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="primary">
-                        <mat-icon aria-label="">info outline</mat-icon>
-                    </button>
-                </mat-list-item>
-            </mat-list>
-        </mat-expansion-panel>
-    </mat-accordion>
+            <!-- </div> -->
+            <!-- <mat-divider></mat-divider> -->
+            <h3 mat-subheader>Прошлые</h3>
+            <mat-list-item role="listitem" [ngClass]="{'removed-order' : order.removed}" *ngFor="let order of orders.old">
+                <mat-icon mat-list-icon>date_range</mat-icon>
+                <h4 mat-line>{{ order.date | date:'mediumDate' }}</h4>
+                <p mat-line> {{ order.total }} &#x20bd;</p>
+                <button mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="primary">
+                    <mat-icon aria-label="">info outline</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    </mat-expansion-panel>
+    <!-- </mat-accordion> -->
 </div>

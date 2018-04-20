@@ -1,5 +1,12 @@
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class AppService {
+    private messageSource;
+    currentMessage;
+    constructor() {
+        this.messageSource = new BehaviorSubject<string>('');
+        this.currentMessage = this.messageSource.asObservable();
+    }
     /**
     * Web api controller
     */
@@ -16,5 +23,8 @@ export class AppService {
         const headers = new Headers({ 'Authorization': 'Bearer ' + localStorage.getItem('currentUser') });
         return new RequestOptions({ headers: headers });
         // }
+    }
+    protected notifyMenu(message: string) {
+        this.messageSource.next(message);
     }
 }

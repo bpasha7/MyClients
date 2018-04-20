@@ -1,12 +1,12 @@
 <mat-toolbar color="primary" class="my-header">
-  <button *ngIf="isLogined()" mat-icon-button (click)="sidenav.toggle()">
+  <button *ngIf="isLogined" mat-icon-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <button *ngIf="!isLogined()" mat-icon-button routerLink="/login">
+  <button *ngIf="!isLogined" mat-icon-button routerLink="/login">
     <mat-icon>lock</mat-icon>
   </button>
   <h1>{{title}}</h1>
-  <button *ngIf="isLogined()" style="margin-left: auto;"  routerLink="/messages" mat-icon-button>
+  <button *ngIf="isLogined" style="margin-left: auto;"  routerLink="/messages" mat-icon-button>
     <mat-icon>notifications</mat-icon>
   </button>
 </mat-toolbar>
