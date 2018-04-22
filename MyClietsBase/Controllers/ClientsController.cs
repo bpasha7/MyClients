@@ -221,6 +221,8 @@ namespace MyClientsBase.Controllers
         var file = Request.Form.Files.FirstOrDefault();
         if (file == null)
           throw new AppException("Empty file!");
+        if (file.Length > _appSettings.MaxImageSize * 1024)
+          throw new AppException("Слишком большое изображени");
         //combine path to user folder using md5 hash
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         var userName = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Name)?.Value;

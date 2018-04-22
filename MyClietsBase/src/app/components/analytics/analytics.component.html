@@ -13,30 +13,37 @@
         <mat-datepicker touchUi="true" #picker2 startView="year"></mat-datepicker>
       </mat-form-field>
       <button [disabled]="begin == null || end == null" mat-icon-button color="accent" (click)="getReport()">
-          <mat-icon aria-label="">update</mat-icon>
-        </button>
+        <mat-icon aria-label="">update</mat-icon>
+      </button>
     </div>
   </mat-card>
 </div>
 <div class="analynics-container">
   <mat-card>
-    <mat-card-title>Отчет</mat-card-title>
-    <mat-card-subtitle>Январь-Март</mat-card-subtitle>
+    <mat-card-title>Прибыль</mat-card-title>
     <mat-card-content>
       <div style="display: block">
-        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [legend]="barChartLegend"
-          [chartType]="barChartType" (chartHover)="chartHovered($event)"></canvas>
+        <canvas *ngIf="show" baseChart [datasets]="totalChartData" [labels]="barChartLabels" [legend]="barChartLegend" [chartType]="'bar'"></canvas>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>Разница</mat-card-title>
+    <!-- <mat-card-subtitle>Январь-Март</mat-card-subtitle> -->
+    <mat-card-content>
+      <div style="display: block">
+        <canvas *ngIf="show" baseChart [datasets]="barChartData" [labels]="barChartLabels" [legend]="barChartLegend" [chartType]="'bar'"></canvas>
       </div>
     </mat-card-content>
   </mat-card>
 
   <mat-card>
     <mat-card-title>Выручка по услугам</mat-card-title>
-    <mat-card-subtitle>Январь-Март</mat-card-subtitle>
+    <!-- <mat-card-subtitle>Январь-Март</mat-card-subtitle> -->
     <div style="display: block">
-      <canvas baseChart height="200" width="250" [datasets]="pieChartData" [options]="pieChartOptions" [labels]="pieChartLabels" [chartType]="pieChartType"
-        (chartHover)="chartHovered($event)" ></canvas>
-        <!-- (chartClick)="chartClicked($event)" -->
+      <canvas *ngIf="show" baseChart height="200" width="250" [datasets]="pieChartData" [options]="pieChartOptions" [labels]="pieChartLabels"
+        [chartType]="'pie'"></canvas>
+      <!-- (chartClick)="chartClicked($event)" -->
     </div>
   </mat-card>
 </div>

@@ -41,17 +41,16 @@ export class ClientService extends AppService {
         return this.http.get(this.config.apiUrl + this.controller + '/' + clientId + '/orders');
     }
 
-    uploadPhoto(clientId: number, form: FormData) { 
-        let req = new HttpRequest('POST', 
+    uploadPhoto(clientId: number, form: FormData) {
+        const req = new HttpRequest('POST',
         this.config.apiUrl + this.controller + '/' + clientId + '/photo', 
         form,
         {
             reportProgress: true,
             headers: new HttpHeaders({
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QiLCJuYW1laWQiOiIxIiwibmJmIjoxNTIyNzM0MDE0LCJleHAiOjE1MjUzMjYwMTQsImlhdCI6MTUyMjczNDAxNH0.ngZxp3bif9Nqu3YO2e-f6MesjKxYMKB5JL1gCB-Hpkg'
+                'Authorization': 'Bearer ' + localStorage.getItem('currentUser'),
             })
         });
-        //req.headers = 
         return this.httpCleint.request(req);
     }
 

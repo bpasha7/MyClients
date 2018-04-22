@@ -7,6 +7,7 @@ namespace MyClientsBase.Helpers
     public string PhotoFolder { get; set; }
     public string IsUser { get; set; }
     public int PassDaysExpired { get; set; }
+    public long MaxImageSize { get; set; }
 
   }
 }

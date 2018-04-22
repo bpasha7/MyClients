@@ -15,10 +15,10 @@ import { AppConfig } from '../../app.config';
     templateUrl: './client.component.html',
 })
 
-export class ClientComponent implements OnInit{
+export class ClientComponent implements OnInit {
     public client: Client = new Client();
     public orders: Orders = new Orders();
-    public photo: string = '';
+    public photo = '';
     constructor(
         public config: AppConfig,
         public snackBar: MatSnackBar,
@@ -30,14 +30,14 @@ export class ClientComponent implements OnInit{
 
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.orders.current = [];
         this.orders.old = [];
         this.route.params.subscribe(params => {
             this.loadClientInfo(params['id']);
             this.loadClientHistory(params['id']);
         });
-        this.userService.notifyMenu("Клиент");        
+        this.userService.notifyMenu('Клиент');
     }
     /**
      * Load client data by id
@@ -48,7 +48,7 @@ export class ClientComponent implements OnInit{
             data => {
                 this.client = data.json().client;
                 // concat photo url
-                this.photo = this.config.photoUrl+ localStorage.getItem('userHash') + '/' + this.client.id+'.jpg';
+                this.photo = this.config.photoUrl + localStorage.getItem('userHash') + '/' + this.client.id + '.jpg';
             },
             error => {
                 this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
@@ -78,8 +78,10 @@ export class ClientComponent implements OnInit{
      */
     openNewOrderDialog() {
         const dialogRef = this.orderDialog.open(OrderModalComponent, {
-            data: { client: this.client, order: null }
-
+            data: {
+                client: this.client,
+                order: null
+            }
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
@@ -110,8 +112,6 @@ export class ClientComponent implements OnInit{
         this.userService.removeOrder(order.id).subscribe(
             data => {
                 order.removed = true;
-               //let selectedOrder: Order= this.orders.find(p=>p.id=== this.order.productId);
-                //this.orders = data.json();
             },
             error => {
                 this.snackBar.open('Ошибка.', 'Закрыть', {
@@ -123,7 +123,7 @@ export class ClientComponent implements OnInit{
     /**
      * Open dialog for uploading new client photo
      */
-    openPhotoDialog (){
+    openPhotoDialog() {
         const dialogRef = this.photoDialog.open(PhotoModalComponent, {
             data: { clientId: this.client.id }
         });

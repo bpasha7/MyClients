@@ -71,8 +71,7 @@ export class ClientsComponent {
                 this.clients.push(result);
                 this.initDataSource();
             }
-
-        })
+        });
     }
 
     /* test(){
