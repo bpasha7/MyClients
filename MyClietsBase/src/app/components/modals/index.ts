@@ -4,3 +4,4 @@ export * from './discount/discount.component';
 export * from './order/order.component';
 export * from './photo/photo.component';
 export * from './outgoing/outgoing.component';
+export * from './messagePreview/messagePreview.component';

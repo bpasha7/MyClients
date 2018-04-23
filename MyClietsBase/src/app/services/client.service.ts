@@ -16,8 +16,8 @@ export class ClientService extends AppService {
         private http: Http,
         private httpCleint: HttpClient,
         public config: AppConfig,
-        private router: Router) {
-        super();
+        public router: Router) {
+        super(router);
         this.controller = '/clients';
     }
     /**

@@ -1,9 +1,12 @@
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Router } from '@angular/router';
 export class AppService {
     private messageSource;
     currentMessage;
-    constructor() {
+    constructor(
+        public router: Router
+    ) {
         this.messageSource = new BehaviorSubject<string>('');
         this.currentMessage = this.messageSource.asObservable();
     }
@@ -26,5 +29,8 @@ export class AppService {
     }
     public notifyMenu(message: string) {
         this.messageSource.next(message);
+    }
+    public goLogin() {
+        this.router.navigate(['/login']);
     }
 }

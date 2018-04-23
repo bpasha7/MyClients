@@ -58,7 +58,8 @@ import {
   OrderModalComponent,
   PhotoModalComponent,
   OutgoingModalComponent,
-  DiscountModalComponent
+  DiscountModalComponent,
+  MessagePreviewComponent,
 } from './components/modals/index';
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
@@ -169,7 +170,8 @@ export class CustomPaginator extends MatPaginatorIntl {
     OrderModalComponent,
     PhotoModalComponent,
     DiscountModalComponent,
-    OutgoingModalComponent
+    OutgoingModalComponent,
+    MessagePreviewComponent
   ],
   declarations: [
     AppComponent,
@@ -180,6 +182,7 @@ export class CustomPaginator extends MatPaginatorIntl {
     OrderModalComponent,
     PhotoModalComponent,
     DiscountModalComponent,
+    MessagePreviewComponent,
     OutgoingModalComponent,
     ProductsComponent,
     MessagesComponent,

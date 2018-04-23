@@ -12,8 +12,8 @@ import { AppService } from './app.service';
 export class UserService extends AppService {
     constructor(private http: Http,
         public config: AppConfig,
-        private router: Router) {
-        super();
+        public router: Router) {
+        super(router);
         this.controller = '/users';
     }
     /**

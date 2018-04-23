@@ -30,7 +30,6 @@ export class ClientComponent implements OnInit {
         private clientService: ClientService,
         private userService: UserService,
         private route: ActivatedRoute) {
-
     }
 
     ngOnInit() {
@@ -57,9 +56,17 @@ export class ClientComponent implements OnInit {
                 this.photo = this.config.photoUrl + localStorage.getItem('userHash') + '/' + this.client.id + '.jpg';
             },
             error => {
-                this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
-                    duration: 2000,
-                });
+                if (error.status === 401) {
+                    this.userService.goLogin();
+                    this.snackBar.open('Пароль истек!', 'Закрыть', {
+                        duration: 2000,
+                    });
+                }
+                else {
+                    this.snackBar.open(error._body, 'Закрыть', {
+                        duration: 2000,
+                    });
+                }
             }
         );
     }
@@ -85,8 +92,8 @@ export class ClientComponent implements OnInit {
     countOrders(orders: Order[]) {
         let count: number = 0;
         orders.forEach(order => {
-          if (!order.removed) 
-            count++;
+            if (!order.removed)
+                count++;
         });
         return count;
     }
@@ -106,13 +113,13 @@ export class ClientComponent implements OnInit {
             if (result === 1) {
                 //newOrder.id = result.id;
                 newOrder.date.setHours(newOrder.date.getHours() + newOrder.date.getTimezoneOffset() / 60);
-                if(newOrder.date > this.today) { 
-                    this.orders.current.push(newOrder);  
-                    this.sort(this.orders.current);       
+                if (newOrder.date > this.today) {
+                    this.orders.current.push(newOrder);
+                    this.sort(this.orders.current);
                 }
                 else {
                     this.orders.old.push(newOrder);
-                    this.sort(this.orders.old);  
+                    this.sort(this.orders.old);
                 }
             }
         });
@@ -140,12 +147,20 @@ export class ClientComponent implements OnInit {
         this.userService.changeStatus(order.id).subscribe(
             data => {
                 order.removed = !order.removed;
-                this.filterOrders();                
+                this.filterOrders();
             },
             error => {
-                this.snackBar.open('Ошибка.', 'Закрыть', {
-                    duration: 2000,
-                });
+                if (error.status === 401) {
+                    this.userService.goLogin();
+                    this.snackBar.open('Пароль истек!', 'Закрыть', {
+                        duration: 2000,
+                    });
+                }
+                else {
+                    this.snackBar.open(error._body, 'Закрыть', {
+                        duration: 2000,
+                    });
+                }
             }
         );
     }

@@ -14,6 +14,7 @@ export class OutgoingsComponent implements OnInit {
   public begin: Date = new Date(this.end.getFullYear(), this.end.getMonth(), 1);
   public outgoings: Outgoing[] = [];
   constructor(
+    public snackBar: MatSnackBar,
     private userService: UserService,
     public dialog: MatDialog
   ) { }
@@ -31,9 +32,17 @@ export class OutgoingsComponent implements OnInit {
         this.outgoings = data.json().outgoings;
       },
       error => {
-        // this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
-        //     duration: 2000,
-        //});
+        if (error.status === 401) {
+          this.userService.goLogin();
+          this.snackBar.open('Пароль истек!', 'Закрыть', {
+            duration: 2000,
+          });
+        }
+        else {
+          this.snackBar.open(error._body, 'Закрыть', {
+            duration: 2000,
+          });
+        }
       }
     );
   }

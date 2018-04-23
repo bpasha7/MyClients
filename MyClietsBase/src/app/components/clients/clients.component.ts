@@ -1,5 +1,5 @@
 import { Component, ViewChild, Inject, OnInit } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl, MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ClientModalComponent } from '../modals/client/client.component';
@@ -22,6 +22,7 @@ export class ClientsComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     constructor(
+        public snackBar: MatSnackBar,
         public dialog: MatDialog,
         private clientService: ClientService) {
     }
@@ -38,7 +39,17 @@ export class ClientsComponent implements OnInit {
                 this.initDataSource();
             },
             error => {
-                console.error(error._body);
+                if (error.status === 401) {
+                    this.clientService.goLogin();
+                    this.snackBar.open('Пароль истек!', 'Закрыть', {
+                      duration: 2000,
+                    });
+                  }
+                  else {
+                    this.snackBar.open(error._body, 'Закрыть', {
+                      duration: 2000,
+                    });
+                  }
             }
         );
     }

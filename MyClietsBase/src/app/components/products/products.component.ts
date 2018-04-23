@@ -50,9 +50,17 @@ export class ProductsComponent implements OnInit {
                 this.initProductSourceTable();
             },
             error => {
-                this.snackBar.open(error._body, 'Закрыть', {
-                    duration: 2000,
-                });
+                if (error.status === 401) {
+                    this.userService.goLogin();
+                    this.snackBar.open('Пароль истек!', 'Закрыть', {
+                        duration: 2000,
+                    });
+                }
+                else {
+                    this.snackBar.open(error._body, 'Закрыть', {
+                        duration: 2000,
+                    });
+                }
             }
         );
     }
@@ -85,9 +93,17 @@ export class ProductsComponent implements OnInit {
                 this.initDiscountSourceTable();
             },
             error => {
-                this.snackBar.open(error._body, 'Закрыть', {
-                    duration: 2000,
-                });
+                if (error.status === 401) {
+                    this.userService.goLogin();
+                    this.snackBar.open('Пароль истек!', 'Закрыть', {
+                        duration: 2000,
+                    });
+                }
+                else {
+                    this.snackBar.open(error._body, 'Закрыть', {
+                        duration: 2000,
+                    });
+                }
             }
         );
     }

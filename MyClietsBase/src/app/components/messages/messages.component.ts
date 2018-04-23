@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MessagePreviewComponent } from '../modals/index';
 import { Message } from '../../models/index';
 import { UserService } from '../../services/index';
 @Component({
@@ -12,6 +13,7 @@ export class MessagesComponent implements OnInit {
   public unread: number = 0;//this.countUnread();;
   public today: Date;
   constructor(
+    public messageDialog: MatDialog,
     private userService: UserService,
     public snackBar: MatSnackBar
   ) { }
@@ -27,7 +29,7 @@ export class MessagesComponent implements OnInit {
   countUnread() {
     let count: number = 0;
     this.messages.forEach(message => {
-      if (!message.isRead) 
+      if (!message.isRead)
         count++;
     });
     this.unread = count;
@@ -35,7 +37,7 @@ export class MessagesComponent implements OnInit {
   }
 
   checkStatus(message: Message) {
-    if(!message.isRead) {
+    if (!message.isRead) {
       return new Date(message.date).getTime() > this.today.getTime() ? 0 : 1;
     }
     return 2;
@@ -45,14 +47,20 @@ export class MessagesComponent implements OnInit {
   }
 
   messageClick(message: Message) {
-    if(!message.isRead) {
+    const dialogRef = this.messageDialog.open(MessagePreviewComponent, {
+      data: {
+        from: message.from,
+        text: message.text,
+      }
+    });
+    if (!message.isRead) {
       this.userService.readMessage(message.id).subscribe(
         data => {
           message.isRead = true;
         },
         error => {
           this.snackBar.open(error._body, 'Закрыть', {
-              duration: 2000,
+            duration: 2000,
           });
         }
       );
@@ -65,9 +73,17 @@ export class MessagesComponent implements OnInit {
         this.messages = data.json().messages;
       },
       error => {
-        this.snackBar.open(error._body, 'Закрыть', {
+        if (error.status === 401) {
+          this.userService.goLogin();
+          this.snackBar.open('Пароль истек!', 'Закрыть', {
             duration: 2000,
-        });
+          });
+        }
+        else {
+          this.snackBar.open(error._body, 'Закрыть', {
+            duration: 2000,
+          });
+        }
       }
     );
   }

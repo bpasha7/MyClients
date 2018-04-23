@@ -2,7 +2,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { Title, DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
-import { UserService. ClientService } from './services';
+import { UserService, ClientService } from './services';
 import { MatIconRegistry } from '@angular/material';
 //import { Client } from './models';
 

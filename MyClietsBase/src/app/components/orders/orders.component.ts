@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Orders } from '../../models/index';
 import { UserService } from '../../services/index';
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
@@ -9,6 +10,7 @@ import { UserService } from '../../services/index';
 export class OrdersComponent implements OnInit {
   orders: Orders = null;
   constructor(
+    public snackBar: MatSnackBar,
     private userService: UserService
   ) { }
 
@@ -23,9 +25,17 @@ export class OrdersComponent implements OnInit {
         this.orders = data.json();
       },
       error => {
-        // this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
-        //     duration: 2000,
-        //});
+        if (error.status === 401) {
+          this.userService.goLogin();
+          this.snackBar.open('Пароль истек!', 'Закрыть', {
+            duration: 2000,
+          });
+        }
+        else {
+          this.snackBar.open(error._body, 'Закрыть', {
+            duration: 2000,
+          });
+        }
       }
     );
   }

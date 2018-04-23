@@ -80,9 +80,17 @@ export class AnalyticsComponent implements OnInit {
         this.show = true;
       },
       error => {
-        this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
-          duration: 2000,
-        });
+        if (error.status === 401) {
+          this.userService.goLogin();
+          this.snackBar.open('Пароль истек!', 'Закрыть', {
+            duration: 2000,
+          });
+        }
+        else {
+          this.snackBar.open(error._body, 'Закрыть', {
+            duration: 2000,
+          });
+        }
       }
     );
   }
