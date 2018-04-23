@@ -57,7 +57,7 @@ namespace MyClientsBase.Controllers
       try
       {
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-
+        end = end.AddDays(1);
         var outgoings = _userService.GetOutgoings(userId, begin, end);
         return Ok(new
         {

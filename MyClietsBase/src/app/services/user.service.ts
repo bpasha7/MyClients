@@ -127,6 +127,10 @@ export class UserService extends AppService {
         return this.http.get(this.config.apiUrl + this.controller + '/messages', this.jwt());
     }
 
+    getUnreadCount() {
+        return this.http.get(this.config.apiUrl + this.controller + '/messages/unread', this.jwt());
+    }
+
     readMessage(id: number) {
         return this.http.patch(this.config.apiUrl + this.controller + '/message/' + id, null, this.jwt());
     }

@@ -203,6 +203,29 @@ namespace MyClientsBase.Controllers
       }
     }
 
+    [HttpGet("messages/unread")]
+    public IActionResult GetCountUnreadMessages()
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        var messagesCount = _userService.GetCountUnreadMessages(userId);
+        return Ok(new
+        {
+          Unread = messagesCount,
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
     [HttpGet("messages")]
     public IActionResult GetMessages()
     {
@@ -234,6 +257,7 @@ namespace MyClientsBase.Controllers
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
         List<MonthReport> monthOrdersReport = null;
+        end = end.AddDays(1);
         var productsReport = _orderService.GenerateProductReport(userId, begin, end, out monthOrdersReport);
         var outgoingsMonth = _userService.GenerateOutgoingsReport(userId, begin, end);
 

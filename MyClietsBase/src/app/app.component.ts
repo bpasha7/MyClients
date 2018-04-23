@@ -15,7 +15,8 @@ export class AppComponent implements OnInit {
   private subscription: Subscription;
   appName = 'My Clients';
   separator = ' :: ';
-  public isLogined: boolean = false;
+  public isLogined = false;
+  public unreadMessageCount = 0;
   title = this.appName;
   public constructor(
     private userService: UserService,
@@ -32,7 +33,15 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.userService.currentMessage.subscribe(message => this.handleMessage(message));
     this.clientService.currentMessage.subscribe(message => this.handleMessage(message));
+    this.checkMessages();
     // this.userRoleId = JSON.parse(localStorage.getItem('currentUser')).roleId;
+  }
+
+  checkMessages() {
+    this.userService.getUnreadCount().subscribe(
+      data => {
+        this.unreadMessageCount = data.json().unread;
+      });
   }
 
   handleMessage(message: string) {

@@ -6,14 +6,17 @@
     <mat-icon>lock</mat-icon>
   </button>
   <h1>{{title}}</h1>
-  <button *ngIf="isLogined" style="margin-left: auto;"  routerLink="/messages" mat-icon-button>
+  <button *ngIf="isLogined && unreadMessageCount == 0" style="margin-left: auto;" routerLink="/messages" mat-icon-button>
     <mat-icon>notifications</mat-icon>
+  </button>
+  <button *ngIf="isLogined && unreadMessageCount > 0" style="margin-left: auto; color: hotpink;" routerLink="/messages" mat-icon-button>
+    <mat-icon>notifications_active</mat-icon>
   </button>
 </mat-toolbar>
 
 <mat-sidenav-container class="my-container">
 
-  <mat-sidenav #sidenav mode="over" opened="false" color="grey" class="my-sidenav" [fixedInViewport]="false">
+  <mat-sidenav #sidenav mode="over" opened="false" color="grey" class="my-sidenav" [fixedInViewport]="false" (click)="checkMessages()">
     <mat-nav-list class="my-list-menu">
       <h3 mat-subheader>Меню</h3>
       <a mat-list-item routerLink="/clients">

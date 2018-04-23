@@ -34,6 +34,7 @@ namespace MyClientsBase.Services
     IList<Discount> GetDiscounts(int userId);
     IList<Order> GetCurrentOrders(int userId);
     IList<Message> GetMessages(int userId);
+    int GetCountUnreadMessages(int userId);
     IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
     IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd);
     string GetMD5(int id, string login);
@@ -259,9 +260,14 @@ namespace MyClientsBase.Services
       var message = _repository.Find(u => u.Id == userId, m => m.Messages).Messages
         .FirstOrDefault(m => m.Id == messageId);
       if (message == null)
-        throw new AppException("Сообщение не найдено!");
+        throw new AppException("РЎРѕРѕР±С‰РµРЅРёРµ РЅРµ РЅР°Р№РґРµРЅРѕ!");
       message.IsRead = true;
       _repository.Save();
+    }
+
+    public int GetCountUnreadMessages(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.Count(c => c.IsRead != true);
     }
   }
 }
