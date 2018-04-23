@@ -8,7 +8,7 @@
 </button> -->
     </mat-card>
 </div>
-<div class="clients-table-container">
+<div class="clients-table-container last">
 
     <mat-table #table [dataSource]="dataSource" matSort>
 
@@ -51,7 +51,7 @@
                 </button>
                 <button mat-icon-button class="social-button">
                     <a class="link-text" href="{{row.linkPhoto}}" target="_blank">
-                        <mat-icon >photo library</mat-icon>
+                        <mat-icon class="social-button" svgIcon="instagram"></mat-icon>
                     </a>
                 </button>
             </mat-cell>
@@ -61,8 +61,8 @@
         </mat-row>
     </mat-table>
     <!-- *ngIf="clients?.length > 0" -->
-    <mat-paginator #paginator  [length]="clients.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
-    <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
-        <mat-icon aria-label="">add</mat-icon>
-    </button>
+    <mat-paginator #paginator [length]="clients.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
 </div>
+<button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
+    <mat-icon aria-label="">add</mat-icon>
+</button>

@@ -44,7 +44,7 @@
         <mat-icon mat-list-icon>settings</mat-icon>
         Настройки
       </a>
-      <a mat-list-item routerLink="/login">
+      <a mat-list-item (click)="sidenav.toggle()" routerLink="/login">
         <mat-icon mat-list-icon>exit_to_app
         </mat-icon>
         Выход
@@ -64,5 +64,5 @@
 </mat-sidenav-container>
 
 <mat-toolbar class="my-footer">
-  <!-- <span>Current Version 0.1.5</span> -->
+  <div style="font-size: 12px; margin: auto;">Current Version 0.2.5 (beta)</div>
 </mat-toolbar>

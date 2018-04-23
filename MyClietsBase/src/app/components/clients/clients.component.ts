@@ -1,4 +1,4 @@
-import { Component, ViewChild, Inject } from '@angular/core';
+import { Component, ViewChild, Inject, OnInit } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -12,7 +12,7 @@ import { ClientService } from '../../services/index';
     templateUrl: './clients.component.html',
 })
 
-export class ClientsComponent {
+export class ClientsComponent implements OnInit {
     displayedColumns = ['lastName', 'contacts'];
     dataSource: MatTableDataSource<Client> = null;
     clients: Client[] = [];
@@ -24,7 +24,11 @@ export class ClientsComponent {
     constructor(
         public dialog: MatDialog,
         private clientService: ClientService) {
+    }
+    
+    ngOnInit() {
         this.loadClients();
+        this.clientService.notifyMenu('Клиенты');
     }
 
     loadClients() {
@@ -64,9 +68,9 @@ export class ClientsComponent {
         this.newClient.birthday = new Date(1990, 0, 1);
         const dialogRef = this.dialog.open(ClientModalComponent, {
             width: 'auto',
-            data: { 
+            data: {
                 client: this.newClient
-             }
+            }
         });
 
         dialogRef.afterClosed().subscribe(result => {

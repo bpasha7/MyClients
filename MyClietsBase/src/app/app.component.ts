@@ -1,8 +1,10 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Title, DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
-import { UserService } from './services';
+import { UserService. ClientService } from './services';
+import { MatIconRegistry } from '@angular/material';
+//import { Client } from './models';
 
 @Component({
   selector: 'app-root',
@@ -13,21 +15,27 @@ export class AppComponent implements OnInit {
   private subscription: Subscription;
   appName = 'My Clients';
   separator = ' :: ';
-  public isLogined:boolean = false;
+  public isLogined: boolean = false;
   title = this.appName;
   public constructor(
     private userService: UserService,
-   ) {
+    private clientService: ClientService,
+    iconReg: MatIconRegistry,
+    sanitizer: DomSanitizer
+  ) {
+    iconReg
+      .addSvgIcon('instagram', sanitizer.bypassSecurityTrustResourceUrl('/assets/instagram.svg'));
     const user = localStorage.getItem('currentUser');
     this.isLogined = user ? true : false;
-   }
+  }
 
-   ngOnInit() {
+  ngOnInit() {
     this.userService.currentMessage.subscribe(message => this.handleMessage(message));
+    this.clientService.currentMessage.subscribe(message => this.handleMessage(message));
     // this.userRoleId = JSON.parse(localStorage.getItem('currentUser')).roleId;
   }
 
-  handleMessage (message: string) {
+  handleMessage(message: string) {
     switch (message) {
       case '1':
         this.isLogined = true;
@@ -35,7 +43,7 @@ export class AppComponent implements OnInit {
       case '0':
         this.isLogined = false;
         break;
-      default: 
+      default:
         this.title = message;
         break;
     }

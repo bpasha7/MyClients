@@ -4,7 +4,7 @@
 }
 .add-fixed-button{
     position: fixed;
-    bottom: 50px;
+    bottom: 35px;
     right: 15px;
 }
 .data-pickers-block{
@@ -23,4 +23,7 @@
 .container-row :last-child {
     width: 40px;
     margin-left: 2%;
+}
+.last{
+    padding-bottom: 40px;
 }

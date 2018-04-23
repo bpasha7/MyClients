@@ -133,7 +133,6 @@ export class ProductsComponent implements OnInit {
                     result.percent /= 100;
                     this.discountDataSorce.data.push(result);
                     this.initDiscountSourceTable();
-                    //this.loadDiscounts();
                 }
             });
         } else { // 0 - product tab index
@@ -143,8 +142,7 @@ export class ProductsComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
                 if (result.id !== 0) {
                     this.productDataSorce.data.push(result);
-                    this.initDiscountSourceTable();
-                    //this.loadDiscounts();
+                    this.initProductSourceTable();
                 }
             });
         }

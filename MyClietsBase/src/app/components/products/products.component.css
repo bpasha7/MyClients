@@ -25,13 +25,19 @@ mat-form-field mat-icon{
 .add-fixed-button{
     z-index: 1;
     position: fixed;
-    bottom: 50px;
+    bottom: 35px;
     right: 15px;
+}
+::ng-deep .mat-paginator .mat-form-field{
+    width: 35px;
+}
+.last{
+    padding-bottom: 40px;
 }
 .search-fixed-button{
     z-index: 1;
     position: fixed;
-    bottom: 50px;
+    bottom: 35px;
     right: 65px;
 }
 .mat-tab-labels{

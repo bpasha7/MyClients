@@ -70,7 +70,10 @@ export class ClientComponent implements OnInit {
         this.oldNotCanceled = this.countOrders(this.orders.old);
         this.currentNotCanceled = this.countOrders(this.orders.current);
     }
-
+    /**
+     * Sort part of orders by date desc
+     * @param orders 
+     */
     sort(orders: Order[]) {
         orders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     }
@@ -96,7 +99,6 @@ export class ClientComponent implements OnInit {
         newOrder.clientId = this.client.id;
         const dialogRef = this.orderDialog.open(OrderModalComponent, {
             data: {
-                //client: this.client,
                 order: newOrder
             }
         });
@@ -110,6 +112,7 @@ export class ClientComponent implements OnInit {
                 }
                 else {
                     this.orders.old.push(newOrder);
+                    this.sort(this.orders.old);  
                 }
             }
         });

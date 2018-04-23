@@ -18,9 +18,9 @@
     </div>
   </mat-card>
 </div>
-<div class="outgoings-container">
+<div class="outgoings-container last">
   <mat-nav-list class="my-list-menu">
-    <h3 mat-subheader>Всего: {{sum()}}</h3>
+    <h3 mat-subheader>Всего: {{sum()}} &#x20bd;</h3>
     <mat-list-item *ngFor="let outgoing of outgoings">
       <mat-icon mat-list-icon>shopping_cart</mat-icon>
       <h4 mat-line>{{outgoing.name}}</h4>

@@ -9,7 +9,7 @@
 <mat-tab-group class="demo-tab-group" color="primary" headerPosition="center" (selectedTabChange)="selectedTabChange($event)" >
   <mat-tab label="Услуги">
       <!-- *ngIf="products?.length > 0" -->
-    <div class="table-container" >
+    <div class="table-container last" >
       <mat-table [dataSource]="productDataSorce" #sortProducts="matSort" matSort>
 
         <!-- Name Column -->
@@ -40,7 +40,7 @@
   </mat-tab>
   <mat-tab label="Скидки">
       <!-- *ngIf="discounts?.length > 0" -->
-      <div class="table-container"  >
+      <div class="table-container last"  >
           <mat-table [dataSource]="discountDataSorce" #sortDiscounts="matSort" matSort>
     
             <!-- Name Column -->
