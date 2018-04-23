@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import {FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Order, Client, Product, Discount } from '../../../models/index';
 import { UserService } from '../../../services/index';
 import { error } from 'util';
@@ -14,7 +14,7 @@ import * as moment from 'moment';
 
 export class OrderModalComponent {
     public order: Order;
-    public client: Client;
+    //public client: Client;
     public time = "09:00";
     public selectedProduct: Product = new Product();
     public products: Product[] = [];
@@ -27,18 +27,20 @@ export class OrderModalComponent {
         private userService: UserService,
         public dialogRef: MatDialogRef<OrderModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
-            if (data.client != null && data.order == null) {
-                this.order = new Order();
-                this.client = data.client;
-                this.order.clientId = this.client.id;
-                //this.title = 'Новая запись';
-            } else {
-                this.order = data.order;
-                this.client = data.client;
-            }
-            this.title = this.client.firstName;
-            this.loadProducts();
-            this.loadDiscounts();
+        this.order = data.order;
+        //this.client = data.client;
+        // if (data.order.id === 0) {
+        //     this.order = new Order();
+        //     this.client = data.client;
+        //     this.order.clientId = this.client.id;
+        //     //this.title = 'Новая запись';
+        // } else {
+        //     this.order = data.order;
+        //     this.client = data.client;
+        // }
+        //this.title = this.client.firstName;
+        this.loadProducts();
+        this.loadDiscounts();
     }
 
     loadProducts() {
@@ -53,7 +55,7 @@ export class OrderModalComponent {
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
     }
@@ -66,7 +68,7 @@ export class OrderModalComponent {
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
     }
@@ -78,14 +80,16 @@ export class OrderModalComponent {
         this.order.date.setMinutes(parseInt(splitted[1]));
         this.userService.createOrder(this.order).subscribe(
             data => {
+                this.order.id = data.json().orderId;
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
-                  });
+                });
+                this.dialogRef.close(1);
             },
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
-                  });
+                });
             }
         );
     }

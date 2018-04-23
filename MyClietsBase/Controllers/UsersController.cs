@@ -80,7 +80,8 @@ namespace MyClientsBase.Controllers
         _userService.CreateOrder(order);
         return Ok(new
         {
-          Message = "Запись добавлена!"
+          Message = "Запись добавлена!",
+          OrderId = order.Id
         });
       }
       catch (AppException ex)
@@ -102,7 +103,7 @@ namespace MyClientsBase.Controllers
 
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
-        _orderService.SetAsRemoved(userId, id);
+        _orderService.ChangeStatus(userId, id);
         return Ok(new
         {
 

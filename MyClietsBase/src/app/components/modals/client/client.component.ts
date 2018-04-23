@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Client } from '../../../models/index';
+import { Client, Order } from '../../../models/index';
 import { ClientService } from '../../../services/index';
 import { Http, Headers, RequestOptions, Response, RequestMethod, ResponseContentType } from '@angular/http';
 import { error } from 'util';

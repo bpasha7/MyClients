@@ -98,7 +98,7 @@ export class UserService extends AppService {
      * Mark as removed user order
      * @param id 
      */
-    removeOrder(id: number) {
+    changeStatus(id: number) {
         return this.http.patch(this.config.apiUrl + this.controller + '/order/' + id, null, this.jwt());
     }
     /**

@@ -18,7 +18,10 @@ import { AppConfig } from '../../app.config';
 export class ClientComponent implements OnInit {
     public client: Client = new Client();
     public orders: Orders = new Orders();
+    public currentNotCanceled = 0;
+    public oldNotCanceled = 0;
     public photo = '';
+    public today: Date;
     constructor(
         public config: AppConfig,
         public snackBar: MatSnackBar,
@@ -31,6 +34,8 @@ export class ClientComponent implements OnInit {
     }
 
     ngOnInit() {
+        const now = new Date();
+        this.today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         this.orders.current = [];
         this.orders.old = [];
         this.route.params.subscribe(params => {
@@ -65,6 +70,8 @@ export class ClientComponent implements OnInit {
         this.clientService.getOrders(id).subscribe(
             data => {
                 this.orders = data.json();
+                this.oldNotCanceled = this.countOrders(this.orders.old);
+                this.currentNotCanceled = this.countOrders(this.orders.current);
             },
             error => {
                 this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
@@ -74,18 +81,39 @@ export class ClientComponent implements OnInit {
         );
     }
     /**
+     * Count not canceled orders
+     * @param orders order list
+     */
+    countOrders(orders: Order[]) {
+        let count: number = 0;
+        orders.forEach(order => {
+          if (!order.removed) 
+            count++;
+        });
+        return count;
+    }
+    /**
      * Open new order dialog
      */
     openNewOrderDialog() {
+        let newOrder: Order = new Order();
+        newOrder.id = 0;
+        newOrder.clientId = this.client.id;
         const dialogRef = this.orderDialog.open(OrderModalComponent, {
             data: {
-                client: this.client,
-                order: null
+                //client: this.client,
+                order: newOrder
             }
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
-                this.loadClientHistory(this.client.id);
+                //newOrder.id = result.id;
+                if(newOrder.date > this.today) { 
+                    this.orders.current.push(newOrder);           
+                }
+                else {
+                    this.orders.old.push(newOrder);
+                }
             }
         });
     }
@@ -105,13 +133,13 @@ export class ClientComponent implements OnInit {
         });
     }
     /**
-     * Mark order as removed
+     * change order status
      * @param order Order
      */
-    removeOrder(order: Order) {
-        this.userService.removeOrder(order.id).subscribe(
+    changeStatus(order: Order) {
+        this.userService.changeStatus(order.id).subscribe(
             data => {
-                order.removed = true;
+                order.removed = !order.removed;
             },
             error => {
                 this.snackBar.open('Ошибка.', 'Закрыть', {

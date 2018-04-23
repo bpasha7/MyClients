@@ -57,7 +57,6 @@
         </mat-card-actions>
     </mat-card>
 </div>
-<!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->
 <div class="client-container">
     <!-- <mat-accordion> -->
     <mat-expansion-panel>
@@ -67,47 +66,37 @@
             </mat-panel-title>
             <mat-panel-description>
                 <mat-spinner *ngIf="orders.current == null || orders.old == null" diameter="15"></mat-spinner>
-                <span *ngIf="orders.current != null || orders.old != null">Всего {{orders.current.length + orders.old.length }} записи</span>
+                <span *ngIf="orders.current != null || orders.old != null">Всего {{currentNotCanceled + oldNotCanceled}} записи</span>
             </mat-panel-description>
         </mat-expansion-panel-header>
-        <mat-list>
-            <h3 mat-subheader>Текущие</h3>
-            <!-- <div> -->
-            <mat-sidenav-container *ngFor="let order of orders.current">
-                <mat-sidenav-content>
-                    <mat-list-item class="order-item" (click)="sidenav.toggle()" [ngClass]="{'removed-order' : order.removed}">
-                        <mat-icon mat-list-icon>date_range</mat-icon>
-                        <h4 mat-line>{{ order.date | date:'MMMM d, H:mm' }}</h4>
-                        <p mat-line> {{ order.total }} &#x20bd;</p>
-                    </mat-list-item>
-                </mat-sidenav-content>
-                <mat-sidenav #sidenav mode="over" position="end">
-                    <div class="slide-menu-container">
-                        <button *ngIf="!order.removed" mat-icon-button class="edit-button" style="bottom: 0px" (click)="openEditOrderDialog(order)" color="primary">
-                            <mat-icon aria-label="">info outline</mat-icon>
-                        </button>
-                        <button *ngIf="!order.removed" (click)="removeOrder(order)" mat-icon-button color="warn">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                        <button *ngIf="order.removed" mat-icon-button color="primary">
-                            <mat-icon>refresh</mat-icon>
-                        </button>
-                    </div>
-                </mat-sidenav>
-            </mat-sidenav-container>
-
-            <!-- </div> -->
-            <!-- <mat-divider></mat-divider> -->
-            <h3 mat-subheader>Прошлые</h3>
-            <mat-list-item role="listitem" [ngClass]="{'removed-order' : order.removed}" *ngFor="let order of orders.old">
-                <mat-icon mat-list-icon>date_range</mat-icon>
-                <h4 mat-line>{{ order.date | date:'mediumDate' }}</h4>
+        <mat-nav-list>
+            <h3 mat-subheader>Текущие: {{currentNotCanceled}}</h3>
+            <mat-list-item *ngFor="let order of orders.current" [ngClass]="{'removed-order' : order.removed}">
+                <mat-icon mat-list-icon  (click)="openEditOrderDialog(order)">date_range</mat-icon>
+                <h4 mat-line (click)="openEditOrderDialog(order)">{{ order.date | date:'MMMM d, H:mm' }}</h4>
                 <p mat-line> {{ order.total }} &#x20bd;</p>
-                <button mat-icon-button class="edit-button" style="bottom: 0px" (click)="editOrder(order)" color="primary">
-                    <mat-icon aria-label="">info outline</mat-icon>
+                <button *ngIf="!order.removed" (click)="changeStatus(order)" mat-icon-button color="warn">
+                    <mat-icon>cancel</mat-icon>
                 </button>
+                <button *ngIf="order.removed" (click)="changeStatus(order)" mat-icon-button color="primary">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <mat-divider></mat-divider>
             </mat-list-item>
-        </mat-list>
+            <h3 mat-subheader>Прошлые: {{oldNotCanceled}}</h3>
+            <mat-list-item *ngFor="let order of orders.old" [ngClass]="{'removed-order' : order.removed}">
+                <mat-icon mat-list-icon  (click)="openEditOrderDialog(order)">date_range</mat-icon>
+                <h4 mat-line  (click)="openEditOrderDialog(order)">{{ order.date | date:'MMMM d, H:mm' }}</h4>
+                <p mat-line> {{ order.total }} &#x20bd;</p>
+                <button *ngIf="!order.removed" (click)="changeStatus(order)" mat-icon-button color="warn">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+                <button *ngIf="order.removed" (click)="changeStatus(order)" mat-icon-button color="primary">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+        </mat-nav-list>
     </mat-expansion-panel>
     <!-- </mat-accordion> -->
 </div>

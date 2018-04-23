@@ -63,7 +63,10 @@ export class ClientsComponent {
         this.newClient.id = 0;
         this.newClient.birthday = new Date(1990, 0, 1);
         const dialogRef = this.dialog.open(ClientModalComponent, {
-            data: { client: this.newClient }
+            width: 'auto',
+            data: { 
+                client: this.newClient
+             }
         });
 
         dialogRef.afterClosed().subscribe(result => {

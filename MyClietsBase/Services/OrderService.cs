@@ -14,7 +14,7 @@ namespace MyClientsBase.Services
 {
   public interface IOrderService
   {
-    void SetAsRemoved(int userId, int orderId);
+    void ChangeStatus(int userId, int orderId);
     IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd, out List<MonthReport> monthReport);
   }
   public class OrderService : IOrderService
@@ -29,10 +29,10 @@ namespace MyClientsBase.Services
       _appSettings = appSettings.Value;
     }
 
-    public void SetAsRemoved(int userId, int orderId)
+    public void ChangeStatus(int userId, int orderId)
     {
       var order = _repository.Find(o => o.UserId == userId && o.Id == orderId);
-      order.Removed = true;
+      order.Removed = !order.Removed;
       _repository.Update(order);
       _repository.Save();
     }
