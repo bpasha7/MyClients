@@ -40,7 +40,6 @@ export class ClientComponent implements OnInit {
         this.orders.old = [];
         this.route.params.subscribe(params => {
             this.loadClientInfo(params['id']);
-            this.loadClientHistory(params['id']);
         });
         this.userService.notifyMenu('Клиент');
     }
@@ -52,6 +51,8 @@ export class ClientComponent implements OnInit {
         this.clientService.get(id).subscribe(
             data => {
                 this.client = data.json().client;
+                this.orders = data.json().orders;
+                this.filterOrders();
                 // concat photo url
                 this.photo = this.config.photoUrl + localStorage.getItem('userHash') + '/' + this.client.id + '.jpg';
             },
@@ -63,23 +64,17 @@ export class ClientComponent implements OnInit {
         );
     }
     /**
-     * Load client order history
-     * @param id client id
+     * Split orders by date
      */
-    loadClientHistory(id: number) {
-        this.clientService.getOrders(id).subscribe(
-            data => {
-                this.orders = data.json();
-                this.oldNotCanceled = this.countOrders(this.orders.old);
-                this.currentNotCanceled = this.countOrders(this.orders.current);
-            },
-            error => {
-                this.snackBar.open('Ошибка загрузки данных.', 'Закрыть', {
-                    duration: 2000,
-                });
-            }
-        );
+    filterOrders() {
+        this.oldNotCanceled = this.countOrders(this.orders.old);
+        this.currentNotCanceled = this.countOrders(this.orders.current);
     }
+
+    sort(orders: Order[]) {
+        orders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    }
+
     /**
      * Count not canceled orders
      * @param orders order list
@@ -108,8 +103,10 @@ export class ClientComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
                 //newOrder.id = result.id;
+                newOrder.date.setHours(newOrder.date.getHours() + newOrder.date.getTimezoneOffset() / 60);
                 if(newOrder.date > this.today) { 
-                    this.orders.current.push(newOrder);           
+                    this.orders.current.push(newOrder);  
+                    this.sort(this.orders.current);       
                 }
                 else {
                     this.orders.old.push(newOrder);
@@ -128,7 +125,7 @@ export class ClientComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
-                this.loadClientHistory(this.client.id);
+                //this.loadClientHistory(this.client.id);
             }
         });
     }
@@ -140,6 +137,7 @@ export class ClientComponent implements OnInit {
         this.userService.changeStatus(order.id).subscribe(
             data => {
                 order.removed = !order.removed;
+                this.filterOrders();                
             },
             error => {
                 this.snackBar.open('Ошибка.', 'Закрыть', {
@@ -174,3 +172,4 @@ export class ClientComponent implements OnInit {
         });
     }
 }
+

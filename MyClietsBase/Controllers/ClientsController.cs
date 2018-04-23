@@ -111,7 +111,7 @@ namespace MyClientsBase.Controllers
 
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
-        if(client.UserId != userId)
+        if (client.UserId != userId)
           throw new AppException("Запрещено обновить клиента!");
 
         _clientService.Update(client);
@@ -170,10 +170,20 @@ namespace MyClientsBase.Controllers
     {
       try
       {
-        var client = _clientService.Get(id);
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        var client = _clientService.Get(userId, id);
+        if (client == null)
+          throw new AppException("Клиент не найден в базе!");
+        var old = client.Orders.Where(o => o.Date < DateTime.Now.Date).OrderByDescending(o => o.Date).ToList();
+        var current = client.Orders.Where(o => o.Date >= DateTime.Now.Date).OrderByDescending(o => o.Date).ToList();
         return Ok(new
         {
-          Client = client
+          Client = _mapper.Map<ClientDto>(client),
+          Orders = new
+          {
+            Old = _mapper.Map<OrderDto[]>(old),
+            Current = _mapper.Map<OrderDto[]>(current)
+          }
         });
       }
       catch (AppException ex)
@@ -187,13 +197,14 @@ namespace MyClientsBase.Controllers
       }
     }
 
-    [AllowAnonymous]
     [HttpGet("{id}/orders")]
     public IActionResult GetOrders(int id)
     {
       try
       {
-        var orders = _clientService.GetOrders(id);
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        var orders = _clientService.GetOrders(userId, id);
         var old = orders.Where(o => o.Date < DateTime.Now.Date).ToList();
         var current = orders.Where(o => o.Date >= DateTime.Now.Date).ToList();
         return Ok(new
@@ -212,7 +223,7 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
-    [Authorize]
+
     [HttpPost, DisableRequestSizeLimit, Route("{id}/photo")]
     public async Task<IActionResult> UploadFiles(int id)
     {

@@ -36,11 +36,6 @@ export class ClientService extends AppService {
     get(clientId: number) {
         return this.http.get(this.config.apiUrl + this.controller + '/' + clientId, this.jwt());
     }
-
-    getOrders(clientId: number) {
-        return this.http.get(this.config.apiUrl + this.controller + '/' + clientId + '/orders');
-    }
-
     uploadPhoto(clientId: number, form: FormData) {
         const req = new HttpRequest('POST',
         this.config.apiUrl + this.controller + '/' + clientId + '/photo', 

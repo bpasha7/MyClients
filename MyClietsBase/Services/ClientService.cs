@@ -16,9 +16,9 @@ namespace MyClientsBase.Services
   {
     void Create(Client client);
     void Update(Client client);
-    Client Get(int id);
+    Client Get(int userId, int id);
     IList<Client> GetClients(int userId);
-    IList<Order> GetOrders(int clientId);
+    IList<Order> GetOrders(int userId, int clientId);
   }
   public class ClientService : IClientService
   {
@@ -44,16 +44,16 @@ namespace MyClientsBase.Services
 
 
 
-    public Client Get(int id)
+    public Client Get(int userId, int id)
     {
-      var client = _repository.Query(c => c.Id == id).AsNoTracking().SingleOrDefault();
-      if (client == null)
-        throw new AppException("Клиент не найден в базе!");
-      else
-        return client;
+      var client = _repository.Query(c => c.Id == id && c.UserId == userId, or => or.Orders).AsNoTracking().SingleOrDefault();
+      //if (client == null)
+      //  throw new AppException("Клиент не найден в базе!");
+      //else
+      return client;
     }
 
-    public IList<Order> GetOrders(int clientId)
+    public IList<Order> GetOrders(int userId, int clientId)
     {
       return _repository.Find(c => c.Id == clientId, or => or.Orders).Orders.OrderByDescending(o => o.Date).ToList();
     }
