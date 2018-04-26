@@ -44,7 +44,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }
@@ -68,7 +68,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }
@@ -101,7 +101,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }

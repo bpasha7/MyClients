@@ -8,6 +8,6 @@ namespace MyClientsBase.Helpers
     public string IsUser { get; set; }
     public int PassDaysExpired { get; set; }
     public long MaxImageSize { get; set; }
-
+    public int PhotoSize { get; set; }
   }
 }

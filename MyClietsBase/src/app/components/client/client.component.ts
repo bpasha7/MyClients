@@ -25,8 +25,7 @@ export class ClientComponent implements OnInit {
     constructor(
         public config: AppConfig,
         public snackBar: MatSnackBar,
-        public orderDialog: MatDialog,
-        public photoDialog: MatDialog,
+        public clientDialog: MatDialog,
         private clientService: ClientService,
         private userService: UserService,
         private route: ActivatedRoute) {
@@ -104,7 +103,7 @@ export class ClientComponent implements OnInit {
         let newOrder: Order = new Order();
         newOrder.id = 0;
         newOrder.clientId = this.client.id;
-        const dialogRef = this.orderDialog.open(OrderModalComponent, {
+        const dialogRef = this.clientDialog.open(OrderModalComponent, {
             data: {
                 order: newOrder
             }
@@ -129,7 +128,7 @@ export class ClientComponent implements OnInit {
      * @param order client order
      */
     openEditOrderDialog(order: Order) {
-        const dialogRef = this.orderDialog.open(OrderModalComponent, {
+        const dialogRef = this.clientDialog.open(OrderModalComponent, {
             data: { client: this.client, order: order }
 
         });
@@ -168,19 +167,20 @@ export class ClientComponent implements OnInit {
      * Open dialog for uploading new client photo
      */
     openPhotoDialog() {
-        const dialogRef = this.photoDialog.open(PhotoModalComponent, {
+        const dialogRef = this.clientDialog.open(PhotoModalComponent, {
             data: { clientId: this.client.id }
         });
         dialogRef.afterClosed().subscribe(result => {
-            if (result === 0) {
-                this.photo = '';
-                this.photo = this.photo;
+            if (result !== 0) {
+                this.photo = result;
             }
         });
     }
-
+    /**
+     * Open
+     */
     editProfile() {
-        const dialogRef = this.photoDialog.open(ClientModalComponent, {
+        const dialogRef = this.clientDialog.open(ClientModalComponent, {
             data: { client: this.client }
         });
         dialogRef.afterClosed().subscribe(result => {

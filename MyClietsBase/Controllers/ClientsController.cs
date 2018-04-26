@@ -52,7 +52,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
       }
     }
     /// <summary>
@@ -90,7 +90,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }
@@ -126,7 +126,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }
@@ -155,7 +155,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }
@@ -192,7 +192,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }
@@ -219,7 +219,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }
@@ -242,13 +242,18 @@ namespace MyClientsBase.Controllers
         var path = $"{Directory.GetCurrentDirectory()}{_appSettings.PhotoFolder}{hash}";
         if (!Directory.Exists(path))
           Directory.CreateDirectory(path);
-        path += $"\\{id}.jpg";
+        path += $"\\{id}";
 
-        if (System.IO.File.Exists(path))
-          System.IO.File.Delete(path);
-        using (FileStream fstream = new FileStream(path, FileMode.Create))
+        if (System.IO.File.Exists(path + ".jpg"))
+          System.IO.File.Delete(path + ".jpg");
+        using (FileStream fstream = new FileStream(path + ".new", FileMode.Create))
         {
           await file.CopyToAsync(fstream);
+        }
+        if (!AppFileSystem.CompressImage(path, _appSettings.PhotoSize))
+        {
+          _logger.LogError($"File {path} was not compressed and deleted!");
+          throw new AppException("Ошибка загрузки файла.");
         }
         return Ok(new
         {
@@ -261,7 +266,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }

@@ -3,7 +3,7 @@ import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/
 // import { Product } from '../../../models/index';
 import { ClientService } from '../../../services/index';
 import { error } from 'util';
-import { HttpEventType, HttpResponse} from '@angular/common/http';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 @Component({
     selector: 'photo-dialog',
     styleUrls: ['./photo.component.css'],
@@ -11,41 +11,22 @@ import { HttpEventType, HttpResponse} from '@angular/common/http';
 })
 
 export class PhotoModalComponent {
-        public src = null;
-        private file;
-        public progress = 0;
-        private clientId = 0;
-        public title: string;
+    public src = null;
+    private file;
+    public progress = 0;
+    private clientId = 0;
+    public title: string;
     constructor(
         public snackBar: MatSnackBar,
         private clientService: ClientService,
         public dialogRef: MatDialogRef<PhotoModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
-            if (data != null) {
-                this.clientId = data.clientId;
-            }
-    }
-
-    create() {
-        // this.userService.createProduct(1, this.product).subscribe(
-        //     data => {
-        //         this.snackBar.open('Услуга добавлена.', 'Закрыть', {
-        //             duration: 2000,
-        //           });
-        //     },
-        //     error => {
-        //         this.snackBar.open(error._body, 'Закрыть', {
-        //             duration: 2000,
-        //           });
-        //     }
-        // );
+        if (data != null) {
+            this.clientId = data.clientId;
+        }
     }
 
     upload(event) {
-        // if (file == null)
-        //     return;
-        // var reader = new FileReader();
-        // reader.readAsDataURL(file);
         if (event.target.files && event.target.files[0]) {
             // tslint:disable-next-line:prefer-const
             let reader = new FileReader();
@@ -55,7 +36,7 @@ export class PhotoModalComponent {
             reader.onload = (event: FileReaderEvent) => { // called once readAsDataURL is completed
                 this.src = event.target.result;
             }
-          }
+        }
 
     }
 
@@ -67,8 +48,19 @@ export class PhotoModalComponent {
             if (event.type === HttpEventType.UploadProgress) {
                 this.progress = Math.round(100 * event.loaded / event.total);
             } else if (event instanceof HttpResponse) {
-                console.log('Files uploaded!');
+                if(event.status == 200) {
+                    this.snackBar.open('Фото обновлено', 'Закрыть', {
+                        duration: 2000,
+                    });
+                    this.progress = 0;
+                    setTimeout(()=>{ this.dialogRef.close(this.src); }, 2000)
+                    
+                } else {
+                    this.snackBar.open('Ошибка загрузки', 'Закрыть', {
+                        duration: 2000,
+                    });
                 }
+            }
         });
     }
     onNoClick(): void {

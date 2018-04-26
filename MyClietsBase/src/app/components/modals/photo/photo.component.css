@@ -10,10 +10,12 @@
 }
 .container-column > * {
     max-width: 250px;
+    
 }
 .container-column img{
-    border: 1px dashed darkslategrey;
-    border-radius: 10px;
+    /* border: 1px dashed darkslategrey;
+    border-radius: 10px; */
+    max-height: 250px;
 }
 .button-ok{
     color: green;
@@ -26,7 +28,7 @@ mat-form-field mat-icon{
     margin-right: 5px;
     vertical-align: bottom;
 }
- .inputfile {
+.inputfile {
 	width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
@@ -34,12 +36,6 @@ mat-form-field mat-icon{
 	position: absolute;
 	z-index: -1;
 }
-/* .inputfile + label {
-    /* font-size: 1.25em;
-    font-weight: 700; 
-    color: white;
-    display: inline-block;
-} */
 .inputfile + label {
     background: darkslategrey;
     border-radius: 15px;
@@ -55,15 +51,10 @@ mat-form-field mat-icon{
 label mat-icon{
     vertical-align: middle;
 }
-/*
-.inputfile:focus + label,
-.inputfile + label:hover {
-    background-color: red;
+.photo-preview{
+    object-fit: contain;
+    /* max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;  */
 }
-.inputfile + label {
-	cursor: pointer;
-}
-.inputfile:focus + label {
-	outline: 1px dotted #000;
-	outline: -webkit-focus-ring-color auto 5px;
-} */
