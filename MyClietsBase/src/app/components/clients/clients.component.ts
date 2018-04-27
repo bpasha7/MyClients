@@ -75,17 +75,19 @@ export class ClientsComponent implements OnInit {
 
     openDialog(): void {
         this.newClient = new Client();
+        this.newClient.lastName = '';
         this.newClient.id = 0;
         this.newClient.birthday = new Date(1990, 0, 1);
         const dialogRef = this.dialog.open(ClientModalComponent, {
+            maxWidth: '310px',
             width: 'auto',
             data: {
-                client: this.newClient
+                client: this.newClient,
             }
         });
-
+        // Test return value
         dialogRef.afterClosed().subscribe(result => {
-            if (result.id !== 0) {
+            if (this.newClient.id !== 0) {
                 this.clients.push(result);
                 this.initDataSource();
             }

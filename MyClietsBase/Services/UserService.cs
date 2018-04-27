@@ -28,7 +28,7 @@ namespace MyClientsBase.Services
     void CreateDiscount(Discount discount);
     void CreateOrder(Order order);
     void CreateOutgoing(Outgoing outgoing);
-    void AddMessage(Message message, string login);
+    void AddMessage(Message message);
     void SetMessageAsRead(int userId, int messageId);
     IList<Product> GetProducts(int userId);
     IList<Discount> GetDiscounts(int userId);
@@ -215,10 +215,10 @@ namespace MyClientsBase.Services
       return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.OrderByDescending(o => o.Date).ToList();
     }
 
-    public void AddMessage(Message message, string login)
+    public void AddMessage(Message message)
     {
       message.Date = DateTime.Now;
-      _repository.Find(u => u.Login == login, m => m.Messages).Messages.Add(message);
+      _repository.Find(u => u.Id == message.UserId, m => m.Messages).Messages.Add(message);
       _repository.Save();
     }
 

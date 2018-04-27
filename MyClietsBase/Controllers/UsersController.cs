@@ -156,11 +156,10 @@ namespace MyClientsBase.Controllers
 
         if (message == null)
           throw new AppException("Неверный данные!");
+        if (message.UserId == null)
+          throw new AppException("Неверный данные!");
 
-        //var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-        //order.UserId = userId;
-
-        _userService.AddMessage(message, "test");
+        _userService.AddMessage(message);
         return Ok(new
         {
           Message = "Запись добавлена!"

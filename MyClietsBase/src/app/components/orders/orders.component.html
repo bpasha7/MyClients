@@ -16,7 +16,7 @@
       <mat-list-item *ngFor="let order of orders.feature">
         <mat-icon mat-list-icon>work</mat-icon>
         <h4 mat-line>{{order.location}}</h4>
-        <p mat-line> {{order.date | date:'MMMM d'}}, {{order.date | date:'HH:mm'}} </p>
+        <p mat-line> {{order.date | date:'d MMMM'}}, {{order.date | date:'HH:mm'}} </p>
         <button mat-icon-button routerLink="/client/{{order.clientId}}" color="primary">
           <mat-icon>account_box</mat-icon>
         </button>

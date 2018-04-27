@@ -4,9 +4,15 @@ import { NgModule, Injectable, LOCALE_ID } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
+import localeRuExtra from '@angular/common/locales/extra/ru';
+registerLocaleData(localeRu, localeRuExtra);
 import { CustomPaginator } from './components/customPaginator';
 import {
   MAT_DATE_LOCALE,
+  MAT_DATE_FORMATS,
+  DateAdapter,
   MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
@@ -49,7 +55,7 @@ import { ChartsModule } from 'ng2-charts-x';
 /**
  * UI components
  */
-import { AppComponent } from './app.component';
+import { AppComponent, MyDateAdapter } from './app.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { ClientComponent } from './components/client/client.component';
 import {
@@ -126,26 +132,6 @@ const appRoutes: Routes = [
 })
 export class DemoMaterialModule { }
 
-/*const spanishRangeLabel = (page: number, pageSize: number, length: number) => {
-  if (length === 0 || pageSize === 0) { return '0 из ${length}'; }
-
-  length = Math.max(length, 0);
-
-  const startIndex = page * pageSize;
-
-  // If the start index exceeds the list length, do not try and fix the end index to the end.
-  const endIndex = startIndex < length ?
-      Math.min(startIndex + pageSize, length) :
-      startIndex + pageSize;
-
-  return `${startIndex + 1} - ${endIndex} из ${length}`;
-};
-@Injectable()
-export class CustomPaginator extends MatPaginatorIntl {
-  itemsPerPageLabel = 'Всего';
-  getRangeLabel = spanishRangeLabel;
-}*/
-
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -194,8 +180,13 @@ export class CustomPaginator extends MatPaginatorIntl {
   ],
   bootstrap: [AppComponent],
   providers: [
+    {provide: DateAdapter, useClass: MyDateAdapter},
+    { provide: LOCALE_ID, useValue: 'ru-RU' },
     { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     { provide: MatPaginatorIntl, useClass: CustomPaginator },
-    AppConfig, ClientService, UserService]
+    AppConfig,
+    ClientService,
+    UserService
+  ]
 })
 export class AppModule { }

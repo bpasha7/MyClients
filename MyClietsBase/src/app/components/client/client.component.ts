@@ -104,6 +104,8 @@ export class ClientComponent implements OnInit {
         newOrder.id = 0;
         newOrder.clientId = this.client.id;
         const dialogRef = this.clientDialog.open(OrderModalComponent, {
+            maxWidth: '310px',
+            width: 'auto',
             data: {
                 order: newOrder
             }
@@ -129,6 +131,8 @@ export class ClientComponent implements OnInit {
      */
     openEditOrderDialog(order: Order) {
         const dialogRef = this.clientDialog.open(OrderModalComponent, {
+            maxWidth: '310px',
+            width: 'auto',
             data: { client: this.client, order: order }
 
         });

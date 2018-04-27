@@ -13,5 +13,6 @@ namespace Data.DTO.Entities
         public DateTime Date { get; set; }
         public bool IsRead { get; set; }
         public bool IsRemoved { get; set; }
+        public int UserId { get; set; }
     }
 }

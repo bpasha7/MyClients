@@ -11,7 +11,7 @@
     margin: auto;
 }
 ::-webkit-scrollbar {
-    width: 4px;
+    max-width: 4px;
 }
 
 /* Track */

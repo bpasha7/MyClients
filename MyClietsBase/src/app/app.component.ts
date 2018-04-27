@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title, DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { UserService, ClientService } from './services';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry, NativeDateAdapter } from '@angular/material';
 //import { Client } from './models';
 
 @Component({
@@ -61,4 +61,10 @@ export class AppComponent implements OnInit {
   // setTitel(section: string){
   //   this.title = this.appName + this.separator + section;
   // }
+}
+
+export class MyDateAdapter extends NativeDateAdapter {
+  getFirstDayOfWeek(): number {
+    return 1;
+  }
 }

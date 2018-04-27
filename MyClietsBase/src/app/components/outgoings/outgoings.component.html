@@ -24,7 +24,7 @@
     <mat-list-item *ngFor="let outgoing of outgoings">
       <mat-icon mat-list-icon>shopping_cart</mat-icon>
       <h4 mat-line>{{outgoing.name}}</h4>
-      <p mat-line>{{outgoing.total}} &#x20bd;. {{outgoing.date | date:'MMMM d'}} </p>
+      <p mat-line>{{outgoing.total}} &#x20bd;. {{outgoing.date | date:'d MMM'}} </p>
       <button mat-icon-button style="bottom: 0px" (click)="delete(outgoing)" color="warn">
         <mat-icon aria-label="">close
         </mat-icon>

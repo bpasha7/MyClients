@@ -11,6 +11,6 @@ if (environment.production) {
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule, {
-  providers: [{provide: LOCALE_ID, useValue: 'ru-RU' }]
+  providers: []
 })
   .catch(err => console.log(err));

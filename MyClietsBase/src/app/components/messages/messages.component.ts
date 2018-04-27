@@ -48,6 +48,7 @@ export class MessagesComponent implements OnInit {
 
   messageClick(message: Message) {
     const dialogRef = this.messageDialog.open(MessagePreviewComponent, {
+      width: '250px',
       data: {
         from: message.from,
         text: message.text,

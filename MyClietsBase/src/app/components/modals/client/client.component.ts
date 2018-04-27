@@ -61,6 +61,7 @@ export class ClientModalComponent {
 
 
     onNoClick(): void {
-        this.dialogRef.close();
+        this.dialogRef.close(this.client);
+        //this.dialogRef.close();
     }
 }
