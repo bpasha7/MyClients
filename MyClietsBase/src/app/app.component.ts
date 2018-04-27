@@ -34,7 +34,6 @@ export class AppComponent implements OnInit {
     this.userService.currentMessage.subscribe(message => this.handleMessage(message));
     this.clientService.currentMessage.subscribe(message => this.handleMessage(message));
     this.checkMessages();
-    // this.userRoleId = JSON.parse(localStorage.getItem('currentUser')).roleId;
   }
 
   checkMessages() {

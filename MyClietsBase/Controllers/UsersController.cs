@@ -287,12 +287,58 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
-    //// GET: api/Users
-    //[HttpGet]
-    //public IEnumerable<string> Get()
-    //{
-    //    return new string[] { "value1", "value2" };
-    //}
+    // GET: api/Users
+    [HttpGet]
+    public IActionResult Get()
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        if(userId < 1)
+          throw new AppException("Неверный данные!");
+        var user = _userService.GetUserInfo(userId);
+        return Ok(new
+        {
+          User = _mapper.Map<UserDto>(user),
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    [HttpPatch("password")]
+    public IActionResult Get([FromBody] string password)
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        if (userId < 1)
+          throw new AppException("Неверный данные!");
+
+        _userService.UpdateUserPassword(userId, password);
+
+        return Ok(new
+        {
+
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
 
     //// GET: api/Users/5
     //[HttpGet("{id}", Name = "Get")]

@@ -41,6 +41,11 @@ export class ClientComponent implements OnInit {
         });
         this.userService.notifyMenu('Клиент');
     }
+    copyDone() {
+        this.snackBar.open('Телефон скопирован.', 'Закрыть', {
+            duration: 2000,
+        });
+    }
     /**
      * Load client data by id
      * @param id client id
@@ -185,6 +190,8 @@ export class ClientComponent implements OnInit {
      */
     editProfile() {
         const dialogRef = this.clientDialog.open(ClientModalComponent, {
+            maxWidth: '310px',
+            width: 'auto',
             data: { client: this.client }
         });
         dialogRef.afterClosed().subscribe(result => {

@@ -142,6 +142,8 @@ export class ProductsComponent implements OnInit {
         // 1 - discount tab index
         if (this.currentTabPosition === 1) {
             const dialogRef = this.dialog.open(DiscountModalComponent, {
+                maxWidth: '310px',
+                width: 'auto'
             });
             // Waiting closing discount modal dialog
             dialogRef.afterClosed().subscribe(result => {
@@ -153,6 +155,8 @@ export class ProductsComponent implements OnInit {
             });
         } else { // 0 - product tab index
             const dialogRef = this.dialog.open(ProductModalComponent, {
+                maxWidth: '310px',
+                width: 'auto'
             });
             // Waiting closing product modal dialog
             dialogRef.afterClosed().subscribe(result => {
@@ -166,6 +170,8 @@ export class ProductsComponent implements OnInit {
 
     openEditProductDialog(selectedProduct: Product): void {
         const dialogRef = this.dialog.open(ProductModalComponent, {
+            maxWidth: '310px',
+            width: 'auto',
             data: { product: selectedProduct }
         });
 
@@ -180,6 +186,8 @@ export class ProductsComponent implements OnInit {
 
     openEditDiscountDialog(selectedDiscount: Discount): void {
         const dialogRef = this.dialog.open(DiscountModalComponent, {
+            maxWidth: '310px',
+            width: 'auto',
             data: { discount: selectedDiscount }
         });
 

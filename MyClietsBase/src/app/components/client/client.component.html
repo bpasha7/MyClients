@@ -18,10 +18,10 @@
                             <span>Звонок</span>
                         </a>
                     </button>
-                    <button mat-menu-item ngxClipboard [cbContent]="client.phone">
+                    <button mat-menu-item ngxClipboard [cbContent]="client.phone" (click)="copyDone()">
                         <mat-icon>content_copy
                         </mat-icon>
-                        <span>{{client.phone}}</span>
+                        <span>Копировать</span>
                     </button>
                 </mat-menu>
             </div>

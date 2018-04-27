@@ -33,6 +33,9 @@ export class UserService extends AppService {
         localStorage.setItem('userHash', hash);
         this.notifyMenu('1');
     }
+    getUserInfo() {
+        return this.http.get(this.config.apiUrl + this.controller, this.jwt());
+    }
     /**
      * Logout - clear local storage
      */

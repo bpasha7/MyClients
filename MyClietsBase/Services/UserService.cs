@@ -22,6 +22,8 @@ namespace MyClientsBase.Services
     /// <returns></returns>
     User Authenticate(string login, string password);
     User Create(User user, string password);
+    User GetUserInfo(int userId);
+    void UpdateUserPassword(int userId, string password);
     void CreateProduct(Product product);
     void UpdateProduct(Product product);
     void UpdateDiscount(Discount discount);
@@ -37,7 +39,6 @@ namespace MyClientsBase.Services
     int GetCountUnreadMessages(int userId);
     IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
     IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd);
-    string GetMD5(int id, string login);
   }
   public class UserService : IUserService
   {
@@ -90,22 +91,6 @@ namespace MyClientsBase.Services
       }
 
       return true;
-    }
-
-    public string GetMD5(int id, string login)
-    {
-      using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
-      {
-        byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes($"{id}_{login}");
-        byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < hashBytes.Length; i++)
-        {
-          sb.Append(hashBytes[i].ToString("X2"));
-        }
-        return sb.ToString();
-      }
     }
     #endregion
     public User Authenticate(string login, string password)
@@ -268,6 +253,26 @@ namespace MyClientsBase.Services
     public int GetCountUnreadMessages(int userId)
     {
       return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.Count(c => c.IsRead != true);
+    }
+
+    public User GetUserInfo(int userId)
+    {
+      return _repository.Find(u => u.Id == userId);
+    }
+
+    public void UpdateUserPassword(int userId, string password)
+    {
+      if (string.IsNullOrWhiteSpace(password))
+        throw new AppException("Password is required");
+
+      byte[] passwordHash, passwordSalt;
+      CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+      var user = _repository.Find(u => u.Id == userId);
+      user.PasswordHash = passwordHash;
+      user.PasswordSalt = passwordSalt;
+
+      _repository.Save();
     }
   }
 }
