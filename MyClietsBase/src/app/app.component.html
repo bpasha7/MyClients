@@ -1,34 +1,73 @@
+<div class="page">
 <mat-toolbar color="primary" class="my-header">
-  <button mat-icon-button (click)="sidenav.toggle()">
+  <button *ngIf="isLogined" mat-icon-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <h1>My Clients</h1>
+  <button *ngIf="!isLogined" mat-icon-button routerLink="/login">
+    <mat-icon>lock</mat-icon>
+  </button>
+  <h1>{{title}}</h1>
+  <button *ngIf="isLogined && unreadMessageCount == 0" style="margin-left: auto;" routerLink="/messages" mat-icon-button>
+    <mat-icon>notifications</mat-icon>
+  </button>
+  <button *ngIf="isLogined && unreadMessageCount > 0" style="margin-left: auto; color: hotpink;" routerLink="/messages" mat-icon-button>
+    <mat-icon>notifications_active</mat-icon>
+  </button>
 </mat-toolbar>
 
 <mat-sidenav-container class="my-container">
 
-  <mat-sidenav #sidenav mode="side" opened="false" color="grey" class="my-sidenav" [fixedInViewport]="false">
-      <mat-nav-list class="my-list-menu">
-        <h3 mat-subheader>Меню</h3>
-        <a mat-list-item routerLink="/clients">
-          <mat-icon mat-list-icon>people</mat-icon>
-          Клиенты
-        </a>
-        <mat-divider></mat-divider>
-        <h3 mat-subheader>Управление</h3>
-        <a mat-list-item routerLink=".">
-          <mat-icon mat-list-icon>settings</mat-icon>
-          Настрйоки
-        </a>
-      </mat-nav-list> 
+  <mat-sidenav #sidenav mode="over" opened="false" color="grey" class="my-sidenav" [fixedInViewport]="false" (click)="checkMessages()">
+    <mat-nav-list class="my-list-menu">
+      <h3 mat-subheader>Меню</h3>
+      <a mat-list-item routerLink="/clients">
+        <mat-icon mat-list-icon>people</mat-icon>
+        Клиенты
+      </a>
+      <a mat-list-item routerLink="/products">
+        <mat-icon mat-list-icon>library_books
+        </mat-icon>
+        Услуги
+      </a>
+      <a mat-list-item routerLink="/orders">
+        <mat-icon mat-list-icon>work</mat-icon>
+        Планы
+      </a>
+      <a mat-list-item routerLink="/outgoings">
+        <mat-icon mat-list-icon>shopping_basket</mat-icon>
+        Расходы
+      </a>
+      <a mat-list-item routerLink="/analytics">
+        <mat-icon mat-list-icon>assessment</mat-icon>
+        Статистика
+      </a>
+      <!-- <div class="my-list-down-menu"> -->
+      <mat-divider></mat-divider>
+      <h3 mat-subheader>Управление</h3>
+      <a mat-list-item routerLink="/settings">
+        <mat-icon mat-list-icon>settings</mat-icon>
+        Настройки
+      </a>
+      <a mat-list-item (click)="sidenav.toggle()" routerLink="/login">
+        <mat-icon mat-list-icon>exit_to_app
+        </mat-icon>
+        Выход
+      </a>
+      <!-- </div> -->
+    </mat-nav-list>
   </mat-sidenav>
- 
+
   <mat-sidenav-content>
+    <!-- <div (click)="sidenav.isOpen ? sidenav.toggle() : skip()">{{sidenav.isOpen}} -->
     <router-outlet>
 
     </router-outlet>
+    <!-- </div> -->
   </mat-sidenav-content>
 
 </mat-sidenav-container>
 
-<mat-toolbar class="my-footer"></mat-toolbar>
+<mat-toolbar class="my-footer">
+  <div style="font-size: 12px; margin: auto;">Current Version 0.2.5 (beta)</div>
+</mat-toolbar>
+</div>

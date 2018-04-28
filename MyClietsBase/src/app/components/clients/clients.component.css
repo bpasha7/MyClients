@@ -1,0 +1,35 @@
+.social-button mat-icon{
+    vertical-align: middle;
+}
+.link-text{
+    text-decoration: none;
+    color: rgba(0,0,0,.87);
+}
+mat-form-field mat-icon{
+    margin-right: 10px;
+    vertical-align: bottom;
+}
+.clients-table-container{
+    min-width: 310px;
+    margin: 0 3px 3px 3px;
+}
+.clients-search-card{
+    padding: 0px 10px 0px 10px;
+}
+.clients-search-card mat-form-field{
+    width: 100%;
+}
+.clients-search-card button{
+    margin-left: 10px;
+}
+.add-fixed-button{
+    position: fixed;
+    bottom: 35px;
+    right: 15px;
+}
+::ng-deep .mat-paginator .mat-form-field{
+    width: 35px;
+}
+.last{
+    padding-bottom: 40px;
+}

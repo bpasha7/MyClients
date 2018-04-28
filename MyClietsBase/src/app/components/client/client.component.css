@@ -1,0 +1,57 @@
+.social-button mat-icon{
+    vertical-align: middle;
+}
+.phone-text{
+    text-decoration: none;
+    color: rgba(0,0,0,.87);
+}
+.link-text{
+    text-decoration: none;
+    color: white;
+}
+mat-form-field mat-icon{
+    margin-right: 10px;
+    vertical-align: bottom;
+}
+.client-container{
+    min-width: 310px;
+    margin: 0 3px 3px 3px;
+}
+.clients-search-card{
+    padding: 0px 10px 0px 10px;
+}
+.clients-search-card mat-form-field{
+    width: 65%;
+}
+.clients-search-card button{
+    margin-left: 10px;
+}
+
+.item-contaner{
+    margin:  0px 3px 3px 3px;
+}
+.client-menu-bar{
+    float: right;
+    position: relative;
+    bottom: 70px;
+}
+.edit-button{
+    float: right;
+    bottom: 50px;
+}
+.removed-order{
+    /* background: pink; */
+    color: red;
+    text-decoration: line-through;
+}
+mat-sidenav-content{
+    background:  white;
+}
+mat-sidenav{
+    
+    overflow: unset;
+}
+.slide-menu-container{
+    /* background: lightgrey; */
+    padding-top: 16px;
+}

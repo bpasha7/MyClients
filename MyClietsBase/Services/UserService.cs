@@ -1,11 +1,13 @@
 using Data.EF;
 using Data.EF.Entities;
 using Data.EF.UnitOfWork;
+using Data.Reports;
 using Domain.Interfaces.Repositories;
 using MyClientsBase.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MyClientsBase.Services
@@ -20,6 +22,23 @@ namespace MyClientsBase.Services
     /// <returns></returns>
     User Authenticate(string login, string password);
     User Create(User user, string password);
+    User GetUserInfo(int userId);
+    void UpdateUserPassword(int userId, string password);
+    void CreateProduct(Product product);
+    void UpdateProduct(Product product);
+    void UpdateDiscount(Discount discount);
+    void CreateDiscount(Discount discount);
+    void CreateOrder(Order order);
+    void CreateOutgoing(Outgoing outgoing);
+    void AddMessage(Message message);
+    void SetMessageAsRead(int userId, int messageId);
+    IList<Product> GetProducts(int userId);
+    IList<Discount> GetDiscounts(int userId);
+    IList<Order> GetCurrentOrders(int userId);
+    IList<Message> GetMessages(int userId);
+    int GetCountUnreadMessages(int userId);
+    IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
+    IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd);
   }
   public class UserService : IUserService
   {
@@ -29,48 +48,18 @@ namespace MyClientsBase.Services
     /// </summary>
     private IRepository<User> _repository;
 
+    private IRepository<Product> _productsRepository;
+
+    private IRepository<Discount> _discountsRepository;
+    private IRepository<Outgoing> _outgoingsRepository;
+
     public UserService(ApplicationDbContext context)
     {
       _unitOfWork = new UnitOfWork(context);
       _repository = _unitOfWork.EfRepository<User>();
-    }
-
-    public User Authenticate(string login, string password)
-    {
-      if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
-        return null;
-
-      var user = _repository.Find(x => x.Login == login);
-
-      // check if username exists
-      if (user == null)
-        return null;
-
-      // check if password is correct
-      if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-        return null;
-
-      // authentication successful
-      return user;
-    }
-
-    public User Create(User user, string password)
-    {
-      // validation
-      if (string.IsNullOrWhiteSpace(password))
-        throw new AppException("Password is required");
-
-      if (_repository.Count(x => x.Login == user.Login) != 0)
-        throw new AppException("Login " + user.Login + " is already taken!");
-
-      byte[] passwordHash, passwordSalt;
-      CreatePasswordHash(password, out passwordHash, out passwordSalt);
-
-      user.PasswordHash = passwordHash;
-      user.PasswordSalt = passwordSalt;
-      _repository.Add(user);
-
-      return user;
+      _productsRepository = _unitOfWork.EfRepository<Product>();
+      _discountsRepository = _unitOfWork.EfRepository<Discount>();
+      _outgoingsRepository = _unitOfWork.EfRepository<Outgoing>();
     }
     #region Password Methods
     private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -104,5 +93,186 @@ namespace MyClientsBase.Services
       return true;
     }
     #endregion
+    public User Authenticate(string login, string password)
+    {
+      if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+        return null;
+
+      var user = _repository.Find(x => x.Login == login);
+
+      // check if username exists
+      if (user == null)
+        return null;
+
+      // check if password is correct
+      if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+        return null;
+
+      // authentication successful
+      return user;
+    }
+
+    public void CreateProduct(Product product)
+    {
+      _repository.Find(u => u.Id == product.UserId, p => p.Products).Products.Add(product);
+      _repository.Save();
+    }
+
+    public void CreateDiscount(Discount discount)
+    {
+      _repository.Find(u => u.Id == discount.UserId, d => d.Discounts).Discounts.Add(discount);
+      _repository.Save();
+    }
+
+    public void CreateOrder(Order order)
+    {
+      _repository.Find(u => u.Id == order.UserId, o => o.Orders).Orders.Add(order);
+      _repository.Save();
+    }
+
+    public IList<Order> GetCurrentOrders(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, o => o.Orders)
+        .Orders.Where(e => e.Date >= DateTime.Now.Date && e.Removed != true)
+        .OrderByDescending(o => o.Date)
+        .ToList();
+    }
+
+
+    public IList<Product> GetProducts(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, p => p.Products).Products.OrderBy(o => o.Name).ToList();
+    }
+
+    public IList<Discount> GetDiscounts(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, d => d.Discounts).Discounts.OrderBy(o => o.Name).ToList();
+    }
+
+    public User Create(User user, string password)
+    {
+      // validation
+      if (string.IsNullOrWhiteSpace(password))
+        throw new AppException("Password is required");
+
+      if (_repository.Count(x => x.Login == user.Login) != 0)
+        throw new AppException("Login " + user.Login + " is already taken!");
+
+      byte[] passwordHash, passwordSalt;
+      CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+      user.PasswordHash = passwordHash;
+      user.PasswordSalt = passwordSalt;
+      _repository.Add(user);
+
+      return user;
+    }
+    public void UpdateProduct(Product product)
+    {
+      _productsRepository.Update(product);
+      _repository.Save();
+    }
+
+    public void UpdateDiscount(Discount discount)
+    {
+      _discountsRepository.Update(discount);
+      _repository.Save();
+    }
+
+    public void CreateOutgoing(Outgoing outgoing)
+    {
+      _outgoingsRepository.Add(outgoing);
+      _outgoingsRepository.Save();
+    }
+
+    public IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end)
+    {
+      return _outgoingsRepository.Query(
+         outgoing => outgoing.UserId == userId &&
+         outgoing.Date >= begin.Date && outgoing.Date <= end.Date
+        )
+        .OrderByDescending(o=>o.Date)
+        .ToList();
+    }
+
+    public IList<Message> GetMessages(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.OrderByDescending(o => o.Date).ToList();
+    }
+
+    public void AddMessage(Message message)
+    {
+      message.Date = DateTime.Now;
+      _repository.Find(u => u.Id == message.UserId, m => m.Messages).Messages.Add(message);
+      _repository.Save();
+    }
+
+    public IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd)
+    {
+      return _repository.Find(u => u.Id ==userId, o => o.Outgoings).Outgoings
+        .Where( outgoing =>
+          outgoing.Date >= dateStart.Date && outgoing.Date <= dateEnd.Date
+         )
+        .Select(
+        field => new
+        {
+          Total = field.Total,
+          Date = field.Date
+        })
+        .GroupBy(g => new
+        {
+          Y = g.Date.Year,
+          M = g.Date.Month,
+          MonthNumber = g.Date.Month,
+          Month = $"{g.Date:MMM}"
+        }
+        )
+        .Select(rep =>
+         new MonthReport
+         {
+           Year = rep.Key.Y,
+           Month = rep.Key.Month,
+           MonthNumber = rep.Key.MonthNumber,
+           Outgoings = rep.Sum(s => s.Total)
+         }
+        )
+        //.OrderBy(m => m.Year)
+        .ToList();
+    }
+
+    public void SetMessageAsRead(int userId, int messageId)
+    {
+      var message = _repository.Find(u => u.Id == userId, m => m.Messages).Messages
+        .FirstOrDefault(m => m.Id == messageId);
+      if (message == null)
+        throw new AppException("Сообщение не найдено!");
+      message.IsRead = true;
+      _repository.Save();
+    }
+
+    public int GetCountUnreadMessages(int userId)
+    {
+      return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.Count(c => c.IsRead != true);
+    }
+
+    public User GetUserInfo(int userId)
+    {
+      return _repository.Find(u => u.Id == userId);
+    }
+
+    public void UpdateUserPassword(int userId, string password)
+    {
+      if (string.IsNullOrWhiteSpace(password))
+        throw new AppException("Password is required");
+
+      byte[] passwordHash, passwordSalt;
+      CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+      var user = _repository.Find(u => u.Id == userId);
+      user.PasswordHash = passwordHash;
+      user.PasswordSalt = passwordSalt;
+
+      _repository.Save();
+    }
   }
 }

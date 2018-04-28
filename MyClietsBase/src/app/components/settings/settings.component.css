@@ -1,0 +1,11 @@
+.avatar{
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
+.container-column {
+    width: 100%;
+}
+.mat-form-field mat-icon{
+    margin-right: 5px;
+    vertical-align: bottom;
+}

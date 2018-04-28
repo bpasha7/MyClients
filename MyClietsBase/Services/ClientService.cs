@@ -15,7 +15,10 @@ namespace MyClientsBase.Services
   public interface IClientService
   {
     void Create(Client client);
-    IList<Client> Get();
+    void Update(Client client);
+    Client Get(int userId, int id);
+    IList<Client> GetClients(int userId);
+    IList<Order> GetOrders(int userId, int clientId);
   }
   public class ClientService : IClientService
   {
@@ -34,9 +37,31 @@ namespace MyClientsBase.Services
       _repository.Save();
     }
 
-    public IList<Client> Get()
+    public IList<Client> GetClients(int userId)
     {
-      return _repository.Query(c => c.UserId == 1).AsNoTracking().ToList();
+      return _repository.Query(c => c.UserId == userId).OrderBy(o => o.LastName).AsNoTracking().ToList();
+    }
+
+
+
+    public Client Get(int userId, int id)
+    {
+      var client = _repository.Query(c => c.Id == id && c.UserId == userId, or => or.Orders).AsNoTracking().SingleOrDefault();
+      //if (client == null)
+      //  throw new AppException("Клиент не найден в базе!");
+      //else
+      return client;
+    }
+
+    public IList<Order> GetOrders(int userId, int clientId)
+    {
+      return _repository.Find(c => c.Id == clientId, or => or.Orders).Orders.OrderByDescending(o => o.Date).ToList();
+    }
+
+    public void Update(Client client)
+    {
+      _repository.Update(client);
+      _repository.Save();
     }
   }
 }

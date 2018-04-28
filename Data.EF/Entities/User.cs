@@ -28,5 +28,25 @@ namespace Data.EF.Entities
         /// Clients
         /// </summary>
         public virtual ICollection<Client> Clients { get; set; }
+        /// <summary>
+        /// Products
+        /// </summary>
+        public virtual ICollection<Product> Products { get; set; }
+        /// <summary>
+        /// Discounts
+        /// </summary>
+        public virtual ICollection<Discount> Discounts { get; set; }
+        /// <summary>
+        /// Orders
+        /// </summary>
+        public virtual ICollection<Order> Orders { get; set; }
+        /// <summary>
+        /// Orders
+        /// </summary>
+        public virtual ICollection<Message> Messages { get; set; }
+        /// <summary>
+        /// Orders
+        /// </summary>
+        public virtual ICollection<Outgoing> Outgoings { get; set; }
     }
 }

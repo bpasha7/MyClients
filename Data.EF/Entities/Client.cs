@@ -28,11 +28,17 @@ namespace Data.EF.Entities
         public string Link { get; set; }
         [MaxLength(128)]
         public string LinkPhoto { get; set; }
+        [MaxLength(128)]
+        public string Commentary { get; set; }
         /// <summary>
         /// User
         /// </summary>
         [ForeignKey("UserId")]
         public virtual User UserInfo { get; set; }
         public int? UserId { get; set; }
+        /// <summary>
+        /// Orders
+        /// </summary>
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

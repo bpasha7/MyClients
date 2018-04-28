@@ -1,6 +1,7 @@
 using AutoMapper;
 using Data.DTO.Entities;
 using Data.EF.Entities;
+using Data.Reports;
 
 namespace MyClientsBase.Helpers
 {
@@ -13,6 +14,24 @@ namespace MyClientsBase.Helpers
 
       CreateMap<Client, ClientDto>();
       CreateMap<ClientDto, Client>();
+
+      CreateMap<Product, ProductDto>();
+      CreateMap<ProductDto, Product>();
+
+      CreateMap<Discount, DiscountDto>();
+      CreateMap<DiscountDto, Discount>();
+
+      CreateMap<Order, OrderDto>();
+      CreateMap<OrderDto, Order>();
+
+      //CreateMap<ProductsReport, ProductsReportDto>();
+      //CreateMap<ProductsReportDto, ProductsReport>();
+
+      CreateMap<OutgoingDto, Outgoing>();
+      CreateMap<Outgoing, OutgoingDto>();
+
+      CreateMap<Message, MessageDto>();
+      CreateMap<MessageDto, Message>();
     }
   }
 }

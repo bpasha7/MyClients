@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>{{ title }} </h1>
+<div mat-dialog-content>
+  <div class="container-column">
+    <mat-form-field>
+      <input matInput placeholder="Название" [(ngModel)]="outgoing.name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Цена" [(ngModel)]="outgoing.total">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Дата" [(ngModel)]="outgoing.date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi="true" #picker startView="month" disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions style="display: block">
+  <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">ОТМЕНА</button>
+  <button *ngIf="outgoing.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
+  <button *ngIf="outgoing.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
+  <!-- <button mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>Обновить</button> -->
+</div>

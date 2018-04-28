@@ -1,0 +1,52 @@
+<div class="analynics-container">
+  <mat-card class="clients-search-card">
+    <mat-card-title>Выбор периода</mat-card-title>
+    <div class="container-row data-pickers-block">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Дата с" [(ngModel)]="begin">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi="true" #picker startView="year"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker2" placeholder="Дата по" [(ngModel)]="end">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker touchUi="true" #picker2 startView="year"></mat-datepicker>
+      </mat-form-field>
+      <button [disabled]="begin == null || end == null" mat-icon-button color="accent" (click)="getReport()">
+        <mat-icon aria-label="">update</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+</div>
+<div class="analynics-container">
+  <mat-card>
+    <mat-card-title>Прибыль</mat-card-title>
+    <mat-card-content>
+      <div style="display: block">
+        <canvas *ngIf="show" baseChart [datasets]="totalChartData" [labels]="barChartLabels" [legend]="barChartLegend" [chartType]="'bar'"></canvas>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="analynics-container">
+  <mat-card>
+    <mat-card-title>Разница</mat-card-title>
+    <!-- <mat-card-subtitle>Январь-Март</mat-card-subtitle> -->
+    <mat-card-content>
+      <div style="display: block">
+        <canvas *ngIf="show" baseChart [datasets]="barChartData" [labels]="barChartLabels" [legend]="barChartLegend" [chartType]="'bar'"></canvas>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="analynics-container">
+  <mat-card>
+    <mat-card-title>Выручка по услугам</mat-card-title>
+    <!-- <mat-card-subtitle>Январь-Март</mat-card-subtitle> -->
+    <div style="display: block">
+      <canvas *ngIf="show" baseChart height="200" width="250" [datasets]="pieChartData" [options]="pieChartOptions" [labels]="pieChartLabels"
+        [chartType]="'pie'"></canvas>
+      <!-- (chartClick)="chartClicked($event)" -->
+    </div>
+  </mat-card>
+</div>
