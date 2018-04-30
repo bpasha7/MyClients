@@ -27,10 +27,11 @@ export class MessagesComponent implements OnInit {
   }
 
   countUnread() {
-    let count: number = 0;
+    let count = 0;
     this.messages.forEach(message => {
-      if (!message.isRead)
+      if (!message.isRead) {
         count++;
+      }
     });
     this.unread = count;
     return count;
@@ -52,6 +53,7 @@ export class MessagesComponent implements OnInit {
       data: {
         from: message.from,
         text: message.text,
+        mode: 'message'
       }
     });
     if (!message.isRead) {
@@ -79,8 +81,7 @@ export class MessagesComponent implements OnInit {
           this.snackBar.open('Пароль истек!', 'Закрыть', {
             duration: 2000,
           });
-        }
-        else {
+        } else {
           this.snackBar.open(error._body, 'Закрыть', {
             duration: 2000,
           });

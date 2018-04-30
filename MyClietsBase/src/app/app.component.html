@@ -20,31 +20,31 @@
   <mat-sidenav #sidenav mode="over" opened="false" color="grey" class="my-sidenav" [fixedInViewport]="false" (click)="checkMessages()">
     <mat-nav-list class="my-list-menu">
       <h3 mat-subheader>Меню</h3>
-      <a mat-list-item routerLink="/clients">
+      <a mat-list-item (click)="sidenav.toggle()" routerLink="/clients">
         <mat-icon mat-list-icon>people</mat-icon>
         Клиенты
       </a>
-      <a mat-list-item routerLink="/products">
+      <a mat-list-item (click)="sidenav.toggle()" routerLink="/products">
         <mat-icon mat-list-icon>library_books
         </mat-icon>
         Услуги
       </a>
-      <a mat-list-item routerLink="/orders">
+      <a mat-list-item (click)="sidenav.toggle()" routerLink="/orders">
         <mat-icon mat-list-icon>work</mat-icon>
         Планы
       </a>
-      <a mat-list-item routerLink="/outgoings">
+      <a mat-list-item (click)="sidenav.toggle()" routerLink="/outgoings">
         <mat-icon mat-list-icon>shopping_basket</mat-icon>
         Расходы
       </a>
-      <a mat-list-item routerLink="/analytics">
+      <a mat-list-item (click)="sidenav.toggle()" routerLink="/analytics">
         <mat-icon mat-list-icon>assessment</mat-icon>
         Статистика
       </a>
       <!-- <div class="my-list-down-menu"> -->
       <mat-divider></mat-divider>
       <h3 mat-subheader>Управление</h3>
-      <a mat-list-item routerLink="/settings">
+      <a mat-list-item (click)="sidenav.toggle()" routerLink="/settings">
         <mat-icon mat-list-icon>settings</mat-icon>
         Настройки
       </a>

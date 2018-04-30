@@ -15,7 +15,7 @@
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <mat-header-cell class="main-column" *matHeaderCellDef mat-sort-header> Наименование </mat-header-cell>
-          <mat-cell class="main-column" *matCellDef="let product" [matMenuTriggerFor]="menu">
+          <mat-cell class="main-column" *matCellDef="let product">
             <mat-menu #menu="matMenu">
               <button mat-menu-item (click)="openEditProductDialog(product)">
                 <mat-icon>mode_edit</mat-icon>
@@ -30,7 +30,9 @@
                 <span>Удалить</span>
               </button>
             </mat-menu>
-            <img class="product-photo" src="{{generateProductPhotoUrl(product)}}">{{product.name}} </mat-cell>
+            <img class="product-photo" src="{{generateProductPhotoUrl(product)}}" (click)="photoClick(product)">
+            <span [matMenuTriggerFor]="menu"> {{product.name}} </span>
+          </mat-cell>
         </ng-container>
 
         <!-- Price Column -->

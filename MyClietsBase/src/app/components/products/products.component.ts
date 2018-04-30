@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Product, Discount } from '../../models/index';
 import { UserService } from '../../services/index';
-import { ProductModalComponent, DiscountModalComponent, PhotoModalComponent } from '../modals';
+import { ProductModalComponent, DiscountModalComponent, PhotoModalComponent, MessagePreviewComponent } from '../modals';
 import { AppConfig } from '../../app.config';
 
 @Component({
@@ -141,6 +141,19 @@ export class ProductsComponent implements OnInit {
         }
 
     }
+    photoClick(product: Product) {
+        if (!product.hasPhoto) {
+            return;
+        }
+        const dialogRef = this.dialog.open(MessagePreviewComponent, {
+          //width: '250px',
+          data: {
+            title: product.name,
+            src: this.generateProductPhotoUrl(product),
+            mode: 'image'
+          }
+        });
+      }
     /**
      * Open modal dialog for creating new discount or product
      */
