@@ -1,15 +1,26 @@
 <h1 mat-dialog-title>{{ title }} </h1>
 <div mat-dialog-content>
   <div class="container-column">
-    <!-- products -->
+    <!-- products *ngIf="selectedProduct != null" -->
     <mat-form-field>
-      <mat-select placeholder="Услуга" [formControl]="productControl" (change)="calculate()" [(ngModel)]="selectedProduct" required>
+      <input matInput placeholder="Услуга" aria-label="Product" [(ngModel)]="selectedProduct" [matAutocomplete]="auto" [formControl]="productCtrl">
+      <button mat-icon-button matSuffix *ngIf="productCtrl.value && productCtrl.enabled" (click)="clearProductSelect($event)">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduct" (optionSelected)="selectProduct($event)">
+        <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+          <img style="vertical-align:middle;" aria-hidden src="{{generateProductPhotoUrl(product)}}" height="25" />
+          <span>{{product.name}} </span>
+          <small>{{product.price}} &#x20bd;</small>
+        </mat-option>
+      </mat-autocomplete>
+      <!-- <mat-select placeholder="Услуга" [formControl]="productControl" (change)="calculate()" [(ngModel)]="selectedProduct" required>
         <mat-option >Не выбрано</mat-option>
         <mat-option *ngFor="let product of products" [value]="product">
           {{product.name}} {{product.price}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="productControl.hasError('required')">Выберите услугу</mat-error>
+      <mat-error *ngIf="productControl.hasError('required')">Выберите услугу</mat-error> -->
     </mat-form-field>
   </div>
 
@@ -54,7 +65,7 @@
 
 </div>
 <div mat-dialog-actions style="display: block">
-    <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">ОТМЕНА</button>
-    <button *ngIf="order.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
-    <button *ngIf="order.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
+  <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">ОТМЕНА</button>
+  <button *ngIf="order.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
+  <button *ngIf="order.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
 </div>

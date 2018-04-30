@@ -13,6 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 using MyClientsBase.Helpers;
 using MyClientsBase.Services;
 using Microsoft.AspNetCore.Cors;
+using System.Threading.Tasks;
+using System.IO;
+
 namespace MyClientsBase.Controllers
 {
   public partial class UsersController : Controller
@@ -49,12 +52,59 @@ namespace MyClientsBase.Controllers
       }
     }
 
+    [HttpPost, DisableRequestSizeLimit, Route("product/{id}/photo")]
+    public async Task<IActionResult> UploadFile(int id)
+    {
+      try
+      {
+        var file = Request.Form.Files.FirstOrDefault();
+        if (file == null)
+          throw new AppException("Empty file!");
+        if (file.Length > _appSettings.MaxImageSize * 1024)
+          throw new AppException("Слишком большое изображени");
+        //combine path to user folder using md5 hash
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        var userName = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+        var hash = AppFileSystem.GetUserMD5(userId, User.Identity.Name);
+        //create directory in not exist
+        var path = $"{Directory.GetCurrentDirectory()}{_appSettings.PhotoFolder}{hash}";
+        if (!Directory.Exists(path))
+          Directory.CreateDirectory(path);
+        path += $"\\{id}_p";
+
+        if (System.IO.File.Exists(path + ".jpg"))
+          System.IO.File.Delete(path + ".jpg");
+        using (FileStream fstream = new FileStream(path + ".new", FileMode.Create))
+        {
+          await file.CopyToAsync(fstream);
+        }
+        if (!AppFileSystem.CompressImage(path, _appSettings.PhotoProductSize))
+        {
+          _logger.LogError($"File {path} was not compressed and deleted!");
+          throw new AppException("Ошибка загрузки файла.");
+        }
+        _userService.SetPhotoFlag(userId, id);
+        return Ok(new
+        {
+
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
     [HttpGet("products")]
     public IActionResult GetProducts()
     {
       try
       {
-
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         var products = _userService.GetProducts(userId);
         return Ok(new

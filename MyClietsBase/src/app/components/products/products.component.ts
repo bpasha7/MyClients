@@ -4,9 +4,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Product, Discount } from '../../models/index';
 import { UserService } from '../../services/index';
-import { ProductModalComponent, DiscountModalComponent } from '../modals';
+import { ProductModalComponent, DiscountModalComponent, PhotoModalComponent } from '../modals';
+import { AppConfig } from '../../app.config';
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'products',
     templateUrl: './products.component.html',
     styleUrls: ['./products.component.css']
@@ -19,12 +21,13 @@ export class ProductsComponent implements OnInit {
     public discountDataSorce: MatTableDataSource<Discount> = null;
     public products: Product[] = [];
     public discounts: Discount[] = [];
-    public showFilter: boolean = false;
-    public currentTabPosition: number = 0;
+    public showFilter = false;
+    public currentTabPosition = 0;
+    public photoDir = '';
     ngOnInit() {
         this.loadProducts();
         this.loadDiscounts();
-        this.userService.notifyMenu("Услуги");
+        this.userService.notifyMenu('Услуги');
     }
     // tslint:disable-next-line:member-ordering
     @ViewChild('paginatorProducts') paginatorProducts: MatPaginator;
@@ -37,7 +40,12 @@ export class ProductsComponent implements OnInit {
     constructor(
         public snackBar: MatSnackBar,
         public dialog: MatDialog,
-        private userService: UserService) {
+        private userService: UserService,
+        public config: AppConfig) {
+            this.photoDir = this.config.photoUrl + localStorage.getItem('userHash') + '/';
+    }
+    generateProductPhotoUrl(product: Product) {
+        return product.hasPhoto ? this.photoDir + product.id + '_p.jpg' : this.config.defaultPhoto;
     }
     /**
      * Load client product list and init data source
@@ -55,8 +63,7 @@ export class ProductsComponent implements OnInit {
                     this.snackBar.open('Пароль истек!', 'Закрыть', {
                         duration: 2000,
                     });
-                }
-                else {
+                } else {
                     this.snackBar.open(error._body, 'Закрыть', {
                         duration: 2000,
                     });
@@ -98,8 +105,7 @@ export class ProductsComponent implements OnInit {
                     this.snackBar.open('Пароль истек!', 'Закрыть', {
                         duration: 2000,
                     });
-                }
-                else {
+                } else {
                     this.snackBar.open(error._body, 'Закрыть', {
                         duration: 2000,
                     });
@@ -109,7 +115,7 @@ export class ProductsComponent implements OnInit {
     }
     /**
      * Needs to know which tab is current
-     * @param tabChangeEvent 
+     * @param tabChangeEvent
      */
     selectedTabChange(tabChangeEvent: MatTabChangeEvent) {
         this.currentTabPosition = tabChangeEvent.index;
@@ -122,7 +128,7 @@ export class ProductsComponent implements OnInit {
     }
     /**
      * Applay filter for selected tab
-     * @param filterValue 
+     * @param filterValue
      */
     applyFilter(filterValue: string) {
         filterValue = filterValue.trim(); // Remove whitespace
@@ -160,9 +166,11 @@ export class ProductsComponent implements OnInit {
             });
             // Waiting closing product modal dialog
             dialogRef.afterClosed().subscribe(result => {
-                if (result.id !== 0) {
-                    this.productDataSorce.data.push(result);
-                    this.initProductSourceTable();
+                if (result !== 0) {
+                    if (result.id !== 0) {
+                        this.productDataSorce.data.push(result);
+                        this.initProductSourceTable();
+                    }
                 }
             });
         }
@@ -178,8 +186,6 @@ export class ProductsComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result.id !== 0) {
                 this.discountDataSorce.data.push(result);
-
-                //this.loadProducts();
             }
         });
     }
@@ -194,6 +200,22 @@ export class ProductsComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
                 this.loadDiscounts();
+            }
+        });
+    }
+    /**
+     * Open dialog for uploading new product photo
+     */
+    openPhotoDialog(product: Product) {
+        const dialogRef = this.dialog.open(PhotoModalComponent, {
+            data: {
+                productId: product.id,
+                type: 'product'
+             }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result !== 0) {
+                product.hasPhoto = true;
             }
         });
     }

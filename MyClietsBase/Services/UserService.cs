@@ -26,6 +26,7 @@ namespace MyClientsBase.Services
     void UpdateUserPassword(int userId, string password);
     void CreateProduct(Product product);
     void UpdateProduct(Product product);
+    void SetPhotoFlag(int userId, int productId);
     void UpdateDiscount(Discount discount);
     void CreateDiscount(Discount discount);
     void CreateOrder(Order order);
@@ -272,6 +273,15 @@ namespace MyClientsBase.Services
       user.PasswordHash = passwordHash;
       user.PasswordSalt = passwordSalt;
 
+      _repository.Save();
+    }
+
+    public void SetPhotoFlag(int userId, int productId)
+    {
+      var product = _repository.Find(u => u.Id == userId, p => p.Products).Products.Where(p => p.Id == productId).SingleOrDefault();
+      if (product == null)
+        throw new AppException($"Product #{productId} not found. User # {userId}");
+      product.HasPhoto = true;
       _repository.Save();
     }
   }

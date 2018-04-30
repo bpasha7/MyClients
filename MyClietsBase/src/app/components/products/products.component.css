@@ -52,3 +52,14 @@ mat-form-field mat-icon{
 .unpressed{
     color: green;
 }
+.product-photo{
+    object-fit: contain;
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    border-radius: 10px;
+    vertical-align: middle;
+}
+.main-column{
+    flex: 4;
+}

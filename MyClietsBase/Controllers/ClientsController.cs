@@ -225,7 +225,7 @@ namespace MyClientsBase.Controllers
     }
 
     [HttpPost, DisableRequestSizeLimit, Route("{id}/photo")]
-    public async Task<IActionResult> UploadFiles(int id)
+    public async Task<IActionResult> UploadFile(int id)
     {
       try
       {

@@ -5,7 +5,7 @@ import { AppConfig } from '../app.config';
 import { Client } from '../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
 // import { HttpRequest } from 'selenium-webdriver/http';
-import { AppService } from './app.service'
+import { AppService } from './app.service';
 
 /**
  * Client Service
@@ -25,10 +25,10 @@ export class ClientService extends AppService {
      * @param client Client
      */
     create(client: Client) {
-        return this.http.post(this.config.apiUrl + this.controller + '/create', client,this.jwt());//, options);
+        return this.http.post(this.config.apiUrl + this.controller + '/create', client, this.jwt());
     }
     update(client: Client) {
-        return this.http.put(this.config.apiUrl + this.controller + '/update', client, this.jwt());//, options);
+        return this.http.put(this.config.apiUrl + this.controller + '/update', client, this.jwt());
     }
     getAll() {
         return this.http.get(this.config.apiUrl + this.controller, this.jwt());
@@ -38,7 +38,7 @@ export class ClientService extends AppService {
     }
     uploadPhoto(clientId: number, form: FormData) {
         const req = new HttpRequest('POST',
-        this.config.apiUrl + this.controller + '/' + clientId + '/photo', 
+        this.config.apiUrl + this.controller + '/' + clientId + '/photo',
         form,
         {
             reportProgress: true,

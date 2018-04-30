@@ -6,4 +6,5 @@ export class Product {
     name: string;
     price: number;
     userId: number;
+    hasPhoto: boolean;
 }

@@ -65,8 +65,7 @@ export class ClientComponent implements OnInit {
                     this.snackBar.open('Пароль истек!', 'Закрыть', {
                         duration: 2000,
                     });
-                }
-                else {
+                } else {
                     this.snackBar.open(error._body, 'Закрыть', {
                         duration: 2000,
                     });
@@ -83,7 +82,7 @@ export class ClientComponent implements OnInit {
     }
     /**
      * Sort part of orders by date desc
-     * @param orders 
+     * @param orders
      */
     sort(orders: Order[]) {
         orders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -94,10 +93,11 @@ export class ClientComponent implements OnInit {
      * @param orders order list
      */
     countOrders(orders: Order[]) {
-        let count: number = 0;
+        let count = 0;
         orders.forEach(order => {
-            if (!order.removed)
+            if (!order.removed) {
                 count++;
+            }
         });
         return count;
     }
@@ -122,8 +122,7 @@ export class ClientComponent implements OnInit {
                 if (newOrder.date > this.today) {
                     this.orders.current.push(newOrder);
                     this.sort(this.orders.current);
-                }
-                else {
+                } else {
                     this.orders.old.push(newOrder);
                     this.sort(this.orders.old);
                 }
@@ -163,8 +162,7 @@ export class ClientComponent implements OnInit {
                     this.snackBar.open('Пароль истек!', 'Закрыть', {
                         duration: 2000,
                     });
-                }
-                else {
+                } else {
                     this.snackBar.open(error._body, 'Закрыть', {
                         duration: 2000,
                     });
@@ -177,7 +175,10 @@ export class ClientComponent implements OnInit {
      */
     openPhotoDialog() {
         const dialogRef = this.clientDialog.open(PhotoModalComponent, {
-            data: { clientId: this.client.id }
+            data: {
+                clientId: this.client.id,
+                type: 'client'
+             }
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result !== 0) {

@@ -6,16 +6,31 @@
     </mat-form-field>
   </mat-card>
 </div>
-<mat-tab-group class="demo-tab-group" color="primary" headerPosition="center" (selectedTabChange)="selectedTabChange($event)" >
+<mat-tab-group class="demo-tab-group" color="primary" headerPosition="center" (selectedTabChange)="selectedTabChange($event)">
   <mat-tab label="Услуги">
-      <!-- *ngIf="products?.length > 0" -->
-    <div class="table-container last" >
+    <!-- *ngIf="products?.length > 0" -->
+    <div class="table-container last">
       <mat-table [dataSource]="productDataSorce" #sortProducts="matSort" matSort>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Наименование </mat-header-cell>
-          <mat-cell *matCellDef="let product" (click)="openEditProductDialog(product)"> {{product.name}} </mat-cell>
+          <mat-header-cell class="main-column" *matHeaderCellDef mat-sort-header> Наименование </mat-header-cell>
+          <mat-cell class="main-column" *matCellDef="let product" [matMenuTriggerFor]="menu">
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openEditProductDialog(product)">
+                <mat-icon>mode_edit</mat-icon>
+                <span>Изменить</span>
+              </button>
+              <button mat-menu-item (click)="openPhotoDialog(product)">
+                <mat-icon>add_a_photo</mat-icon>
+                <span>Фото</span>
+              </button>
+              <button mat-menu-item disabled>
+                <mat-icon>delete</mat-icon>
+                <span>Удалить</span>
+              </button>
+            </mat-menu>
+            <img class="product-photo" src="{{generateProductPhotoUrl(product)}}">{{product.name}} </mat-cell>
         </ng-container>
 
         <!-- Price Column -->
@@ -23,6 +38,12 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header> Стоимость </mat-header-cell>
           <mat-cell *matCellDef="let product"> {{product.price}} </mat-cell>
         </ng-container>
+
+        <!-- Action Column -->
+        <!-- <ng-container matColumnDef="action" >
+          <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+          <mat-cell *matCellDef="let product">  </mat-cell>
+        </ng-container> -->
 
         <mat-header-row *matHeaderRowDef="displayedProductColumns"></mat-header-row>
         <mat-row *matRowDef="let product; columns: displayedProductColumns;">
@@ -39,30 +60,30 @@
     </button> -->
   </mat-tab>
   <mat-tab label="Скидки">
-      <!-- *ngIf="discounts?.length > 0" -->
-      <div class="table-container last"  >
-          <mat-table [dataSource]="discountDataSorce" #sortDiscounts="matSort" matSort>
-    
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Описание</mat-header-cell>
-              <mat-cell *matCellDef="let discount" (click)="openEditDiscountDialog(discount)"> {{discount.name}} </mat-cell>
-            </ng-container>
-    
-            <!-- Discount Column -->
-            <ng-container matColumnDef="percent">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Величина</mat-header-cell>
-              <mat-cell *matCellDef="let discount"> {{discount.percent * 100}} %</mat-cell>
-            </ng-container>
-    
-            <mat-header-row *matHeaderRowDef="displayedDiscountColumns"></mat-header-row>
-            <mat-row *matRowDef="let discount; columns: displayedDiscountColumns;">
-            </mat-row>
-          </mat-table>
-    
-          <mat-paginator #paginatorDiscounts [length]="discounts.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
-        </div>
-        <!-- <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
+    <!-- *ngIf="discounts?.length > 0" -->
+    <div class="table-container last">
+      <mat-table [dataSource]="discountDataSorce" #sortDiscounts="matSort" matSort>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Описание</mat-header-cell>
+          <mat-cell *matCellDef="let discount" (click)="openEditDiscountDialog(discount)"> {{discount.name}} </mat-cell>
+        </ng-container>
+
+        <!-- Discount Column -->
+        <ng-container matColumnDef="percent">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Величина</mat-header-cell>
+          <mat-cell *matCellDef="let discount"> {{discount.percent * 100}} %</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedDiscountColumns"></mat-header-row>
+        <mat-row *matRowDef="let discount; columns: displayedDiscountColumns;">
+        </mat-row>
+      </mat-table>
+
+      <mat-paginator #paginatorDiscounts [length]="discounts.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+    </div>
+    <!-- <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
           <mat-icon aria-label="">add</mat-icon>
         </button> -->
   </mat-tab>

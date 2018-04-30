@@ -4,13 +4,16 @@ import { AppConfig } from '../app.config';
 import { User, Product, Order, Discount, Outgoing } from '../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppService } from './app.service';
+import { HttpHeaders, HttpRequest, HttpClient } from '@angular/common/http';
 
 /**
  * Сервис для работы с контроллером Users
  */
 @Injectable()
 export class UserService extends AppService {
-    constructor(private http: Http,
+    constructor(
+        private httpCleint: HttpClient,
+        private http: Http,
         public config: AppConfig,
         public router: Router) {
         super(router);
@@ -18,15 +21,15 @@ export class UserService extends AppService {
     }
     /**
      * Authenticate user
-     * @param user 
+     * @param user
      */
     login(user: User) {
         return this.http.post(this.config.apiUrl + this.controller + '/authenticate', user);
     }
     /**
      * Set data to local storage
-     * @param token 
-     * @param hash 
+     * @param token
+     * @param hash
      */
     setToken(token: string, hash: string) {
         localStorage.setItem('currentUser', token);
@@ -51,14 +54,14 @@ export class UserService extends AppService {
     }
     /**
      * Create user product
-     * @param product 
+     * @param product
      */
     createProduct(product: Product) {
         return this.http.post(this.config.apiUrl + this.controller + '/product', product, this.jwt());
     }
     /**
      * Update user product
-     * @param product 
+     * @param product
      */
     updateProduct(product: Product) {
         return this.http.put(this.config.apiUrl + this.controller + '/product', product, this.jwt());
@@ -71,7 +74,7 @@ export class UserService extends AppService {
     }
     /**
      * Create user discount
-     * @param discount 
+     * @param discount
      */
     createDiscount(discount: Discount) {
         return this.http.post(this.config.apiUrl + this.controller + '/discount', discount, this.jwt());
@@ -99,13 +102,13 @@ export class UserService extends AppService {
     }
     /**
      * Mark as removed user order
-     * @param id 
+     * @param id
      */
     changeStatus(id: number) {
         return this.http.patch(this.config.apiUrl + this.controller + '/order/' + id, null, this.jwt());
     }
     /**
-     * Get current user orders 
+     * Get current user orders
      */
     getCurrentOrders() {
         return this.http.get(this.config.apiUrl + this.controller + '/orders/current', this.jwt());
@@ -136,5 +139,17 @@ export class UserService extends AppService {
 
     readMessage(id: number) {
         return this.http.patch(this.config.apiUrl + this.controller + '/message/' + id, null, this.jwt());
+    }
+    uploadProductPhoto(productId: number, form: FormData) {
+        const req = new HttpRequest('POST',
+        this.config.apiUrl + this.controller + '/product/' + productId + '/photo',
+        form,
+        {
+            reportProgress: true,
+            headers: new HttpHeaders({
+                'Authorization': 'Bearer ' + localStorage.getItem('currentUser'),
+            })
+        });
+        return this.httpCleint.request(req);
     }
 }
