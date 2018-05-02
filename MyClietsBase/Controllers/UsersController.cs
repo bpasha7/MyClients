@@ -64,91 +64,11 @@ namespace MyClientsBase.Controllers
       }
     }
 
-    [HttpPost("order")]
-    public IActionResult CreateOrder([FromBody]OrderDto ordertDto)
-    {
-      try
-      {
-        var order = _mapper.Map<Order>(ordertDto);
-
-        if (order == null)
-          throw new AppException("Неверный данные!");
-
-        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-        order.UserId = userId;
-
-        _userService.CreateOrder(order);
-        return Ok(new
-        {
-          Message = "Запись добавлена!",
-          OrderId = order.Id
-        });
-      }
-      catch (AppException ex)
-      {
-        return BadRequest(ex.Message);
-      }
-      catch (Exception ex)
-      {
-        _logger.LogCritical($"{ex}");
-        return BadRequest("Service error!");
-      }
-    }
-
-    [HttpPatch("order/{id}")]
-    public IActionResult SetOrdersAsRemoved(int id)
-    {
-      try
-      {
-
-        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-
-        _orderService.ChangeStatus(userId, id);
-        return Ok(new
-        {
-
-        });
-      }
-      catch (AppException ex)
-      {
-        return BadRequest(ex.Message);
-      }
-      catch (Exception ex)
-      {
-        _logger.LogCritical($"{ex}");
-        return BadRequest("Service error!");
-      }
-    }
-
-    [HttpGet("orders/current")]
-    public IActionResult GetCurrentOrders()
-    {
-      try
-      {
-        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-        var orders = _userService.GetCurrentOrders(userId);
-        var feature = orders.Where(o => o.Date.Date > DateTime.Now.Date).OrderBy(d=>d.Date);
-        var current = orders.Where(o => o.Date.Date == DateTime.Now.Date).OrderBy(d => d.Date);
-        return Ok(new
-        {
-          Feature = _mapper.Map<OrderDto[]>(feature),
-          Current = _mapper.Map<OrderDto[]>(current)
-        });
-      }
-      catch (AppException ex)
-      {
-        return BadRequest(ex.Message);
-      }
-      catch (Exception ex)
-      {
-        _logger.LogCritical($"{ex}");
-        return BadRequest("Service error!");
-      }
-    }
+    
 
     [AllowAnonymous]
     [HttpPost("message")]
-    public IActionResult CreateOrder([FromBody]MessageDto messageDto)
+    public IActionResult CreateMessage([FromBody]MessageDto messageDto)
     {
       try
       {

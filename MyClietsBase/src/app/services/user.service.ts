@@ -19,6 +19,7 @@ export class UserService extends AppService {
         super(router);
         this.controller = '/users';
     }
+    //#region User accont manipulations
     /**
      * Authenticate user
      * @param user
@@ -39,6 +40,7 @@ export class UserService extends AppService {
     getUserInfo() {
         return this.http.get(this.config.apiUrl + this.controller, this.jwt());
     }
+    //#endregion
     /**
      * Logout - clear local storage
      */
@@ -46,6 +48,7 @@ export class UserService extends AppService {
         localStorage.clear();
         this.notifyMenu('0');
     }
+    //#region Products api methods
     /**
      * Get user product list
      */
@@ -67,6 +70,25 @@ export class UserService extends AppService {
         return this.http.put(this.config.apiUrl + this.controller + '/product', product, this.jwt());
     }
     /**
+     * Upload user product photo
+     * @param productId product id
+     * @param form form date with file
+     */
+    uploadProductPhoto(productId: number, form: FormData) {
+        const req = new HttpRequest('POST',
+            this.config.apiUrl + this.controller + '/product/' + productId + '/photo',
+            form,
+            {
+                reportProgress: true,
+                headers: new HttpHeaders({
+                    'Authorization': 'Bearer ' + localStorage.getItem('currentUser'),
+                })
+            });
+        return this.httpCleint.request(req);
+    }
+    //#endregion
+    //#region Discount api methods
+    /**
      * Get user discount list
      */
     getDiscounts() {
@@ -86,13 +108,8 @@ export class UserService extends AppService {
     updateDiscount(discount: Discount) {
         return this.http.put(this.config.apiUrl + this.controller + '/discount', discount, this.jwt());
     }
-    /**
-     * Create user order
-     * @param order
-     */
-    createOrder(order: Order) {
-        return this.http.post(this.config.apiUrl + this.controller + '/order', order, this.jwt());
-    }
+    //#endregion
+    //#region Outgoings api methods
     /**
      * Create user outgoing
      * @param outgoing
@@ -100,21 +117,39 @@ export class UserService extends AppService {
     createOutgoing(outgoing: Outgoing) {
         return this.http.post(this.config.apiUrl + this.controller + '/outgoing', outgoing, this.jwt());
     }
+    //#endregion
+    //#region Orders api methods
     /**
-     * Mark as removed user order
+     * Create user order
+     * @param order new order
+     */
+    createOrder(order: Order) {
+        return this.http.post(this.config.apiUrl + this.controller + '/order', order, this.jwt());
+    }
+    /**
+     * Update existed order
+     * @param order Edited order
+     */
+    updateOrder(order: Order) {
+        return this.http.put(this.config.apiUrl + this.controller + '/order', order, this.jwt());
+    }
+    /**
+     * Change order status
      * @param id
      */
     changeStatus(id: number) {
         return this.http.patch(this.config.apiUrl + this.controller + '/order/' + id, null, this.jwt());
     }
     /**
-     * Get current user orders
+     * Get user current orders
      */
     getCurrentOrders() {
         return this.http.get(this.config.apiUrl + this.controller + '/orders/current', this.jwt());
     }
+    //#endregion
+    //#region Reports api methods
     /**
-     * Get user report by dates
+     * Get user statictics report by dates
      * @param begin date begin report
      * @param end date end report
      */
@@ -123,33 +158,35 @@ export class UserService extends AppService {
             this.config.apiUrl + this.controller + '/report?begin=' +
             begin.toDateString() + '&end=' + end.toDateString(), this.jwt());
     }
-
+    /**
+     * Get user outgoings report by dates
+     * @param begin date begin report
+     * @param end date end report
+     */
     getOutgoings(begin: Date, end: Date) {
         return this.http.get(this.config.apiUrl + this.controller + '/outgoings/report?begin=' +
-        begin.toDateString() + '&end=' + end.toDateString(), this.jwt());
+            begin.toDateString() + '&end=' + end.toDateString(), this.jwt());
     }
-
+    //#endregion
+    //#region Messages api methods
+    /**
+     * Get  user messages
+     */
     getMessages() {
         return this.http.get(this.config.apiUrl + this.controller + '/messages', this.jwt());
     }
-
+    /**
+     * Get count unread user messages
+     */
     getUnreadCount() {
         return this.http.get(this.config.apiUrl + this.controller + '/messages/unread', this.jwt());
     }
-
+    /**
+     * Mark as read user message
+     * @param id message id
+     */
     readMessage(id: number) {
         return this.http.patch(this.config.apiUrl + this.controller + '/message/' + id, null, this.jwt());
     }
-    uploadProductPhoto(productId: number, form: FormData) {
-        const req = new HttpRequest('POST',
-        this.config.apiUrl + this.controller + '/product/' + productId + '/photo',
-        form,
-        {
-            reportProgress: true,
-            headers: new HttpHeaders({
-                'Authorization': 'Bearer ' + localStorage.getItem('currentUser'),
-            })
-        });
-        return this.httpCleint.request(req);
-    }
+    //#endregion
 }

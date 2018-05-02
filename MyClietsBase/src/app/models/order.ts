@@ -7,6 +7,7 @@ export class Order {
     commentary: string;
     productId: number;
     total: number;
+    prepay: number;
     userId: number;
     clientId: number;
     removed: boolean;

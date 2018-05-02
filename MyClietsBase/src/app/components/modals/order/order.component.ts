@@ -29,7 +29,7 @@ export class OrderModalComponent implements OnInit {
     productCtrl: FormControl;
     filteredProducts: Observable<Product[]>;
     public order: Order;
-    //public client: Client;
+    // public client: Client;
     public time = '09:00';
     public selectedProduct: Product = null;
     public products: Product[] = [];
@@ -45,17 +45,6 @@ export class OrderModalComponent implements OnInit {
         public dialogRef: MatDialogRef<OrderModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
         this.order = data.order;
-        //this.client = data.client;
-        // if (data.order.id === 0) {
-        //     this.order = new Order();
-        //     this.client = data.client;
-        //     this.order.clientId = this.client.id;
-        //     //this.title = 'Новая запись';
-        // } else {
-        //     this.order = data.order;
-        //     this.client = data.client;
-        // }
-        //this.title = this.client.firstName;
     }
 
     ngOnInit(): void {
@@ -65,30 +54,47 @@ export class OrderModalComponent implements OnInit {
         this.loadProducts();
         this.loadDiscounts();
     }
-
+    /**
+     * Filtering products by name
+     * @param name typing product name
+     */
     filterProducts(name: string): Product[] {
         return this.products.filter(product =>
             product.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
     }
-
+    /**
+     * Display format selected product
+     * @param product selected product
+     */
     displayProduct(product?: Product): string {
         return product ? product.name : '';
     }
-
+    /**
+     * Generating photo url for product
+     * @param product product
+     */
     generateProductPhotoUrl(product: Product) {
         return product.hasPhoto ? this.photoDir + product.id + '_p.jpg' : this.config.defaultPhoto;
     }
-
+    /**
+     * Event after selected new product
+     * @param e
+     */
     selectProduct (e: Event) {
         this.calculate();
     }
-
+    /**
+     * Clear selected product
+     * @param e
+     */
     clearProductSelect(e: Event) {
         this.selectedProduct = new Product();
         this.selectedProduct.name = '';
         this.selectedProduct.price = 0;
     }
-
+    /**
+     * Loading products and create filter
+     */
     loadProducts() {
         this.userService.getProducts().subscribe(
             data => {
@@ -115,7 +121,9 @@ export class OrderModalComponent implements OnInit {
             }
         );
     }
-
+    /**
+     * Loading discounts
+     */
     loadDiscounts() {
         this.userService.getDiscounts().subscribe(
             data => {
@@ -129,11 +137,15 @@ export class OrderModalComponent implements OnInit {
             }
         );
     }
-
+    /**
+     * Create new one
+     */
     create() {
         this.order.productId = this.selectedProduct.id;
-        var splitted = this.time.split(':', 2);
+        const splitted = this.time.split(':', 2);
+        // tslint:disable-next-line:radix
         this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
+        // tslint:disable-next-line:radix
         this.order.date.setMinutes(parseInt(splitted[1]));
         this.userService.createOrder(this.order).subscribe(
             data => {
@@ -143,6 +155,7 @@ export class OrderModalComponent implements OnInit {
                 });
                 this.dialogRef.close(1);
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
@@ -150,11 +163,40 @@ export class OrderModalComponent implements OnInit {
             }
         );
     }
+    /**
+     * Update order
+     */
+    update() {
+        this.order.productId = this.selectedProduct.id;
+        this.order.date = new Date(this.order.date);
+        const splitted = this.time.split(':', 2);
+        // tslint:disable-next-line:radix
+        this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
+        // tslint:disable-next-line:radix
+        this.order.date.setMinutes(parseInt(splitted[1]));
+        this.userService.updateOrder(this.order).subscribe(
+            data => {
+                this.snackBar.open(data.json().message, 'Закрыть', {
+                    duration: 2000,
+                });
+                this.dialogRef.close(1);
+            },
+            // tslint:disable-next-line:no-shadowed-variable
+            error => {
+                this.snackBar.open(error._body, 'Закрыть', {
+                    duration: 2000,
+                });
+            }
+        );
+    }
+    /**
+     * Calculating order total price
+     */
     calculate() {
         if (this.selectedProduct.price != null || this.discountControl.value) {
-            this.order.total = this.selectedProduct.price * (1 - this.discountControl.value);
+            this.order.total = this.selectedProduct.price * (1 - this.discountControl.value) - this.order.prepay;
         } else if (this.productCtrl.value != null) {
-            this.order.total = this.selectedProduct.price;
+            this.order.total = this.selectedProduct.price - this.order.prepay;
         }
     }
     onNoClick(): void {

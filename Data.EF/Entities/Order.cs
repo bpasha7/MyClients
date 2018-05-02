@@ -18,6 +18,7 @@ namespace Data.EF.Entities
         public DateTime Date { get; set; }
         public string Location { get; set; }
         public string Commentary { get; set; }
+        public decimal Prepay { get; set; }
         public bool? Removed { get; set; }
         /// <summary>
         /// User

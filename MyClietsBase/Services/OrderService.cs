@@ -15,6 +15,11 @@ namespace MyClientsBase.Services
   public interface IOrderService
   {
     void ChangeStatus(int userId, int orderId);
+    /// <summary>
+    /// Updating Order data
+    /// </summary>
+    /// <param name="order">Order</param>
+    void Update(Order order);
     IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd, out List<MonthReport> monthReport);
   }
   public class OrderService : IOrderService
@@ -39,24 +44,6 @@ namespace MyClientsBase.Services
 
     public IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd, out List<MonthReport> monthReport)
     {
-      //var monthReport = _repository.Query(
-      //  order => order.UserId == userId &&
-      //  order.Removed != true &&
-      //  order.Date >= dateStart.Date && order.Date <= dateEnd.Date,
-      //  p => p.ProductInfo
-      //  )
-      //  .Select(
-      //    field => new
-      //    {
-      //      //ProductId = field.ProductId,
-      //      //ProductName = field.ProductInfo.Name,
-      //      Total = field.Total,
-      //      Date = field.Date
-      //    }
-      //   )
-
-      //  .ToList();
-      //return
       var data = _repository.Query(
         order => order.UserId == userId &&
         order.Removed != true &&
@@ -71,14 +58,6 @@ namespace MyClientsBase.Services
           Total = field.Total,
           Date = field.Date
         })
-        //.GroupBy(g => new { g.ProductId, g.ProductName })
-        //.Select(rep =>
-        // new ProductsReport
-        // {
-        //   ProductName = rep.Key.ProductName,
-        //   Sum = rep.Sum(s => s.Total)
-        // }
-        //)
         .ToList();
       monthReport = data
              .GroupBy(g => new
@@ -113,6 +92,14 @@ namespace MyClientsBase.Services
         .ToList();
       return report;
     }
-
+    /// <summary>
+    /// Updating Order data
+    /// </summary>
+    /// <param name="order">Order</param>
+    public void Update(Order order)
+    {
+      _repository.Update(order);
+      _repository.Save();
+    }
   }
 }

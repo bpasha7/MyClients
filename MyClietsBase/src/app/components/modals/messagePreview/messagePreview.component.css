@@ -22,6 +22,10 @@
 .button-cancel{
     color:red;
 }
+.image-preview{
+    display: block;
+    margin: auto;
+}
 mat-form-field mat-icon{
     margin-right: 5px;
     vertical-align: bottom;

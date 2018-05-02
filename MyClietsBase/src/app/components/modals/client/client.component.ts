@@ -31,6 +31,7 @@ export class ClientModalComponent {
                 });
                 this.dialogRef.close(this.client);
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
@@ -51,6 +52,7 @@ export class ClientModalComponent {
                     duration: 2000,
                 });
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
@@ -62,6 +64,6 @@ export class ClientModalComponent {
 
     onNoClick(): void {
         this.dialogRef.close(this.client);
-        //this.dialogRef.close();
+        // this.dialogRef.close();
     }
 }

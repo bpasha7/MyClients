@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>{{ title }} </h1>
 <div mat-dialog-content>
   <p *ngIf="showText">{{ text }}</p>
-  <img *ngIf="showImage" src ="{{imageSrc}}"/>
+  <img class="image-preview" *ngIf="showImage" src ="{{imageSrc}}"/>
 </div>
 <!-- <div mat-dialog-actions style="display: block">
   <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">Назад</button>

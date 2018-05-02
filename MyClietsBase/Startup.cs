@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MyClientsBase.Helpers;
 using MyClientsBase.Services;
-using NLog.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;

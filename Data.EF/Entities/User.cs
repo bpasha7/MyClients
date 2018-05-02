@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,10 +20,20 @@ namespace Data.EF.Entities
         [Required]
         [MaxLength(50)]
         public string Login { get; set; }
+        [MaxLength(50)]
+        public string Gmail { get; set; }
+        [MaxLength(50)]
+        public string Email { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime Birthday { get; set; }
+
+
+
         [Column(TypeName = "VARBINARY(128)")]
         public byte[] PasswordHash { get; set; }
         [Column(TypeName = "VARBINARY(128)")]
         public byte[] PasswordSalt { get; set; }
+
 
         /// <summary>
         /// Clients

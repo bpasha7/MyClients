@@ -52,15 +52,20 @@ namespace MyClientsBase.Services
     private IRepository<Product> _productsRepository;
 
     private IRepository<Discount> _discountsRepository;
+
     private IRepository<Outgoing> _outgoingsRepository;
+
+    private IRepository<Message> _messagesRepository;
 
     public UserService(ApplicationDbContext context)
     {
+      
       _unitOfWork = new UnitOfWork(context);
       _repository = _unitOfWork.EfRepository<User>();
       _productsRepository = _unitOfWork.EfRepository<Product>();
       _discountsRepository = _unitOfWork.EfRepository<Discount>();
       _outgoingsRepository = _unitOfWork.EfRepository<Outgoing>();
+      _messagesRepository = _unitOfWork.EfRepository<Message>();
     }
     #region Password Methods
     private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -253,7 +258,8 @@ namespace MyClientsBase.Services
 
     public int GetCountUnreadMessages(int userId)
     {
-      return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.Count(c => c.IsRead != true);
+      //return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.Count(c => c.IsRead != true);
+      return _messagesRepository.Count(messages => messages.UserId == userId && messages.IsRead != true);
     }
 
     public User GetUserInfo(int userId)

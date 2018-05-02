@@ -15,3 +15,7 @@
 .login-progress{
     display: block;
 }
+.login-container{
+    min-width: 310px;
+    margin: 0 3px 3px 3px;
+}

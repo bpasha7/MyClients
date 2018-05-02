@@ -26,7 +26,7 @@
 
   <div class="container-row">
     <mat-form-field>
-      <mat-icon matSuffix>access_time</mat-icon>
+      <!-- <mat-icon matSuffix>access_time</mat-icon> -->
       <input class="my-time-picker" matInput placeholder="Время" type="time" [(ngModel)]="time">
     </mat-form-field>
     <mat-form-field>
@@ -35,19 +35,27 @@
       <mat-datepicker touchUi="true" #picker startView="month" disabled="false"></mat-datepicker>
     </mat-form-field>
   </div>
+  <div class="container-column">
+     <!-- discount -->
+     <mat-form-field>
+        <mat-select placeholder="Скидки" value="0" (change)="calculate()" [formControl]="discountControl">
+          <mat-option [value]="0">Без</mat-option>
+          <mat-option *ngFor="let discount of discounts" [value]="discount.percent">
+            {{discount.name}} {{100 * discount.percent}}%
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  </div>
   <div class="container-row">
-    <!-- discount -->
-    <mat-form-field>
-      <mat-select placeholder="Скидки" value="0" (change)="calculate()" [formControl]="discountControl">
-        <mat-option [value]="0">Без</mat-option>
-        <mat-option *ngFor="let discount of discounts" [value]="discount.percent">
-          {{discount.name}} {{100 * discount.percent}}%
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+       <!-- prepayment -->
+       <mat-form-field>
+          <mat-icon matPrefix>done</mat-icon>
+          <input matInput placeholder="Предоплата" [(ngModel)]="order.prepay">
+          <mat-hint align="end">Включается в итог</mat-hint>
+        </mat-form-field>
     <!-- total -->
     <mat-form-field>
-      <mat-icon matPrefix>done</mat-icon>
+      <mat-icon matPrefix>done_all</mat-icon>
       <input matInput placeholder="Итого" [(ngModel)]="order.total">
     </mat-form-field>
   </div>

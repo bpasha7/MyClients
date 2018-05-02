@@ -41,6 +41,7 @@ export class ClientComponent implements OnInit {
         });
         this.userService.notifyMenu('Клиент');
     }
+
     copyDone() {
         this.snackBar.open('Телефон скопирован.', 'Закрыть', {
             duration: 2000,
@@ -84,8 +85,12 @@ export class ClientComponent implements OnInit {
      * Sort part of orders by date desc
      * @param orders
      */
-    sort(orders: Order[]) {
-        orders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    sort(orders: Order[], desc: boolean = false) {
+        if (!desc) {
+            orders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        } else {
+            orders.sort((b, a) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        }
     }
 
     /**
@@ -105,8 +110,9 @@ export class ClientComponent implements OnInit {
      * Open new order dialog
      */
     openNewOrderDialog() {
-        let newOrder: Order = new Order();
+        const newOrder: Order = new Order();
         newOrder.id = 0;
+        newOrder.prepay = 0;
         newOrder.clientId = this.client.id;
         const dialogRef = this.clientDialog.open(OrderModalComponent, {
             maxWidth: '310px',
@@ -117,15 +123,16 @@ export class ClientComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
-                //newOrder.id = result.id;
+                // newOrder.id = result.id;
                 newOrder.date.setHours(newOrder.date.getHours() + newOrder.date.getTimezoneOffset() / 60);
                 if (newOrder.date > this.today) {
                     this.orders.current.push(newOrder);
-                    this.sort(this.orders.current);
+                    this.sort(this.orders.current, true);
                 } else {
                     this.orders.old.push(newOrder);
                     this.sort(this.orders.old);
                 }
+                this.filterOrders();
             }
         });
     }
@@ -134,15 +141,33 @@ export class ClientComponent implements OnInit {
      * @param order client order
      */
     openEditOrderDialog(order: Order) {
+        const temp = Object.assign({}, order);
         const dialogRef = this.clientDialog.open(OrderModalComponent, {
             maxWidth: '310px',
             width: 'auto',
-            data: { client: this.client, order: order }
-
+            data: {
+                order: temp
+            }
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
-                //this.loadClientHistory(this.client.id);
+                temp.date.setHours(temp.date.getHours() + temp.date.getTimezoneOffset() / 60);
+                const currentPos = this.orders.current.findIndex(item => item.id === temp.id);
+                if (currentPos !== -1) {
+                    this.orders.current.splice(currentPos, 1);
+                }
+                const oldPos = this.orders.old.findIndex(item => item.id === temp.id);
+                if (oldPos !== -1) {
+                    this.orders.old.splice(oldPos, 1);
+                }
+                if (temp.date > this.today) {
+                    this.orders.current.push(temp);
+                    this.sort(this.orders.current, true);
+                } else {
+                    this.orders.old.push(temp);
+                    this.sort(this.orders.old);
+                }
+                this.filterOrders();
             }
         });
     }

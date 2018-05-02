@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Interfaces", "Domain
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTest", "XUnitTest\XUnitTest.csproj", "{AEF80E4B-3F44-4154-BDE1-8809C3A53343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Reports", "Data.Reports\Data.Reports.csproj", "{FF340420-775E-4917-8754-01017EF90E35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Reports", "Data.Reports\Data.Reports.csproj", "{FF340420-775E-4917-8754-01017EF90E35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

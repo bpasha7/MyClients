@@ -31,7 +31,7 @@
               </button>
             </mat-menu>
             <img class="product-photo" src="{{generateProductPhotoUrl(product)}}" (click)="photoClick(product)">
-            <span [matMenuTriggerFor]="menu"> {{product.name}} </span>
+            <span class="warped-name" [matMenuTriggerFor]="menu"> {{product.name}} </span>
           </mat-cell>
         </ng-container>
 
