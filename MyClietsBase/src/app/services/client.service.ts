@@ -48,5 +48,4 @@ export class ClientService extends AppService {
         });
         return this.httpCleint.request(req);
     }
-
 }

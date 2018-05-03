@@ -22,9 +22,9 @@
   <mat-nav-list class="my-list-menu">
     <h3 mat-subheader>Всего:&nbsp;<span *ngIf="!process">{{sum}} &#x20bd;</span>
       <mat-spinner *ngIf="process" diameter="15"></mat-spinner></h3>
-    <mat-list-item *ngFor="let outgoing of outgoings" (click)="openEditOutgoingDialog(outgoing)">
-      <mat-icon mat-list-icon>shopping_cart</mat-icon>
-      <h4 mat-line>{{outgoing.name}}</h4>
+    <mat-list-item *ngFor="let outgoing of outgoings">
+      <mat-icon mat-list-icon (click)="openEditOutgoingDialog(outgoing)">shopping_cart</mat-icon>
+      <h4 mat-line (click)="openEditOutgoingDialog(outgoing)">{{outgoing.name}}</h4>
       <p mat-line>{{outgoing.total}} &#x20bd;. {{outgoing.date | date:'d MMM'}} </p>
       <button mat-icon-button style="bottom: 0px" (click)="delete(outgoing)" color="warn">
         <mat-icon aria-label="">close

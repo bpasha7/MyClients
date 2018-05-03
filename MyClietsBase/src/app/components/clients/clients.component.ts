@@ -26,7 +26,7 @@ export class ClientsComponent implements OnInit {
         public dialog: MatDialog,
         private clientService: ClientService) {
     }
-    
+
     ngOnInit() {
         this.loadClients();
         this.clientService.notifyMenu('Клиенты');
@@ -44,8 +44,7 @@ export class ClientsComponent implements OnInit {
                     this.snackBar.open('Пароль истек!', 'Закрыть', {
                       duration: 2000,
                     });
-                  }
-                  else {
+                  } else {
                     this.snackBar.open(error._body, 'Закрыть', {
                       duration: 2000,
                     });

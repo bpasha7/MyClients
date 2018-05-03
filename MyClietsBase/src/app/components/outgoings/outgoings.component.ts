@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Outgoing } from '../../models/index';
 import { UserService } from '../../services/index';
-import { OutgoingModalComponent } from '../modals';
+import { OutgoingModalComponent, ConfirmationComponent } from '../modals';
 
 @Component({
   selector: 'app-outgoings',
@@ -23,9 +23,10 @@ export class OutgoingsComponent implements OnInit {
 
   ngOnInit() {
     this.process = true;
-    this.userService.notifyMenu("Расходы");
+    this.userService.notifyMenu('Расходы');
   }
 
+  // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
     this.loadOutgoings();
   }
@@ -45,8 +46,7 @@ export class OutgoingsComponent implements OnInit {
           this.snackBar.open('Пароль истек!', 'Закрыть', {
             duration: 2000,
           });
-        }
-        else {
+        } else {
           this.snackBar.open(error._body, 'Закрыть', {
             duration: 2000,
           });
@@ -75,36 +75,46 @@ export class OutgoingsComponent implements OnInit {
    * @param outgoing
    */
   delete(outgoing: Outgoing) {
-    this.userService.deleteOutgoing(outgoing.id).subscribe(
-      data => {
-        const index: number = this.outgoings.indexOf(outgoing);
-        if (index !== -1) {
-          this.outgoings.splice(index, 1);
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+       data: {
+         title: 'Подтвердите',
+         text: 'Удалить ' + outgoing.name + ' на сумму ' + outgoing.total  + '?',
         }
-        this.outgoingsSum();
-        this.snackBar.open(data.json().message, 'Закрыть', {
-          duration: 2000,
-        });
-      },
-      error => {
-        if (error.status === 401) {
-          this.userService.goLogin();
-          this.snackBar.open('Пароль истек!', 'Закрыть', {
-            duration: 2000,
-          });
-        }
-        else {
-          this.snackBar.open(error._body, 'Закрыть', {
-            duration: 2000,
-          });
-        }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 1) {
+        this.userService.deleteOutgoing(outgoing.id).subscribe(
+          data => {
+            const index: number = this.outgoings.indexOf(outgoing);
+            if (index !== -1) {
+              this.outgoings.splice(index, 1);
+            }
+            this.outgoingsSum();
+            this.snackBar.open(data.json().message, 'Закрыть', {
+              duration: 2000,
+            });
+          },
+          error => {
+            if (error.status === 401) {
+              this.userService.goLogin();
+              this.snackBar.open('Пароль истек!', 'Закрыть', {
+                duration: 2000,
+              });
+            } else {
+              this.snackBar.open(error._body, 'Закрыть', {
+                duration: 2000,
+              });
+            }
+          }
+        );
       }
-    );
+    });
   }
   /**
    * Open new outgoing dialog
    */
-  openDialog(): void {
+  openDialog() {
     const dialogRef = this.dialog.open(OutgoingModalComponent, {
       // data: {  }
     });
@@ -114,8 +124,7 @@ export class OutgoingsComponent implements OnInit {
         this.outgoings.push(result);
         this.sort();
       }
-
-    })
+    });
   }
   /**
    * Open outgoing dialog for editing data

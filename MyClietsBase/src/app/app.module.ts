@@ -66,6 +66,7 @@ import {
   OutgoingModalComponent,
   DiscountModalComponent,
   MessagePreviewComponent,
+  ConfirmationComponent,
 } from './components/modals/index';
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
@@ -74,6 +75,8 @@ import { OutgoingsComponent } from './components/outgoings/outgoings.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { LoginComponent } from './components/login/login.component';
 import { MessagesComponent } from './components/messages/messages.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+
 
 import { AppConfig } from './app.config';
 import { UserService, ClientService } from './services/index';
@@ -89,6 +92,8 @@ const appRoutes: Routes = [
   { path: 'analytics', component: AnalyticsComponent },
   { path: '', component: MessagesComponent },
   { path: 'messages', component: MessagesComponent },
+  { path: 'start', component: RegistrationComponent },
+
 ];
 /*Routes */
 
@@ -157,7 +162,8 @@ export class DemoMaterialModule { }
     PhotoModalComponent,
     DiscountModalComponent,
     OutgoingModalComponent,
-    MessagePreviewComponent
+    MessagePreviewComponent,
+    ConfirmationComponent
   ],
   declarations: [
     AppComponent,
@@ -169,9 +175,11 @@ export class DemoMaterialModule { }
     PhotoModalComponent,
     DiscountModalComponent,
     MessagePreviewComponent,
+    ConfirmationComponent,
     OutgoingModalComponent,
     ProductsComponent,
     MessagesComponent,
+    RegistrationComponent,
     OrdersComponent,
     OutgoingsComponent,
     LoginComponent,

@@ -112,6 +112,9 @@ namespace MyClientsBase.Services
       if (user == null)
         return null;
 
+      if (user.Activated == false)
+        throw new AppException("Обратитесь к администратору для активации!");
+
       // check if password is correct
       if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
         return null;
@@ -163,8 +166,8 @@ namespace MyClientsBase.Services
       if (string.IsNullOrWhiteSpace(password))
         throw new AppException("Password is required");
 
-      if (_repository.Count(x => x.Login == user.Login) != 0)
-        throw new AppException("Login " + user.Login + " is already taken!");
+      if (_repository.Count(x => x.Login == user.Login || x.Email == user.Email) != 0)
+        throw new AppException("Логини или Почта уже заняты!");
 
       byte[] passwordHash, passwordSalt;
       CreatePasswordHash(password, out passwordHash, out passwordSalt);

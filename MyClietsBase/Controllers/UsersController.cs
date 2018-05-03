@@ -337,7 +337,11 @@ namespace MyClientsBase.Controllers
       try
       {
         _userService.Create(user, userDto.Password);
-        return Ok();
+        return Ok(new
+        {
+          Message = "Учетная запиь создана."
+        }
+      );
       }
       catch (AppException ex)
       {

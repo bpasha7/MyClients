@@ -4,6 +4,7 @@ import { Discount } from '../../../models/index';
 import { UserService } from '../../../services/index';
 import { error } from 'util';
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'discount-dialog',
     styleUrls: ['./discount.component.css'],
     templateUrl: './discount.component.html',
@@ -37,6 +38,7 @@ export class DiscountModalComponent {
                 });
                 this.dialogRef.close(this.discount);
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
@@ -53,6 +55,7 @@ export class DiscountModalComponent {
                   });
                   return 1;
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
@@ -61,7 +64,7 @@ export class DiscountModalComponent {
             }
         );
     }
-    
+
     onNoClick(): void {
         this.dialogRef.close();
     }

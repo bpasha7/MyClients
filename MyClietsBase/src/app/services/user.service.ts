@@ -40,6 +40,9 @@ export class UserService extends AppService {
     getUserInfo() {
         return this.http.get(this.config.apiUrl + this.controller, this.jwt());
     }
+    register(user: User) {
+        return this.http.post(this.config.apiUrl + this.controller + '/register', user);
+    }
     //#endregion
     /**
      * Logout - clear local storage

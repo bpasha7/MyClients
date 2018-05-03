@@ -146,7 +146,7 @@ export class ProductsComponent implements OnInit {
             return;
         }
         const dialogRef = this.dialog.open(MessagePreviewComponent, {
-          //width: '250px',
+          // width: '250px',
           data: {
             title: product.name,
             src: this.generateProductPhotoUrl(product),

@@ -26,7 +26,7 @@ export class AnalyticsComponent implements OnInit {
   public pieChartData: Array<any>;
   public pieChartOptions: any = {
     responsive: true
-    //maintainAspectRatio: false
+    // maintainAspectRatio: false
   };
 
   public show = false;
@@ -85,8 +85,7 @@ export class AnalyticsComponent implements OnInit {
           this.snackBar.open('Пароль истек!', 'Закрыть', {
             duration: 2000,
           });
-        }
-        else {
+        } else {
           this.snackBar.open(error._body, 'Закрыть', {
             duration: 2000,
           });

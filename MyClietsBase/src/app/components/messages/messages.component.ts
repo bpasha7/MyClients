@@ -10,7 +10,7 @@ import { UserService } from '../../services/index';
 })
 export class MessagesComponent implements OnInit {
   public messages: Message[] = [];
-  public unread: number = 0;//this.countUnread();;
+  public unread = 0;
   public today: Date;
   constructor(
     public messageDialog: MatDialog,
@@ -22,8 +22,8 @@ export class MessagesComponent implements OnInit {
     const now = new Date();
     this.today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     this.loadMessages();
-    this.userService.notifyMenu("Новости");
-    //this.unread = this.countUnread();
+    this.userService.notifyMenu('Новости');
+    // this.unread = this.countUnread();
   }
 
   countUnread() {

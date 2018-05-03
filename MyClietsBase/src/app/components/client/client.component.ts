@@ -36,6 +36,7 @@ export class ClientComponent implements OnInit {
         this.today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         this.userService.notifyMenu('Клиент');
     }
+    // tslint:disable-next-line:use-life-cycle-interface
     ngAfterViewInit() {
         this.route.params.subscribe(params => {
             this.loadClientInfo(params['id']);

@@ -26,6 +26,7 @@ namespace Data.EF.Entities
         public string Email { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime Birthday { get; set; }
+        public bool Activated { get; set; }
 
 
 
