@@ -61,7 +61,7 @@
         </mat-row>
     </mat-table>
     <!-- *ngIf="clients?.length > 0" -->
-    <mat-paginator #paginator [length]="clients.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+    <mat-paginator #paginator [length]="clients.length" [pageSize]="15" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
 </div>
 <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
     <mat-icon aria-label="">add</mat-icon>

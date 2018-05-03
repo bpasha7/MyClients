@@ -34,12 +34,12 @@ export class ClientComponent implements OnInit {
     ngOnInit() {
         const now = new Date();
         this.today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        this.orders.current = [];
-        this.orders.old = [];
+        this.userService.notifyMenu('Клиент');
+    }
+    ngAfterViewInit() {
         this.route.params.subscribe(params => {
             this.loadClientInfo(params['id']);
         });
-        this.userService.notifyMenu('Клиент');
     }
 
     copyDone() {

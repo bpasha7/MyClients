@@ -5,7 +5,7 @@
       <input matInput placeholder="Название" [(ngModel)]="outgoing.name">
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Цена" [(ngModel)]="outgoing.total">
+      <input matInput placeholder="Цена" [(ngModel)]="outgoing.total" keyboardType="number">
     </mat-form-field>
     <mat-form-field>
       <input matInput [matDatepicker]="picker" placeholder="Дата" [(ngModel)]="outgoing.date">
@@ -16,7 +16,7 @@
 </div>
 <div mat-dialog-actions style="display: block">
   <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">ОТМЕНА</button>
-  <button *ngIf="outgoing.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
+  <button *ngIf="outgoing.id != 0" mat-button class="button-ok" (click)="update()" cdkFocusInitial>ОБНОВИТЬ</button>
   <button *ngIf="outgoing.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
   <!-- <button mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>Обновить</button> -->
 </div>

@@ -46,20 +46,22 @@ export class OutgoingModalComponent {
         );
     }
 
-    // update() {
-    //     this.userService.updateProduct(this.outgoing).subscribe(
-    //         data => {
-    //             this.snackBar.open(data.json().message, 'Закрыть', {
-    //                 duration: 2000,
-    //               });
-    //         },
-    //         error => {
-    //             this.snackBar.open(error._body, 'Закрыть', {
-    //                 duration: 2000,
-    //               });
-    //         }
-    //     );
-    // }
+    update() {
+        this.userService.updateOutgoing(this.outgoing).subscribe(
+            data => {
+                this.dialogRef.close(1);
+                this.snackBar.open(data.json().message, 'Закрыть', {
+                    duration: 2000,
+                  });
+            },
+            error => {
+                this.dialogRef.close(0);
+                this.snackBar.open(error._body, 'Закрыть', {
+                    duration: 2000,
+                  });
+            }
+        );
+    }
     
     onNoClick(): void {
         this.dialogRef.close();

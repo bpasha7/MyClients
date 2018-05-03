@@ -64,8 +64,6 @@ namespace MyClientsBase.Controllers
       }
     }
 
-    
-
     [AllowAnonymous]
     [HttpPost("message")]
     public IActionResult CreateMessage([FromBody]MessageDto messageDto)

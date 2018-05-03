@@ -31,6 +31,8 @@ namespace MyClientsBase.Services
     void CreateDiscount(Discount discount);
     void CreateOrder(Order order);
     void CreateOutgoing(Outgoing outgoing);
+    void UpdateOutgoing(int userId, Outgoing outgoing);
+    void DeleteOutgoing(int userId, int outgoingId);
     void AddMessage(Message message);
     void SetMessageAsRead(int userId, int messageId);
     IList<Product> GetProducts(int userId);
@@ -182,13 +184,32 @@ namespace MyClientsBase.Services
     public void UpdateDiscount(Discount discount)
     {
       _discountsRepository.Update(discount);
-      _repository.Save();
+     // _repository.Save();
     }
 
     public void CreateOutgoing(Outgoing outgoing)
     {
       _outgoingsRepository.Add(outgoing);
-      _outgoingsRepository.Save();
+      //_outgoingsRepository.Save();
+    }
+
+    public void UpdateOutgoing(int userId, Outgoing outgoing)
+    {
+      var exist = _outgoingsRepository.Count(o => o.Id == outgoing.Id && o.UserId == userId) == 1 ? true : false;
+      if(!exist)
+        throw new AppException("Вам нельзя обновить расход!");
+      outgoing.UserId = userId;
+      _outgoingsRepository.Update(outgoing);
+      //_outgoingsRepository.Save();
+    }
+
+    public void DeleteOutgoing(int userId, int outgoingId)
+    {
+      var outgoing = _outgoingsRepository.Query(o => o.UserId == userId && o.Id == outgoingId).SingleOrDefault();
+      if (outgoing == null)
+        throw new AppException("Расход не найден!");
+      _outgoingsRepository.Remove(outgoingId);
+      //_outgoingsRepository.Save();
     }
 
     public IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end)

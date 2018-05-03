@@ -12,7 +12,7 @@
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker touchUi="true" #picker2 startView="year"></mat-datepicker>
       </mat-form-field>
-      <button [disabled]="begin == null || end == null" mat-icon-button color="accent" (click)="loadOutgoings()">
+      <button [disabled]="begin == null || end == null || process" mat-icon-button color="accent" (click)="loadOutgoings()">
         <mat-icon aria-label="">update</mat-icon>
       </button>
     </div>
@@ -20,8 +20,9 @@
 </div>
 <div class="outgoings-container last">
   <mat-nav-list class="my-list-menu">
-    <h3 mat-subheader>Всего: {{sum()}} &#x20bd;</h3>
-    <mat-list-item *ngFor="let outgoing of outgoings">
+    <h3 mat-subheader>Всего:&nbsp;<span *ngIf="!process">{{sum}} &#x20bd;</span>
+      <mat-spinner *ngIf="process" diameter="15"></mat-spinner></h3>
+    <mat-list-item *ngFor="let outgoing of outgoings" (click)="openEditOutgoingDialog(outgoing)">
       <mat-icon mat-list-icon>shopping_cart</mat-icon>
       <h4 mat-line>{{outgoing.name}}</h4>
       <p mat-line>{{outgoing.total}} &#x20bd;. {{outgoing.date | date:'d MMM'}} </p>

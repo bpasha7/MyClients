@@ -117,6 +117,20 @@ export class UserService extends AppService {
     createOutgoing(outgoing: Outgoing) {
         return this.http.post(this.config.apiUrl + this.controller + '/outgoing', outgoing, this.jwt());
     }
+    /**
+     * Update user outgoing
+     * @param outgoing
+     */
+    updateOutgoing(outgoing: Outgoing) {
+        return this.http.put(this.config.apiUrl + this.controller + '/outgoing', outgoing, this.jwt());
+    }
+    /**
+     * Delete user outgoing
+     * @param outgoingId outgoing id
+     */
+    deleteOutgoing(outgoingId: number) {
+        return this.http.delete(this.config.apiUrl + this.controller + '/outgoing/' + outgoingId, this.jwt());
+    }
     //#endregion
     //#region Orders api methods
     /**
