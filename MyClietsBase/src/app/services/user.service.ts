@@ -73,6 +73,13 @@ export class UserService extends AppService {
         return this.http.put(this.config.apiUrl + this.controller + '/product', product, this.jwt());
     }
     /**
+     * Remove product
+     * @param productId product id
+     */
+    removeProduct(productId: number) {
+        return this.http.patch(this.config.apiUrl + this.controller + '/product/' + productId, null,  this.jwt());        
+    }
+    /**
      * Upload user product photo
      * @param productId product id
      * @param form form date with file

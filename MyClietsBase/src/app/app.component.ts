@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title, DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { UserService, ClientService } from './services';
-import { MatIconRegistry, NativeDateAdapter } from '@angular/material';
+import { MatIconRegistry, NativeDateAdapter, MatSnackBar } from '@angular/material';
 //import { Client } from './models';
 
 @Component({
@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   public unreadMessageCount = 0;
   title = this.appName;
   public constructor(
+    public snackBar: MatSnackBar,
     private userService: UserService,
     private clientService: ClientService,
     iconReg: MatIconRegistry,
@@ -43,17 +44,23 @@ export class AppComponent implements OnInit {
       });
   }
 
-  handleMessage(message: string) {
-    switch (message) {
-      case '1':
-        this.isLogined = true;
-        break;
-      case '0':
-        this.isLogined = false;
-        break;
-      default:
-        this.title = message;
-        break;
+  handleMessage(message: any) {
+    if (message.type !== undefined) {
+      this.snackBar.open(message.text, 'Закрыть', {
+        duration: 2000,
+      });
+    } else {
+      switch (message) {
+        case '1':
+          this.isLogined = true;
+          break;
+        case '0':
+          this.isLogined = false;
+          break;
+        default:
+          this.title = message;
+          break;
+      }
     }
   }
 

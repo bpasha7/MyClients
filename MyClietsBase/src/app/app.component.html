@@ -7,10 +7,10 @@
     <mat-icon>lock</mat-icon>
   </button>
   <h1>{{title}}</h1>
-  <button *ngIf="isLogined && unreadMessageCount == 0" style="margin-left: auto;" routerLink="/messages" mat-icon-button>
+  <button *ngIf="isLogined && unreadMessageCount == 0" class="right-elements" routerLink="/messages" mat-icon-button>
     <mat-icon>notifications</mat-icon>
   </button>
-  <button *ngIf="isLogined && unreadMessageCount > 0" style="margin-left: auto; color: hotpink;" routerLink="/messages" mat-icon-button>
+  <button *ngIf="isLogined && unreadMessageCount > 0" class="right-elements" color="warn" routerLink="/messages" mat-icon-button>
     <mat-icon>notifications_active</mat-icon>
   </button>
 </mat-toolbar>

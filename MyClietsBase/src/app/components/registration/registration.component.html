@@ -7,7 +7,7 @@
     <mat-vertical-stepper [linear]="true">
       <mat-step [stepControl]="userInfoFormGroup">
         <form [formGroup]="userInfoFormGroup" class="from-many-fields">
-          <ng-template matStepLabel>Укажите персональные данные</ng-template>
+          <ng-template matStepLabel>Персональные данные</ng-template>
           <mat-form-field>
             <input matInput #name minlength="5" maxlength="128" placeholder="Фимилия и имя" [(ngModel)]="newUser.name" formControlName="userInfoCtrl"
               required>
@@ -20,7 +20,7 @@
             <mat-datepicker touchUi="true" #picker startView="multi-year" disabled="false"></mat-datepicker>
           </mat-form-field> -->
           <mat-form-field>
-            <input matInput placeholder="Email" [formControl]="emailFormControl" [(ngModel)]="newUser.email" [errorStateMatcher]="matcher">
+            <input matInput type="email" placeholder="Email" [formControl]="emailFormControl" [(ngModel)]="newUser.email" [errorStateMatcher]="matcher">
             <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
             <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
               Пожалуйста, введите правильный адрес
@@ -36,7 +36,7 @@
       </mat-step>
       <mat-step [stepControl]="accountInfoFormGroup">
         <form [formGroup]="accountInfoFormGroup" class="from-many-fields">
-          <ng-template matStepLabel>Укажите данные для входа в систему</ng-template>
+          <ng-template matStepLabel>Логин и пароль</ng-template>
           <mat-form-field>
             <input matInput #login minlength="5" maxlength="50" placeholder="Логин" [(ngModel)]="newUser.login" formControlName="loginCtrl"
               required>

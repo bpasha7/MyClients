@@ -2,7 +2,7 @@
   <mat-card class="search-card">
     <mat-form-field [floatLabel]="'never'" class="">
       <mat-icon matPrefix>search</mat-icon>
-      <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
+      <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Поиск" type="search">
     </mat-form-field>
   </mat-card>
 </div>
@@ -25,7 +25,7 @@
                 <mat-icon>add_a_photo</mat-icon>
                 <span>Фото</span>
               </button>
-              <button mat-menu-item disabled>
+              <button mat-menu-item (click)="deleteProduct(product)">
                 <mat-icon>delete</mat-icon>
                 <span>Удалить</span>
               </button>

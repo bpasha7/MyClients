@@ -25,6 +25,7 @@ namespace MyClientsBase.Services
     User GetUserInfo(int userId);
     void UpdateUserPassword(int userId, string password);
     void CreateProduct(Product product);
+    void SetAsRemovedProduct(int userId, int productId);
     void UpdateProduct(Product product);
     void SetPhotoFlag(int userId, int productId);
     void UpdateDiscount(Discount discount);
@@ -152,7 +153,7 @@ namespace MyClientsBase.Services
 
     public IList<Product> GetProducts(int userId)
     {
-      return _repository.Find(u => u.Id == userId, p => p.Products).Products.OrderBy(o => o.Name).ToList();
+      return _productsRepository.Query(p => p.UserId == userId && !p.IsRemoved).OrderBy(o => o.Name).ToList();
     }
 
     public IList<Discount> GetDiscounts(int userId)
@@ -294,7 +295,7 @@ namespace MyClientsBase.Services
     public void UpdateUserPassword(int userId, string password)
     {
       if (string.IsNullOrWhiteSpace(password))
-        throw new AppException("Password is required");
+        throw new AppException("Пароль содержит пробелы!");
 
       byte[] passwordHash, passwordSalt;
       CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -308,11 +309,20 @@ namespace MyClientsBase.Services
 
     public void SetPhotoFlag(int userId, int productId)
     {
-      var product = _repository.Find(u => u.Id == userId, p => p.Products).Products.Where(p => p.Id == productId).SingleOrDefault();
+      var product = _productsRepository.Find(p => p.UserId == userId && p.Id == productId);
       if (product == null)
-        throw new AppException($"Product #{productId} not found. User # {userId}");
+        throw new Exception($"Услуга или товар не найдены.");
       product.HasPhoto = true;
-      _repository.Save();
+      _productsRepository.Save();
+    }
+
+    public void SetAsRemovedProduct(int userId, int productId)
+    {
+      var product = _productsRepository.Find(p => p.UserId == userId && p.Id == productId);
+      if (product == null)
+        throw new Exception($"Услуга или товар не найдены.");
+      product.IsRemoved = true;
+      _productsRepository.Save();
     }
   }
 }

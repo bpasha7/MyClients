@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Product, Discount } from '../../models/index';
 import { UserService } from '../../services/index';
-import { ProductModalComponent, DiscountModalComponent, PhotoModalComponent, MessagePreviewComponent } from '../modals';
+import { ProductModalComponent, DiscountModalComponent, PhotoModalComponent, MessagePreviewComponent, ConfirmationComponent } from '../modals';
 import { AppConfig } from '../../app.config';
 
 @Component({
@@ -42,7 +42,7 @@ export class ProductsComponent implements OnInit {
         public dialog: MatDialog,
         private userService: UserService,
         public config: AppConfig) {
-            this.photoDir = this.config.photoUrl + localStorage.getItem('userHash') + '/';
+        this.photoDir = this.config.photoUrl + localStorage.getItem('userHash') + '/';
     }
     generateProductPhotoUrl(product: Product) {
         return product.hasPhoto ? this.photoDir + product.id + '_p.jpg' : this.config.defaultPhoto;
@@ -146,14 +146,56 @@ export class ProductsComponent implements OnInit {
             return;
         }
         const dialogRef = this.dialog.open(MessagePreviewComponent, {
-          // width: '250px',
-          data: {
-            title: product.name,
-            src: this.generateProductPhotoUrl(product),
-            mode: 'image'
-          }
+            // width: '250px',
+            data: {
+                title: product.name,
+                src: this.generateProductPhotoUrl(product),
+                mode: 'image'
+            }
         });
-      }
+    }
+    /**
+     * Delete product
+     * @param productId Product id
+     */
+    deleteProduct(product: Product) {
+        const dialogRef = this.dialog.open(ConfirmationComponent, {
+            data: {
+              title: 'Подтвердите',
+              text: 'Удалить ' + product.name + ' цена ' + product.price  + '?',
+             }
+         });
+     
+         dialogRef.afterClosed().subscribe(result => {
+           if (result === 1) {
+             this.userService.removeProduct(product.id).subscribe(
+               data => {
+                 const index: number = this.products.indexOf(product);
+                 if (index !== -1) {
+                   this.products.splice(index, 1);
+                   this.initProductSourceTable();
+                 }
+                 this.snackBar.open(data.json().message, 'Закрыть', {
+                   duration: 2000,
+                 });
+               },
+               error => {
+                this.userService.responseErrorHandle(error);
+                //  if (error.status === 401) {
+                //    this.userService.goLogin();
+                //    this.snackBar.open('Пароль истек!', 'Закрыть', {
+                //      duration: 2000,
+                //    });
+                //  } else {
+                //    this.snackBar.open(error._body, 'Закрыть', {
+                //      duration: 2000,
+                //    });
+                //  }
+               }
+             );
+           }
+         });
+    }
     /**
      * Open modal dialog for creating new discount or product
      */
@@ -224,7 +266,7 @@ export class ProductsComponent implements OnInit {
             data: {
                 productId: product.id,
                 type: 'product'
-             }
+            }
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result !== 0) {

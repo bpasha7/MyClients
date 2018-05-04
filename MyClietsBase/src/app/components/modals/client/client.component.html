@@ -13,7 +13,7 @@
   <div class="container-row">
     <mat-form-field>
       <mat-icon matPrefix>phone</mat-icon>
-      <input type="tel" matInput placeholder="Телефон" [(ngModel)]="client.phone">
+      <input matInput placeholder="Телефон" [(ngModel)]="client.phone" type="tel">
     </mat-form-field>
     <mat-form-field>
       <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="client.birthday" disabled>

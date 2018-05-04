@@ -50,13 +50,13 @@
        <!-- prepayment -->
        <mat-form-field>
           <mat-icon matPrefix>done</mat-icon>
-          <input matInput placeholder="Предоплата" [(ngModel)]="order.prepay">
-          <mat-hint align="end">Включается в итог</mat-hint>
+          <input matInput placeholder="Предоплата" (input)="calculate()"  [(ngModel)]="order.prepay" type="number">
+          <mat-hint *ngIf="order.prepay != 0" align="begin">Включается в итог</mat-hint>
         </mat-form-field>
     <!-- total -->
     <mat-form-field>
       <mat-icon matPrefix>done_all</mat-icon>
-      <input matInput placeholder="Итого" [(ngModel)]="order.total">
+      <input matInput placeholder="Итого" [(ngModel)]="order.total" type="number">
     </mat-form-field>
   </div>
   <div class="container-column">

@@ -16,6 +16,7 @@ namespace Data.EF.Entities {
         [Required]
         public decimal Price { get; set; }
         public bool HasPhoto { get; set; }
+        public bool IsRemoved { get; set; }
         /// <summary>
         /// User
         /// </summary>

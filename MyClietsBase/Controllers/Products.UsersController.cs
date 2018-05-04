@@ -123,6 +123,29 @@ namespace MyClientsBase.Controllers
       }
     }
 
+    [HttpPatch("product/{id}")]
+    public IActionResult RemoveProduct(int id)
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        _userService.SetAsRemovedProduct(userId, id);
+        return Ok(new
+        {
+          Message = "Услуга удалена"
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
     [HttpPut("product")]
     public IActionResult UpdateProducts([FromBody]ProductDto productDto)
     {

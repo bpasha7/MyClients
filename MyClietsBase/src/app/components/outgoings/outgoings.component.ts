@@ -116,6 +116,8 @@ export class OutgoingsComponent implements OnInit {
    */
   openDialog() {
     const dialogRef = this.dialog.open(OutgoingModalComponent, {
+      maxWidth: '310px',
+      width: 'auto',
       // data: {  }
     });
 

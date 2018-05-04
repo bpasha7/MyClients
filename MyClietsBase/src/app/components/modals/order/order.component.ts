@@ -141,6 +141,18 @@ export class OrderModalComponent implements OnInit {
      * Create new one
      */
     create() {
+        if (this.selectedProduct.id === undefined){
+            this.snackBar.open('Не выбран продукт!', 'Закрыть', {
+                duration: 2000,
+            });
+            return;
+        }
+        if (this.order.date === undefined){
+            this.snackBar.open('Не выбрана дата!', 'Закрыть', {
+                duration: 2000,
+            });
+            return;
+        }
         this.order.productId = this.selectedProduct.id;
         const splitted = this.time.split(':', 2);
         // tslint:disable-next-line:radix

@@ -55,7 +55,7 @@ namespace MyClientsBase.Services
         {
           ProductId = field.ProductId,
           ProductName = field.ProductInfo.Name,
-          Total = field.Total,
+          Total = field.Total + field.Prepay,
           Date = field.Date
         })
         .ToList();
