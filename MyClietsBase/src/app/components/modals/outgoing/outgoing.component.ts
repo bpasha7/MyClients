@@ -4,6 +4,7 @@ import { Outgoing } from '../../../models/index';
 import { UserService } from '../../../services/index';
 import { error } from 'util';
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'outgoing-dialog',
     styleUrls: ['./outgoing.component.css'],
     templateUrl: './outgoing.component.html',
@@ -12,6 +13,7 @@ import { error } from 'util';
 export class OutgoingModalComponent {
     public outgoing: Outgoing;
     public title: string;
+    public inProc = false;
     constructor(
         public dialog: MatDialog,
         public snackBar: MatSnackBar,
@@ -30,6 +32,7 @@ export class OutgoingModalComponent {
     }
 
     create() {
+        this.inProc = true;
         this.userService.createOutgoing(this.outgoing).subscribe(
             data => {
                 this.outgoing.id = data.json().outgoingId;
@@ -38,7 +41,9 @@ export class OutgoingModalComponent {
                 });
                 this.dialogRef.close(this.outgoing);
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
+                this.inProc = false;
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
                   });
@@ -47,6 +52,7 @@ export class OutgoingModalComponent {
     }
 
     update() {
+        this.inProc = true;
         this.userService.updateOutgoing(this.outgoing).subscribe(
             data => {
                 this.dialogRef.close(1);
@@ -54,8 +60,10 @@ export class OutgoingModalComponent {
                     duration: 2000,
                   });
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
-                this.dialogRef.close(0);
+                this.inProc = false;
+                // this.dialogRef.close(0);
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
                   });

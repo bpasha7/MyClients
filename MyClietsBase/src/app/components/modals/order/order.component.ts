@@ -36,6 +36,7 @@ export class OrderModalComponent implements OnInit {
     public discounts: Discount[] = [];
     public title: string;
     public photoDir = '';
+    public inProc = false;
     // productControl = new FormControl('', [Validators.required]);
     discountControl = new FormControl('');
     constructor(
@@ -159,6 +160,7 @@ export class OrderModalComponent implements OnInit {
         this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
         // tslint:disable-next-line:radix
         this.order.date.setMinutes(parseInt(splitted[1]));
+        this.inProc = true;
         this.userService.createOrder(this.order).subscribe(
             data => {
                 this.order.id = data.json().orderId;
@@ -169,6 +171,7 @@ export class OrderModalComponent implements OnInit {
             },
             // tslint:disable-next-line:no-shadowed-variable
             error => {
+                this.inProc = false;
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
                 });
@@ -186,6 +189,7 @@ export class OrderModalComponent implements OnInit {
         this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
         // tslint:disable-next-line:radix
         this.order.date.setMinutes(parseInt(splitted[1]));
+        this.inProc = true;
         this.userService.updateOrder(this.order).subscribe(
             data => {
                 this.snackBar.open(data.json().message, 'Закрыть', {
@@ -195,6 +199,7 @@ export class OrderModalComponent implements OnInit {
             },
             // tslint:disable-next-line:no-shadowed-variable
             error => {
+                this.inProc = false;
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
                 });
@@ -204,11 +209,12 @@ export class OrderModalComponent implements OnInit {
     /**
      * Calculating order total price
      */
-    calculate() {
+    calculate(prepay: number = 0) {
+        const price = prepay === 0 ? this.selectedProduct.price  : this.order.total;
         if (this.selectedProduct.price != null || this.discountControl.value) {
-            this.order.total = this.selectedProduct.price * (1 - this.discountControl.value) - this.order.prepay;
+            this.order.total = price * (1 - this.discountControl.value) - this.order.prepay;
         } else if (this.productCtrl.value != null) {
-            this.order.total = this.selectedProduct.price - this.order.prepay;
+            this.order.total = price - this.order.prepay;
         }
     }
     onNoClick(): void {

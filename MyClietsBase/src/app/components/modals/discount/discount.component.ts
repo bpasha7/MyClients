@@ -13,6 +13,7 @@ import { error } from 'util';
 export class DiscountModalComponent {
     public discount: Discount;
     public title: string;
+    public inProc = false;
     constructor(
         public snackBar: MatSnackBar,
         private userService: UserService,
@@ -30,6 +31,7 @@ export class DiscountModalComponent {
     }
 
     create() {
+        this.inProc = true;
         this.userService.createDiscount(this.discount).subscribe(
             data => {
                 this.discount.id = data.json().discountId;
@@ -40,6 +42,7 @@ export class DiscountModalComponent {
             },
             // tslint:disable-next-line:no-shadowed-variable
             error => {
+                this.inProc = false;
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
                   });
@@ -48,19 +51,19 @@ export class DiscountModalComponent {
     }
 
     update() {
+        this.inProc = true;
         this.userService.updateDiscount(this.discount).subscribe(
             data => {
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
                   });
-                  return 1;
             },
             // tslint:disable-next-line:no-shadowed-variable
             error => {
+                this.inProc = false;
                 this.snackBar.open(error._body, 'Закрыть', {
                     duration: 2000,
                   });
-                  return 0;
             }
         );
     }
