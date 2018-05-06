@@ -20,11 +20,11 @@ namespace MyClientsBase.Controllers
   public partial class UsersController : Controller
   {
     [HttpPost("order")]
-    public IActionResult CreateOrder([FromBody]OrderDto ordertDto)
+    public IActionResult CreateOrder([FromBody]OrderDto orderDto)
     {
       try
       {
-        var order = _mapper.Map<Order>(ordertDto);
+        var order = _mapper.Map<Order>(orderDto);
 
         if (order == null)
           throw new AppException("Неверный данные!");
@@ -32,7 +32,16 @@ namespace MyClientsBase.Controllers
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         order.UserId = userId;
 
-        _userService.CreateOrder(order);
+        if (orderDto.Prepay != 0)
+        {
+          order.Prepayment = new OrderPrepayment
+          {
+            Total = orderDto.Prepay,
+            Date = orderDto.DatePrepay,
+          };
+        }
+
+        _orderService.CreateOrder(order);
         return Ok(new
         {
           Message = "Запись добавлена!",
@@ -64,8 +73,18 @@ namespace MyClientsBase.Controllers
 
         if (order.UserId != userId)
           throw new AppException("Вам нельзя обновить услугу!");
+        OrderPrepayment op = null;
 
-        _orderService.Update(order);
+        if (orderDto.Prepay != 0)
+        {
+          op = new OrderPrepayment
+          {
+            Total = orderDto.Prepay,
+            Date = orderDto.DatePrepay
+          };
+        }
+
+        _orderService.Update(order, op);
 
         return Ok(new
         {

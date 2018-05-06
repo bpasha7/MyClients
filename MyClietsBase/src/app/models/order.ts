@@ -12,4 +12,5 @@ export class Order {
     clientId: number;
     removed: boolean;
     date: Date;
+    datePrepay: Date;
 }

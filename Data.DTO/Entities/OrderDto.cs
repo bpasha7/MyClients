@@ -16,5 +16,6 @@ namespace Data.DTO.Entities
         public string Commentary { get; set; }
         public bool Removed { get; set; }
         public decimal Prepay { get; set; }
+        public DateTime DatePrepay { get; set; }
     }
 }

@@ -6,9 +6,8 @@ import { UserService } from '../../../services/index';
 import { error } from 'util';
 import * as moment from 'moment';
 import { AppConfig } from '../../../app.config';
-import { Observable } from 'rxjs/Observable';
-import {startWith} from 'rxjs/operators/startWith';
-import {map} from 'rxjs/operators/map';
+import { Observable } from 'rxjs';
+import {startWith, map} from 'rxjs/operators';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -142,13 +141,13 @@ export class OrderModalComponent implements OnInit {
      * Create new one
      */
     create() {
-        if (this.selectedProduct.id === undefined){
+        if (this.selectedProduct.id === undefined) {
             this.snackBar.open('Не выбран продукт!', 'Закрыть', {
                 duration: 2000,
             });
             return;
         }
-        if (this.order.date === undefined){
+        if (this.order.date === undefined) {
             this.snackBar.open('Не выбрана дата!', 'Закрыть', {
                 duration: 2000,
             });

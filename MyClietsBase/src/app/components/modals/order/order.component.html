@@ -35,24 +35,29 @@
       <mat-datepicker touchUi="true" #picker startView="month" disabled="false"></mat-datepicker>
     </mat-form-field>
   </div>
-  <div class="container-column">
-     <!-- discount -->
-     <mat-form-field>
-        <mat-select placeholder="Скидки" value="0" (change)="calculate()" [formControl]="discountControl">
-          <mat-option [value]="0">Без</mat-option>
-          <mat-option *ngFor="let discount of discounts" [value]="discount.percent">
-            {{discount.name}} {{100 * discount.percent}}%
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+  <div class="container-row">
+    <!-- prepayment -->
+    <mat-form-field>
+      <mat-icon matPrefix>done</mat-icon>
+      <input matInput placeholder="Предоплата" (input)="calculate()" [(ngModel)]="order.prepay" type="number">
+      <mat-hint *ngIf="order.prepay != 0" align="begin">Включается в итог</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker2" placeholder="Дата" [(ngModel)]="order.datePrepay">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker touchUi="true" #picker2 startView="month" disabled="false"></mat-datepicker>
+    </mat-form-field>
   </div>
   <div class="container-row">
-       <!-- prepayment -->
-       <mat-form-field>
-          <mat-icon matPrefix>done</mat-icon>
-          <input matInput placeholder="Предоплата" (input)="calculate()"  [(ngModel)]="order.prepay" type="number">
-          <mat-hint *ngIf="order.prepay != 0" align="begin">Включается в итог</mat-hint>
-        </mat-form-field>
+    <!-- discount -->
+    <mat-form-field>
+      <mat-select placeholder="Скидки" value="0" (change)="calculate()" [formControl]="discountControl">
+        <mat-option [value]="0">Без</mat-option>
+        <mat-option *ngFor="let discount of discounts" [value]="discount.percent">
+          {{discount.name}} {{100 * discount.percent}}%
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <!-- total -->
     <mat-form-field>
       <mat-icon matPrefix>done_all</mat-icon>

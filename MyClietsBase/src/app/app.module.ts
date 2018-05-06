@@ -13,6 +13,7 @@ import {
   MAT_DATE_LOCALE,
   MAT_DATE_FORMATS,
   DateAdapter,
+  MatBadgeModule,
   MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
@@ -100,6 +101,7 @@ const appRoutes: Routes = [
 @NgModule({
   exports: [
     CdkTableModule,
+    MatBadgeModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,

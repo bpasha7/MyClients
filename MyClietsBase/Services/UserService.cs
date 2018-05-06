@@ -30,7 +30,6 @@ namespace MyClientsBase.Services
     void SetPhotoFlag(int userId, int productId);
     void UpdateDiscount(Discount discount);
     void CreateDiscount(Discount discount);
-    void CreateOrder(Order order);
     void CreateOutgoing(Outgoing outgoing);
     void UpdateOutgoing(int userId, Outgoing outgoing);
     void DeleteOutgoing(int userId, int outgoingId);
@@ -133,12 +132,6 @@ namespace MyClientsBase.Services
     public void CreateDiscount(Discount discount)
     {
       _repository.Find(u => u.Id == discount.UserId, d => d.Discounts).Discounts.Add(discount);
-      _repository.Save();
-    }
-
-    public void CreateOrder(Order order)
-    {
-      _repository.Find(u => u.Id == order.UserId, o => o.Orders).Orders.Add(order);
       _repository.Save();
     }
 

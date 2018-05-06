@@ -19,13 +19,16 @@ namespace MyClientsBase.Services
     /// Updating Order data
     /// </summary>
     /// <param name="order">Order</param>
-    void Update(Order order);
+    void Update(Order order, OrderPrepayment op);
+    void CreateOrder(Order order);
     IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd, out List<MonthReport> monthReport);
   }
   public class OrderService : IOrderService
   {
     private UnitOfWork _unitOfWork;
     private IRepository<Order> _repository;
+    private IRepository<OrderPrepayment> _repositoryPrepayment;
+
     private readonly AppSettings _appSettings;
     public OrderService(ApplicationDbContext context, IOptions<AppSettings> appSettings)
     {
@@ -44,21 +47,26 @@ namespace MyClientsBase.Services
 
     public IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd, out List<MonthReport> monthReport)
     {
-      var data = _repository.Query(
+      var dataSource =
+        _repository.Query(
         order => order.UserId == userId &&
         order.Removed != true &&
         order.Date >= dateStart.Date && order.Date <= dateEnd.Date,
-        p => p.ProductInfo
+        p => p.ProductInfo,
+        op => op.Prepayment
         )
+        .ToList();
+      var data = dataSource
         .Select(
         field => new
         {
           ProductId = field.ProductId,
           ProductName = field.ProductInfo.Name,
-          Total = field.Total + field.Prepay,
-          Date = field.Date
-        })
-        .ToList();
+          Total = field.Total,// + field.Prepay,
+          Date = field.Date,
+          Prepay = field.Prepayment?.Total,
+          DatePrepay = field.Prepayment?.Date
+        });
       monthReport = data
              .GroupBy(g => new
              {
@@ -79,6 +87,8 @@ namespace MyClientsBase.Services
         )
         //.OrderBy(m => m.Year)
         .ToList();
+      var prepayments = data.Where(order => order.DatePrepay >= dateStart.Date && order.DatePrepay <= dateEnd.Date)
+        .Sum(order => order.Prepay);
 
       var report = data
         .GroupBy(g => new { g.ProductId, g.ProductName })
@@ -90,16 +100,42 @@ namespace MyClientsBase.Services
          }
         )
         .ToList();
+
+      var prepayData = new ProductsReport
+      {
+        ProductName = "Предоплата",
+        Sum = Convert.ToDecimal(prepayments)
+      };
+
+      report.Add(prepayData);
       return report;
     }
     /// <summary>
     /// Updating Order data
     /// </summary>
     /// <param name="order">Order</param>
-    public void Update(Order order)
+    public void Update(Order order, OrderPrepayment op)
     {
+      _repositoryPrepayment = _unitOfWork.EfRepository<OrderPrepayment>();
       _repository.Update(order);
-      _repository.Save();
+      var prepayment = _repositoryPrepayment.Find(p=>p.OrderId == order.Id);
+      if (prepayment == null)
+      {
+        op.OrderId = order.Id;
+        _repositoryPrepayment.Add(op);
+      }
+      else
+      {
+        prepayment.Total = op.Total;
+        prepayment.Date = op.Date;
+        _repositoryPrepayment.Save();
+      }
+    }
+
+    public void CreateOrder(Order order)
+    {
+      _repository.Add(order);
+      //_repository.Save();
     }
   }
 }

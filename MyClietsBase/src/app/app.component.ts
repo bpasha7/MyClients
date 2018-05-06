@@ -1,7 +1,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { Title, DomSanitizer } from '@angular/platform-browser';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { UserService, ClientService } from './services';
 import { MatIconRegistry, NativeDateAdapter, MatSnackBar } from '@angular/material';
 //import { Client } from './models';

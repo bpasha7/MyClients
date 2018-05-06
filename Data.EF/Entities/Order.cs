@@ -18,8 +18,12 @@ namespace Data.EF.Entities
         public DateTime Date { get; set; }
         public string Location { get; set; }
         public string Commentary { get; set; }
-        public decimal Prepay { get; set; }
+        //public decimal Prepay { get; set; }
         public bool? Removed { get; set; }
+        /// <summary>
+        /// Orders
+        /// </summary>
+        public virtual OrderPrepayment Prepayment { get; set; }
         /// <summary>
         /// User
         /// </summary>
@@ -38,5 +42,12 @@ namespace Data.EF.Entities
         [ForeignKey("ProductId")]
         public virtual Product ProductInfo { get; set; }
         public int? ProductId { get; set; }
+
+        #region notMaped
+        [NotMapped]
+        public decimal Prepay { get { return Prepayment == null ? 0 : Prepayment.Total; } }
+        //[NotMapped]
+        //public DateTime DatePrepay { get{ return Prepayment == null ? Date.min : Prepayment.Date; } }
+        #endregion 
     }
 }
