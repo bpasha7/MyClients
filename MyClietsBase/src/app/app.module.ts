@@ -13,13 +13,13 @@ import {
   MAT_DATE_LOCALE,
   MAT_DATE_FORMATS,
   DateAdapter,
+  MatChipsModule,
   MatBadgeModule,
   MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
   MatCheckboxModule,
-  MatChipsModule,
   MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
@@ -47,6 +47,7 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatPaginatorIntl,
+  MAT_CHIPS_DEFAULT_OPTIONS,
 } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -101,13 +102,13 @@ const appRoutes: Routes = [
 @NgModule({
   exports: [
     CdkTableModule,
+    MatChipsModule,
     MatBadgeModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
     MatCheckboxModule,
-    MatChipsModule,
     MatStepperModule,
     MatDatepickerModule,
     MatDialogModule,
@@ -190,10 +191,15 @@ export class DemoMaterialModule { }
   ],
   bootstrap: [AppComponent],
   providers: [
-    {provide: DateAdapter, useClass: MyDateAdapter},
+    { provide: DateAdapter, useClass: MyDateAdapter},
     { provide: LOCALE_ID, useValue: 'ru-RU' },
     { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     { provide: MatPaginatorIntl, useClass: CustomPaginator },
+    // { provide: MAT_CHIPS_DEFAULT_OPTIONS,
+    //   useValue: {
+    //     separatorKeyCodes: [ENTER, COMMA]
+    //   }
+    // },
     AppConfig,
     ClientService,
     UserService

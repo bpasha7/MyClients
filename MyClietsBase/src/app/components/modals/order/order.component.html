@@ -3,10 +3,29 @@
   <div class="container-column">
     <!-- products *ngIf="selectedProduct != null" -->
     <mat-form-field>
-      <input matInput placeholder="Услуга" aria-label="Product" [(ngModel)]="selectedProduct" [matAutocomplete]="auto" [formControl]="productCtrl">
+      <!-- <input matInput placeholder="Услуга" aria-label="Product" [(ngModel)]="selectedProduct" [matAutocomplete]="auto" [formControl]="productCtrl">
       <button mat-icon-button matSuffix *ngIf="productCtrl.value && productCtrl.enabled" (click)="clearProductSelect($event)">
         <mat-icon>clear</mat-icon>
-      </button>
+      </button>(remove)="remove(fruit)"          -->
+      <mat-chip-list #chipList>
+        <mat-chip
+          *ngFor="let sp of selectedProducts"
+          [selectable]="true" 
+          [removable]="true" 
+          (removed)="remove(sp)"
+          >
+          {{sp.name}}
+          <mat-icon *ngIf="true" matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Выбранные позиции"
+          #productsSelectInput
+          [formControl]="productsSelectCtrl"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+        />
+      </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduct" (optionSelected)="selectProduct($event)">
         <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
           <img style="vertical-align:middle;" aria-hidden src="{{generateProductPhotoUrl(product)}}" height="25" />
@@ -51,7 +70,7 @@
   <div class="container-row">
     <!-- discount -->
     <mat-form-field>
-      <mat-select placeholder="Скидки" value="0" (change)="calculate()" [formControl]="discountControl">
+      <mat-select placeholder="Скидки" value="0" (openedChange)="calculate()" [formControl]="discountControl">
         <mat-option [value]="0">Без</mat-option>
         <mat-option *ngFor="let discount of discounts" [value]="discount.percent">
           {{discount.name}} {{100 * discount.percent}}%

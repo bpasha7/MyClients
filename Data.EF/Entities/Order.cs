@@ -21,9 +21,13 @@ namespace Data.EF.Entities
         //public decimal Prepay { get; set; }
         public bool? Removed { get; set; }
         /// <summary>
-        /// Orders
+        /// Prepayment
         /// </summary>
         public virtual OrderPrepayment Prepayment { get; set; }
+        /// <summary>
+        /// Order items
+        /// </summary>
+        public virtual ICollection<OrderItem> Items { get; set; }
         /// <summary>
         /// User
         /// </summary>
@@ -31,18 +35,19 @@ namespace Data.EF.Entities
         public virtual User UserInfo { get; set; }
         public int? UserId { get; set; }
         /// <summary>
-        /// User
+        /// Client
         /// </summary>
         [ForeignKey("ClientId")]
         public virtual Client ClientInfo { get; set; }
         public int? ClientId { get; set; }
         /// <summary>
-        /// User
+        /// Discount
         /// </summary>
-        [ForeignKey("ProductId")]
-        public virtual Product ProductInfo { get; set; }
-        public int? ProductId { get; set; }
+        [ForeignKey("DiscountId")]
+        public virtual Discount DiscountInfo { get; set; }
+        public int? DiscountId { get; set; }
 
+        public int? ProductId { get; set; }
         #region notMaped
         [NotMapped]
         public decimal Prepay { get { return Prepayment == null ? 0 : Prepayment.Total; } }

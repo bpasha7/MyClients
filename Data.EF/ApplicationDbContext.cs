@@ -22,6 +22,7 @@ namespace Data.EF
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Outgoing> Outgoings { get; set; }
         public virtual DbSet<OrderPrepayment> OrderPrepayment { get; set; }
+        public virtual DbSet<OrderItem> OrdersItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

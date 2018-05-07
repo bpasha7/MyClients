@@ -10,9 +10,10 @@ using System;
 namespace MyClientsBase.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180507065202_order items table")]
+    partial class orderitemstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,8 +120,6 @@ namespace MyClientsBase.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("DiscountId");
-
                     b.Property<string>("Location");
 
                     b.Property<int?>("ProductId");
@@ -134,8 +133,6 @@ namespace MyClientsBase.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
-
-                    b.HasIndex("DiscountId");
 
                     b.HasIndex("UserId");
 
@@ -288,10 +285,6 @@ namespace MyClientsBase.Migrations
                     b.HasOne("Data.EF.Entities.Client", "ClientInfo")
                         .WithMany("Orders")
                         .HasForeignKey("ClientId");
-
-                    b.HasOne("Data.EF.Entities.Discount", "DiscountInfo")
-                        .WithMany()
-                        .HasForeignKey("DiscountId");
 
                     b.HasOne("Data.EF.Entities.User", "UserInfo")
                         .WithMany("Orders")
