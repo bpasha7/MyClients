@@ -21,9 +21,7 @@ export class OrderModalComponent implements OnInit {
 
     filteredProducts: Observable<Product[]>;
     public order: Order;
-    // public client: Client;
     public time = '09:00';
-    public selectedProduct: Product = null;
     public products: Product[] = [];
 
     public selectedProducts: Product[] = [];
@@ -34,7 +32,6 @@ export class OrderModalComponent implements OnInit {
     public title: string;
     public photoDir = '';
     public inProc = false;
-    // productControl = new FormControl('', [Validators.required]);
     discountControl = new FormControl('');
     constructor(
         public config: AppConfig,
@@ -48,7 +45,6 @@ export class OrderModalComponent implements OnInit {
     ngOnInit(): void {
         this.photoDir = this.config.photoUrl + localStorage.getItem('userHash') + '/';
         this.productsSelectCtrl = new FormControl();
-
         this.loadProducts();
         this.loadDiscounts();
     }
@@ -85,6 +81,8 @@ export class OrderModalComponent implements OnInit {
     selectProduct(event: MatAutocompleteSelectedEvent) {
         const selectedProduct: Product = event.option.value;
         this.selectedProducts.push(selectedProduct);
+        
+        // this.productsSelectCtrl.setValue(' ');
         this.calculate();
     }
     remove(product: Product): void {
@@ -94,15 +92,24 @@ export class OrderModalComponent implements OnInit {
         }
         this.calculate();
     }
+    add(event: MatChipInputEvent): void {
+        const input = event.input;
+        const value = event.value;
+
+        // Reset the input value
+        if (input) {
+          input.value = '';
+        }
+      }
     /**
      * Clear selected product
      * @param e
      */
-    clearProductSelect(e: Event) {
-        this.selectedProduct = new Product();
-        this.selectedProduct.name = '';
-        this.selectedProduct.price = 0;
-    }
+    // clearProductSelect(e: Event) {
+    //     this.selectedProduct = new Product();
+    //     this.selectedProduct.name = '';
+    //     this.selectedProduct.price = 0;
+    // }
     //#endregion
     /**
      * Loading products and create filter
@@ -111,19 +118,17 @@ export class OrderModalComponent implements OnInit {
         this.userService.getProducts().subscribe(
             data => {
                 this.products = data.json().products;
-                if (this.order.productId !== undefined) {
-                    this.selectedProduct = this.products.find(p => p.id === this.order.productId);
-                } else {
-                    this.selectedProduct = new Product();
-                    this.selectedProduct.name = '';
-                    this.selectedProduct.price = 0;
-                }
                 this.filteredProducts = this.productsSelectCtrl.valueChanges
                     .pipe(
                         startWith<string | Product>(''),
                         map(value => typeof value === 'string' ? value : value.name),
                         map(name => name ? this.filterProducts(name) : this.products.slice())
                     );
+                if (this.order.productsId !== undefined) {
+                    this.order.productsId.forEach(productId => {
+                        this.selectedProducts.push(this.products.find(p => p.id === productId));
+                    });
+                }
             },
             // tslint:disable-next-line:no-shadowed-variable
             error => {
@@ -140,6 +145,8 @@ export class OrderModalComponent implements OnInit {
         this.userService.getDiscounts().subscribe(
             data => {
                 this.discounts = data.json().discounts;
+                //this.discounts.push({id: 0, name: 'Без'})
+                this.discountControl.setValue(0);
             },
             // tslint:disable-next-line:no-shadowed-variable
             error => {
@@ -170,7 +177,8 @@ export class OrderModalComponent implements OnInit {
         if (!this.validate) {
             return;
         }
-        this.order.productId = this.selectedProduct.id;
+        //this.order.productId = this.selectedProduct.id;
+        this.order.productsId = this.selectedProducts.map(p => p.id);
         const splitted = this.time.split(':', 2);
         // tslint:disable-next-line:radix
         this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
@@ -201,7 +209,8 @@ export class OrderModalComponent implements OnInit {
         if (!this.validate) {
             return;
         }
-        this.order.productId = this.selectedProduct.id;
+        //this.order.productId = this.selectedProduct.id;
+        this.order.productsId = this.selectedProducts.map(p => p.id);
         this.order.date = new Date(this.order.date);
         const splitted = this.time.split(':', 2);
         // tslint:disable-next-line:radix
@@ -234,9 +243,11 @@ export class OrderModalComponent implements OnInit {
             sum += +sp.price;
         });
 
+        const discountVal = this.discounts.find(d => d.id === this.discountControl.value).percent;
+
         //const price = prepay === 0 ? sum : this.order.total;
-        if (this.selectedProducts.length !== 0 || this.discountControl.value) {
-            this.order.total = sum * (1 - this.discountControl.value) - this.order.prepay;
+        if (this.selectedProducts.length !== 0) {
+            this.order.total = sum * (1 - discountVal) - this.order.prepay;
         } else if (this.productsSelectCtrl.value != null) {
             this.order.total = sum - this.order.prepay;
         }

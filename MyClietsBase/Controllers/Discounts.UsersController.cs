@@ -60,6 +60,12 @@ namespace MyClientsBase.Controllers
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
         var discounts = _userService.GetDiscounts(userId);
+        discounts.Add(new Discount
+        {
+          Name = "Без",
+          Id = 0,
+          Percent = 0
+        });
         return Ok(new
         {
           Discounts = _mapper.Map<DiscountDto[]>(discounts)

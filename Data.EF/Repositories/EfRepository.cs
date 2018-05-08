@@ -22,9 +22,7 @@ namespace Data.EF.Repositories
         {
             return DbSet.ToList();
         }
-
-
-
+        
         protected virtual DbSet<T> DbSet
         {
             get

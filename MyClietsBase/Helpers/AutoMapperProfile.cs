@@ -24,6 +24,9 @@ namespace MyClientsBase.Helpers
       CreateMap<Order, OrderDto>();
       CreateMap<OrderDto, Order>();
 
+      CreateMap<Order, OrderInfoDto>();
+
+
       //CreateMap<ProductsReport, ProductsReportDto>();
       //CreateMap<ProductsReportDto, ProductsReport>();
 

@@ -37,7 +37,6 @@ namespace MyClientsBase.Services
     void SetMessageAsRead(int userId, int messageId);
     IList<Product> GetProducts(int userId);
     IList<Discount> GetDiscounts(int userId);
-    IList<Order> GetCurrentOrders(int userId);
     IList<Message> GetMessages(int userId);
     int GetCountUnreadMessages(int userId);
     IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
@@ -134,15 +133,6 @@ namespace MyClientsBase.Services
       _repository.Find(u => u.Id == discount.UserId, d => d.Discounts).Discounts.Add(discount);
       _repository.Save();
     }
-
-    public IList<Order> GetCurrentOrders(int userId)
-    {
-      return _repository.Find(u => u.Id == userId, o => o.Orders)
-        .Orders.Where(e => e.Date >= DateTime.Now.Date && e.Removed != true)
-        .OrderByDescending(o => o.Date)
-        .ToList();
-    }
-
 
     public IList<Product> GetProducts(int userId)
     {

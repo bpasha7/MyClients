@@ -46,11 +46,16 @@ namespace MyClientsBase.Services
 
     public Client Get(int userId, int id)
     {
-      var client = _repository.Query(c => c.Id == id && c.UserId == userId, or => or.Orders).AsNoTracking().SingleOrDefault();
+      return _repository
+        .Query(client => client.Id == id && client.UserId == userId)//.Join(_repositoryOrderItems, or => or.)
+        .Include(client => client.Orders)
+          .ThenInclude(order => order.Items)
+          .ThenInclude(item => item.ProductInfo)
+        .AsNoTracking().SingleOrDefault();
       //if (client == null)
       //  throw new AppException("Клиент не найден в базе!");
       //else
-      return client;
+     // return client;
     }
 
     public IList<Order> GetOrders(int userId, int clientId)

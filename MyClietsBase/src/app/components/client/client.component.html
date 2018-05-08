@@ -74,7 +74,7 @@
             <mat-list-item *ngFor="let order of orders.current" [ngClass]="{'removed-order' : order.removed}">
                 <mat-icon mat-list-icon  (click)="openEditOrderDialog(order)">date_range</mat-icon>
                 <h4 mat-line (click)="openEditOrderDialog(order)">{{ order.date | date:'d MMMM, H:mm' }}</h4>
-                <p mat-line> {{ order.total }} &#x20bd;</p>
+                <p mat-line> {{ order.label }}</p>
                 <button *ngIf="!order.removed" (click)="changeStatus(order)" mat-icon-button color="warn">
                     <mat-icon>close</mat-icon>
                 </button>
@@ -87,7 +87,7 @@
             <mat-list-item *ngFor="let order of orders.old" [ngClass]="{'removed-order' : order.removed}">
                 <mat-icon mat-list-icon  (click)="openEditOrderDialog(order)">date_range</mat-icon>
                 <h4 mat-line  (click)="openEditOrderDialog(order)">{{ order.date | date:'d MMMM, H:mm' }}</h4>
-                <p mat-line> {{ order.total }} &#x20bd;</p>
+                <p mat-line> {{ order.label }} </p>
                 <button *ngIf="!order.removed" (click)="changeStatus(order)" mat-icon-button color="warn">
                     <mat-icon>close</mat-icon>
                 </button>

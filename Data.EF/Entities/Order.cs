@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text;
 
 namespace Data.EF.Entities
@@ -49,10 +50,42 @@ namespace Data.EF.Entities
 
         public int? ProductId { get; set; }
         #region notMaped
+        /// <summary>
+        /// Prepay sum if exist
+        /// </summary>
         [NotMapped]
         public decimal Prepay { get { return Prepayment == null ? 0 : Prepayment.Total; } }
-        //[NotMapped]
-        //public DateTime DatePrepay { get{ return Prepayment == null ? Date.min : Prepayment.Date; } }
+        /// <summary>
+        /// Prepay date if exist
+        /// </summary>
+        [NotMapped]
+        public DateTime DatePrepay { get { return Prepayment == null ? DateTime.Now : Prepayment.Date; } }
+        /// <summary>
+        /// Products id list
+        /// </summary>
+        [NotMapped]
+        public IList<int> ProductsId
+        {
+            get
+            {
+                return Items == null ? null : Items.Select(p => p.ProductInfo.Id).ToList();
+            }
+        }
+        /// <summary>
+        /// Show order products name max 500 char
+        /// </summary>
+        [NotMapped]
+        public string Label
+        {
+            get
+            {
+                if (Items == null || Items.Count == 0)
+                    return "";
+                var names = Items.Select(p => p.ProductInfo.Name).Aggregate((i, j) => i + ", " + j);
+                return names.Length > 50 ? names.Substring(0, 50) : names;
+                //return Items != null ? "" : Items.Select(p => p.ProductInfo.Name).Aggregate((i, j) => i + ", " + j);
+            }
+        }
         #endregion 
     }
 }

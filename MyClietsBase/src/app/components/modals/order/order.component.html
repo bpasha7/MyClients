@@ -24,13 +24,15 @@
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           [matAutocomplete]="auto"
           [matChipInputFor]="chipList"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event)"
         />
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduct" (optionSelected)="selectProduct($event)">
         <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
           <img style="vertical-align:middle;" aria-hidden src="{{generateProductPhotoUrl(product)}}" height="25" />
           <span>{{product.name}} </span>
-          <small>{{product.price}} &#x20bd;</small>
+          <small>{{product.price}}</small>
         </mat-option>
       </mat-autocomplete>
       <!-- <mat-select placeholder="Услуга" [formControl]="productControl" (change)="calculate()" [(ngModel)]="selectedProduct" required>
@@ -70,9 +72,9 @@
   <div class="container-row">
     <!-- discount -->
     <mat-form-field>
-      <mat-select placeholder="Скидки" value="0" (openedChange)="calculate()" [formControl]="discountControl">
+      <mat-select placeholder="Скидки" value="0" [(ngModel)]="order.discountId" (openedChange)="calculate()" [formControl]="discountControl">
         <mat-option [value]="0">Без</mat-option>
-        <mat-option *ngFor="let discount of discounts" [value]="discount.percent">
+        <mat-option *ngFor="let discount of discounts" [value]="discount.id">
           {{discount.name}} {{100 * discount.percent}}%
         </mat-option>
       </mat-select>

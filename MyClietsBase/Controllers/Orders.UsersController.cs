@@ -26,11 +26,13 @@ namespace MyClientsBase.Controllers
       {
         var order = _mapper.Map<Order>(orderDto);
 
-        if (order == null)
+        if (order == null || orderDto.ProductsId == null)
           throw new AppException("Неверный данные!");
 
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         order.UserId = userId;
+
+        
 
         if (orderDto.Prepay != 0)
         {
@@ -41,7 +43,14 @@ namespace MyClientsBase.Controllers
           };
         }
 
-        _orderService.CreateOrder(order);
+
+        if (order.DiscountId == 0)
+        {
+          order.DiscountId = null;
+        }
+
+        _orderService.CreateOrder(order, orderDto.ProductsId);
+
         return Ok(new
         {
           Message = "Запись добавлена!",
@@ -66,7 +75,7 @@ namespace MyClientsBase.Controllers
       {
         var order = _mapper.Map<Order>(orderDto);
 
-        if (order == null)
+        if (order == null || orderDto.ProductsId == null)
           throw new AppException("Неверный данные!");
 
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
@@ -82,9 +91,15 @@ namespace MyClientsBase.Controllers
             Total = orderDto.Prepay,
             Date = orderDto.DatePrepay
           };
+          //order.Prepayment = op;
         }
 
-        _orderService.Update(order, op);
+        if(order.DiscountId == 0)
+        {
+          order.DiscountId = null;
+        }
+
+        _orderService.Update(order, op, orderDto.ProductsId);
 
         return Ok(new
         {
@@ -133,13 +148,13 @@ namespace MyClientsBase.Controllers
       try
       {
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-        var orders = _userService.GetCurrentOrders(userId);
+        var orders = _orderService.GetCurrentOrders(userId);
         var feature = orders.Where(o => o.Date.Date > DateTime.Now.Date).OrderBy(d => d.Date);
         var current = orders.Where(o => o.Date.Date == DateTime.Now.Date).OrderBy(d => d.Date);
         return Ok(new
         {
-          Feature = _mapper.Map<OrderDto[]>(feature),
-          Current = _mapper.Map<OrderDto[]>(current)
+          Feature = _mapper.Map<OrderInfoDto[]>(feature),
+          Current = _mapper.Map<OrderInfoDto[]>(current)
         });
       }
       catch (AppException ex)

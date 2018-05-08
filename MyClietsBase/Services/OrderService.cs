@@ -3,6 +3,7 @@ using Data.EF.Entities;
 using Data.EF.UnitOfWork;
 using Data.Reports;
 using Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MyClientsBase.Helpers;
 using System;
@@ -19,8 +20,9 @@ namespace MyClientsBase.Services
     /// Updating Order data
     /// </summary>
     /// <param name="order">Order</param>
-    void Update(Order order, OrderPrepayment op);
-    void CreateOrder(Order order);
+    void Update(Order order, OrderPrepayment op, IList<int> productsId);
+    IList<Order> GetCurrentOrders(int userId);
+    void CreateOrder(Order order, IList<int> productsId);
     IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd, out List<MonthReport> monthReport);
   }
   public class OrderService : IOrderService
@@ -116,28 +118,83 @@ namespace MyClientsBase.Services
     /// Updating Order data
     /// </summary>
     /// <param name="order">Order</param>
-    public void Update(Order order, OrderPrepayment op)
+    public void Update(Order order, OrderPrepayment op, IList<int> productsId)
     {
-      _repositoryPrepayment = _unitOfWork.EfRepository<OrderPrepayment>();
+      //_repositoryPrepayment = _unitOfWork.EfRepository<OrderPrepayment>();
       _repository.Update(order);
-      var prepayment = _repositoryPrepayment.Find(p=>p.OrderId == order.Id);
-      if (prepayment == null)
+
+      var toUpdate =_repository.Query(o => o.Id == order.Id)
+        .Include(p => p.Prepayment)
+        .Include(oi => oi.Items)
+          .ThenInclude(i => i.ProductInfo)
+      .SingleOrDefault();
+
+      var newItems = new List<OrderItem>();
+
+      //var duplicate = toUpdate.Items.Select(i => i.Id).Intersect(productsId);
+
+      //var haveItems = toUpdate.Items.Where(oi => productsId.Contains(oi.Id));
+
+      //var haveNot = haveItems.Select(oi => !productsId.Contains(oi.Id));
+
+      //foreach (var item in toUpdate.Items)
+      //{
+      //  if (duplicate.Contains(item.Id))
+      //    continue;
+      //  else
+      //    toUpdate.Items
+      //}
+
+      foreach (var id in productsId)
       {
-        op.OrderId = order.Id;
-        _repositoryPrepayment.Add(op);
+        //if(toUpdate.Items.cou)
+        newItems.Add(new OrderItem
+        {
+          ProductId = id
+        });
+      }
+      toUpdate.Items = newItems;
+
+      //var prepayment = _repositoryPrepayment.Find(p=>p.OrderId == order.Id);
+      if (toUpdate.Prepayment == null)
+      {
+        toUpdate.Prepayment = op;
+        //_repositoryPrepayment.Add(op);
       }
       else
       {
-        prepayment.Total = op.Total;
-        prepayment.Date = op.Date;
-        _repositoryPrepayment.Save();
+        toUpdate.Prepayment.Total = op.Total;
+        toUpdate.Prepayment.Date = op.Date;
       }
+      _repository.Save();
     }
 
-    public void CreateOrder(Order order)
+    public void CreateOrder(Order order, IList<int> productsId)
     {
+
+      order.Items = new List<OrderItem>();
+      foreach (var id in productsId)
+      {
+        order.Items.Add(new OrderItem
+        {
+           ProductId = id
+        });
+      }
       _repository.Add(order);
+
       //_repository.Save();
+    }
+
+    public IList<Order> GetCurrentOrders(int userId)
+    {
+
+      return _repository.Query(e => e.Date >= DateTime.Now.Date && e.Removed != true)//, oi => oi.Items)
+        .Include(oi => oi.Items)
+          .ThenInclude( i => i.ProductInfo)
+        //.SelectMany(i. => i.ProductInfo)
+        .OrderByDescending(o => o.Date)
+        .AsNoTracking()
+        .ToList();
     }
   }
 }
