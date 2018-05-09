@@ -22,6 +22,7 @@ namespace MyClientsBase.Services
     /// <param name="order">Order</param>
     void Update(Order order, OrderPrepayment op, IList<int> productsId);
     IList<Order> GetCurrentOrders(int userId);
+    int OrdersDone(int productId);
     void CreateOrder(Order order, IList<int> productsId);
     IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd, out List<MonthReport> monthReport);
   }
@@ -30,12 +31,15 @@ namespace MyClientsBase.Services
     private UnitOfWork _unitOfWork;
     private IRepository<Order> _repository;
     private IRepository<OrderPrepayment> _repositoryPrepayment;
+    private IRepository<OrderItem> _repositoryOrderItems;
 
     private readonly AppSettings _appSettings;
     public OrderService(ApplicationDbContext context, IOptions<AppSettings> appSettings)
     {
       _unitOfWork = new UnitOfWork(context);
       _repository = _unitOfWork.EfRepository<Order>();
+      _repositoryPrepayment = _unitOfWork.EfRepository<OrderPrepayment>();
+
       _appSettings = appSettings.Value;
     }
 
@@ -49,70 +53,158 @@ namespace MyClientsBase.Services
 
     public IList<ProductsReport> GenerateProductReport(int userId, DateTime dateStart, DateTime dateEnd, out List<MonthReport> monthReport)
     {
-      /* var dataSource =
+       var dataSource =
          _repository.Query(
          order => order.UserId == userId &&
          order.Removed != true &&
-         order.Date >= dateStart.Date && order.Date <= dateEnd.Date,
-         p => p.ProductInfo,
-         op => op.Prepayment
+         order.Date >= dateStart.Date && order.Date <= dateEnd.Date)
+         .Include(order => order.Prepayment)
+         .Include(order => order.Items)
+          .ThenInclude(item => item.ProductInfo)
+        .Select(
+            field => new
+            {
+              oId = field.Id,
+              Date = field.Date,
+              Total = field.Total,
+              Items = field.Items,
+              Prepay = field.Prepay,
+              DatePrepay = field.DatePrepay
+            }
          )
-         .ToList();
-       var data = dataSource
-         .Select(
-         field => new
+        .AsNoTracking()
+        .ToList();
+      //var data = dataSource
+      //  .Select(
+      //  field => new
+      //  {
+      //    ProductId = field.ProductId,
+      //    ProductName = field.ProductInfo.Name,
+      //    Total = field.Total,// + field.Prepay,
+      //     Date = field.Date,
+      //    Prepay = field.Prepayment?.Total,
+      //    DatePrepay = field.Prepayment?.Date
+      //  });
+      monthReport = dataSource
+             .GroupBy(g => new
+             {
+               Y = g.Date.Year,
+               M = g.Date.Month,
+               Month = $"{g.Date:MMM}",
+               MonthNumber = g.Date.Month,
+             }
+        )
+        .Select(rep =>
+         new MonthReport
          {
-           ProductId = field.ProductId,
-           ProductName = field.ProductInfo.Name,
-           Total = field.Total,// + field.Prepay,
-           Date = field.Date,
-           Prepay = field.Prepayment?.Total,
-           DatePrepay = field.Prepayment?.Date
-         });
-       monthReport = data
-              .GroupBy(g => new
-              {
-                Y = g.Date.Year,
-                M = g.Date.Month,
-                Month = $"{g.Date:MMM}",
-                MonthNumber = g.Date.Month,
-              }
-         )
-         .Select(rep =>
-          new MonthReport
-          {
-            Year = rep.Key.Y,
-            Month = rep.Key.Month,
-            MonthNumber = rep.Key.MonthNumber,
-            Total = rep.Sum(s => s.Total)
-          }
-         )
-         //.OrderBy(m => m.Year)
-         .ToList();
-       var prepayments = data.Where(order => order.DatePrepay >= dateStart.Date && order.DatePrepay <= dateEnd.Date)
-         .Sum(order => order.Prepay);
+           Year = rep.Key.Y,
+           Month = rep.Key.Month,
+           MonthNumber = rep.Key.MonthNumber,
+           Total = //rep.Sum(s => s.Total)
+           rep.Sum(s => (s.DatePrepay >= dateStart.Date && s.DatePrepay <= dateEnd.Date) ? s.Total + s.Prepay : s.Total)
+         }
+        )
+        //.OrderBy(m => m.Year)
+        .ToList();
 
-       var report = data
-         .GroupBy(g => new { g.ProductId, g.ProductName })
-         .Select(rep =>
-          new ProductsReport
-          {
-            ProductName = rep.Key.ProductName,
-            Sum = rep.Sum(s => s.Total)
-          }
-         )
-         .ToList();
+      var prepaymentsData = _repositoryPrepayment
+        .Query(op =>
+        op.Date >= dateStart.Date && op.Date <= dateEnd.Date
+        && op.OrderInfo.Removed != true
+        && op.OrderInfo.Date > dateEnd.Date)
+        .Include(order => order.OrderInfo)
+        .Select(
+        field => new
+        {
+          Date = field.Date,
+          Total = field.Total
+        })
+        .AsNoTracking()
+        .ToList();
 
-       var prepayData = new ProductsReport
-       {
-         ProductName = "Предоплата",
-         Sum = Convert.ToDecimal(prepayments)
-       };
+       var prepaymentsByMonth = prepaymentsData.GroupBy(g => new
+        {
+          Y = g.Date.Year,
+          M = g.Date.Month,
+          MonthNumber = g.Date.Month,
+          Month = $"{g.Date:MMM}"
+        }
+        )
+        .Select(rep =>
+         new MonthReport
+         {
+           Year = rep.Key.Y,
+           Month = rep.Key.Month,
+           MonthNumber = rep.Key.MonthNumber,
+           Total = rep.Sum(s => s.Total)
+         }
+        )
+        .ToList();
 
-       report.Add(prepayData);
-       return report;*/
-      monthReport = null;
-      return null;
+      foreach (var m in prepaymentsByMonth)
+      {
+        var t = monthReport.Find(p => p.Year == m.Year && p.MonthNumber == m.MonthNumber);
+        if (t == null)
+        {
+          monthReport.Add(m);
+        }
+        else
+        {
+          t.Total += m.Total;
+        }
+      }
+
+      var onlyPrepay = prepaymentsData.Sum(op => op.Total);
+
+      var prepayments = dataSource.Where(order => order.DatePrepay >= dateStart.Date && order.DatePrepay <= dateEnd.Date)
+        .Sum(order => order.Prepay);
+      prepayments += onlyPrepay;
+
+
+      //var report = new List<ProductsReport>();// dataSource
+      //.GroupBy(g => new { g.Items, g.ProductName })
+      //.Select(rep =>
+      // new ProductsReport
+      // {
+      //   ProductName = rep.Key.ProductName,
+      //   Sum = rep.Sum(s => s.Total)
+      // }
+      //)
+      //.ToList();
+      var dic = new Dictionary<int, ProductsReport>();
+      foreach (var order in dataSource)
+      {
+        var sum = order.Items.Sum(oi => oi.ProductInfo.Price);
+        var count = order.Items.Count;
+        var dif = Math.Round((order.Total - sum) / count, 0);
+
+        foreach (var item in order.Items)
+        {
+          int id = (int)item.ProductId;
+          decimal priceWithDif = (item.ProductInfo.Price + dif);
+          if (dic.ContainsKey(id))
+            dic[id].Sum += priceWithDif;
+          else
+            dic.Add(id, new ProductsReport
+            {
+              ProductName = item.ProductInfo.Name,
+              Sum = priceWithDif
+            });
+        }
+      }
+
+      var report = dic.Values.ToList();
+
+      var prepayData = new ProductsReport
+      {
+        ProductName = "Предоплата",
+        Sum = Convert.ToDecimal(prepayments)
+      };
+
+      report.Add(prepayData);
+      return report;
+      //monthReport = null;
+      //return null;
     }
     /// <summary>
     /// Updating Order data
@@ -195,6 +287,13 @@ namespace MyClientsBase.Services
         .OrderByDescending(o => o.Date)
         .AsNoTracking()
         .ToList();
+    }
+
+    public int OrdersDone(int productId)
+    {
+      _repositoryOrderItems = _unitOfWork.EfRepository<OrderItem>();
+      return _repositoryOrderItems.Count(io => io.ProductId == productId);
+      //return 5;// result == null ? 0 : result.Count;
     }
   }
 }

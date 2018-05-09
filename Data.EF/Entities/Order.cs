@@ -51,6 +51,15 @@ namespace Data.EF.Entities
         public int? ProductId { get; set; }
         #region notMaped
         /// <summary>
+        /// Geting Total depends on date
+        /// </summary>
+        //public decimal GetTotal(DateTime begin, DateTime end)
+        //{
+        //    if (DatePrepay < begin || DatePrepay > end)
+        //        return Prepay;
+        //    return (DatePrepay.Month == Date.Month && DatePrepay.Year == Date.Year) ? Total + Prepay : Total;
+        //}
+        /// <summary>
         /// Prepay sum if exist
         /// </summary>
         [NotMapped]

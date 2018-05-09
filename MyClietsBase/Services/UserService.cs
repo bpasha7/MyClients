@@ -3,6 +3,7 @@ using Data.EF.Entities;
 using Data.EF.UnitOfWork;
 using Data.Reports;
 using Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using MyClientsBase.Helpers;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace MyClientsBase.Services
     void UpdateUserPassword(int userId, string password);
     void CreateProduct(Product product);
     void SetAsRemovedProduct(int userId, int productId);
-    void UpdateProduct(Product product);
+    void UpdateProduct(Product product, int done);
     void SetPhotoFlag(int userId, int productId);
     void UpdateDiscount(Discount discount);
     void CreateDiscount(Discount discount);
@@ -162,10 +163,13 @@ namespace MyClientsBase.Services
 
       return user;
     }
-    public void UpdateProduct(Product product)
+    public void UpdateProduct(Product product, int done)
     {
+      var old = _productsRepository.Query(p => p.Id == product.Id).AsNoTracking().SingleOrDefault();
+      if (old?.Price != product.Price)
+        throw new AppException($"Есть записи {done} шт., нельзя обновить цену!");
       _productsRepository.Update(product);
-      _repository.Save();
+      //_repository.Save();
     }
 
     public void UpdateDiscount(Discount discount)
@@ -304,6 +308,7 @@ namespace MyClientsBase.Services
       var product = _productsRepository.Find(p => p.UserId == userId && p.Id == productId);
       if (product == null)
         throw new Exception($"Услуга или товар не найдены.");
+      product.Name += $"[до {DateTime.Now.Date:d}]";
       product.IsRemoved = true;
       _productsRepository.Save();
     }

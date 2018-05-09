@@ -33,3 +33,6 @@ mat-form-field mat-icon{
 .last{
     padding-bottom: 40px;
 }
+.pointer{
+    cursor: pointer;
+}

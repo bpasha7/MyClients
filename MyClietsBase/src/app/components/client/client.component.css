@@ -55,3 +55,7 @@ mat-sidenav{
     /* background: lightgrey; */
     padding-top: 16px;
 }
+.client-photo{
+    /* max-height: 300px;
+    object-fit: contain; */
+}

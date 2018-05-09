@@ -15,7 +15,7 @@
         <!-- Name Column -->
         <ng-container matColumnDef="lastName">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Клиент </mat-header-cell>
-            <mat-cell *matCellDef="let row" routerLink="/client/{{row.id}}"> {{row.lastName}} {{row.firstName}} </mat-cell>
+            <mat-cell class="pointer" *matCellDef="let row" routerLink="/client/{{row.id}}"> {{row.lastName}} {{row.firstName}} </mat-cell>
         </ng-container>
 
         <!-- Contacts Column -->

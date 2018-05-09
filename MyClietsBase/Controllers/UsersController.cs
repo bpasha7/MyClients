@@ -199,7 +199,7 @@ namespace MyClientsBase.Controllers
       {
         return BadRequest(ex.Message);
       }
-      catch (Exception ex)
+    catch (Exception ex)
       {
         _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");

@@ -51,7 +51,10 @@ namespace MyClientsBase.Services
         .Include(client => client.Orders)
           .ThenInclude(order => order.Items)
           .ThenInclude(item => item.ProductInfo)
-        .AsNoTracking().SingleOrDefault();
+        .Include(client => client.Orders)
+        .ThenInclude(order => order.Prepayment)
+        .AsNoTracking()
+        .SingleOrDefault();
       //if (client == null)
       //  throw new AppException("Клиент не найден в базе!");
       //else
@@ -60,7 +63,7 @@ namespace MyClientsBase.Services
 
     public IList<Order> GetOrders(int userId, int clientId)
     {
-      return _repository.Find(c => c.Id == clientId, or => or.Orders).Orders.OrderByDescending(o => o.Date).ToList();
+      return _repository.Find(c => c.Id == clientId).Orders.OrderByDescending(o => o.Date).ToList();
     }
 
     public void Update(Client client)

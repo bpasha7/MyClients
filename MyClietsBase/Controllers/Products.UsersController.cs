@@ -161,7 +161,12 @@ namespace MyClientsBase.Controllers
         if (product.UserId != userId)
           throw new AppException("Вам нельзя обновить услугу!");
 
-        _userService.UpdateProduct(product);
+        var count = _orderService.OrdersDone(product.Id);
+
+        //if (count != 0)
+        //  throw new AppException($"Есть записи({count} шт.), нельзя обновить!");
+
+        _userService.UpdateProduct(product, count);
 
         return Ok(new
         {
