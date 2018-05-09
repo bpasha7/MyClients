@@ -8,7 +8,7 @@ import * as moment from 'moment';
 import { AppConfig } from '../../../app.config';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { ENTER } from '@angular/cdk/keycodes';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -26,7 +26,7 @@ export class OrderModalComponent implements OnInit {
 
     public selectedProducts: Product[] = [];
     productsSelectCtrl: FormControl;
-    separatorKeysCodes = [ENTER, COMMA];
+    separatorKeysCodes = [ENTER];
 
     public discounts: Discount[] = [];
     public title: string;
