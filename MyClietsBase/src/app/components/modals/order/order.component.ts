@@ -21,7 +21,7 @@ export class OrderModalComponent implements OnInit {
 
     filteredProducts: Observable<Product[]>;
     public order: Order;
-    public time = '09:00';
+    public time;
     public products: Product[] = [];
 
     public selectedProducts: Product[] = [];
@@ -44,12 +44,15 @@ export class OrderModalComponent implements OnInit {
 
     ngOnInit(): void {
         this.photoDir = this.config.photoUrl + localStorage.getItem('userHash') + '/';
+        const myDate = new Date();
+        this.time =  ('0' + myDate.getHours()).slice(-2) + ':' + ('0' + myDate.getMinutes()).slice(-2);
         this.productsSelectCtrl = new FormControl();
         this.loadProducts();
         this.loadDiscounts();
     }
     //#region Products select control
 
+    // tslint:disable-next-line:member-ordering
     @ViewChild('productsSelectInput') productsSelectInput: ElementRef;
 
     /**
@@ -81,7 +84,6 @@ export class OrderModalComponent implements OnInit {
     selectProduct(event: MatAutocompleteSelectedEvent) {
         const selectedProduct: Product = event.option.value;
         this.selectedProducts.push(selectedProduct);
-        
         // this.productsSelectCtrl.setValue(' ');
         this.calculate();
     }
@@ -169,6 +171,15 @@ export class OrderModalComponent implements OnInit {
             });
             return false;
         }
+        // this.order.productId = this.selectedProduct.id;
+        this.order.productsId = this.selectedProducts.map(p => p.id);
+        const splitted = this.time.split(':', 2);
+        // tslint:disable-next-line:radix
+        this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
+        this.order.datePrepay.setHours(-this.order.date.getTimezoneOffset() / 60);
+        // tslint:disable-next-line:radix
+        this.order.date.setMinutes(parseInt(splitted[1]));
+        return true;
     }
     /**
      * Create new one
@@ -177,13 +188,6 @@ export class OrderModalComponent implements OnInit {
         if (!this.validate) {
             return;
         }
-        //this.order.productId = this.selectedProduct.id;
-        this.order.productsId = this.selectedProducts.map(p => p.id);
-        const splitted = this.time.split(':', 2);
-        // tslint:disable-next-line:radix
-        this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
-        // tslint:disable-next-line:radix
-        this.order.date.setMinutes(parseInt(splitted[1]));
         this.inProc = true;
         this.userService.createOrder(this.order).subscribe(
             data => {
@@ -209,14 +213,6 @@ export class OrderModalComponent implements OnInit {
         if (!this.validate) {
             return;
         }
-        //this.order.productId = this.selectedProduct.id;
-        this.order.productsId = this.selectedProducts.map(p => p.id);
-        this.order.date = new Date(this.order.date);
-        const splitted = this.time.split(':', 2);
-        // tslint:disable-next-line:radix
-        this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
-        // tslint:disable-next-line:radix
-        this.order.date.setMinutes(parseInt(splitted[1]));
         this.inProc = true;
         this.userService.updateOrder(this.order).subscribe(
             data => {
@@ -245,7 +241,7 @@ export class OrderModalComponent implements OnInit {
 
         const discountVal = this.discounts.find(d => d.id === this.discountControl.value).percent;
 
-        //const price = prepay === 0 ? sum : this.order.total;
+        // const price = prepay === 0 ? sum : this.order.total;
         if (this.selectedProducts.length !== 0) {
             this.order.total = sum * (1 - discountVal) - this.order.prepay;
         } else if (this.productsSelectCtrl.value != null) {
