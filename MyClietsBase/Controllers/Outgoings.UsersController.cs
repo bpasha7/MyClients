@@ -21,7 +21,7 @@ namespace MyClientsBase.Controllers
   {
 
     [HttpPost("outgoing")]
-    public IActionResult CreateDiscount([FromBody]OutgoingDto outgoingDto)
+    public IActionResult CreateOutgoing([FromBody]OutgoingDto outgoingDto)
     {
       try
       {
@@ -38,6 +38,64 @@ namespace MyClientsBase.Controllers
         {
           Message = "Расход добавлен!",
           OutgoingId = outgoing.Id
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    [HttpPut("outgoing")]
+    public IActionResult UpdateOutgoing([FromBody]OutgoingDto outgoingDto)
+    {
+      try
+      {
+        var outgoing = _mapper.Map<Outgoing>(outgoingDto);
+
+        if (outgoing == null)
+          throw new AppException("Неверный данные!");
+
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        //if(outgoing.UserId != userId)
+        //  throw new AppException("Вам нельзя обновить расход!");
+
+        _userService.UpdateOutgoing(userId, outgoing);
+        return Ok(new
+        {
+          Message = "Расход обновлен!",
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    [HttpDelete("outgoing/{id}")]
+    public IActionResult DeleteOutgoing(int id)
+    {
+      try
+      {
+
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        _userService.DeleteOutgoing(userId, id);
+
+        return Ok(new
+        {
+          Message = "Расход удален!",
         });
       }
       catch (AppException ex)

@@ -13,12 +13,13 @@ import {
   MAT_DATE_LOCALE,
   MAT_DATE_FORMATS,
   DateAdapter,
+  MatChipsModule,
+  MatBadgeModule,
   MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
   MatCheckboxModule,
-  MatChipsModule,
   MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
@@ -46,6 +47,7 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatPaginatorIntl,
+  MAT_CHIPS_DEFAULT_OPTIONS,
 } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -66,6 +68,7 @@ import {
   OutgoingModalComponent,
   DiscountModalComponent,
   MessagePreviewComponent,
+  ConfirmationComponent,
 } from './components/modals/index';
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
@@ -74,6 +77,8 @@ import { OutgoingsComponent } from './components/outgoings/outgoings.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { LoginComponent } from './components/login/login.component';
 import { MessagesComponent } from './components/messages/messages.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+
 
 import { AppConfig } from './app.config';
 import { UserService, ClientService } from './services/index';
@@ -89,18 +94,21 @@ const appRoutes: Routes = [
   { path: 'analytics', component: AnalyticsComponent },
   { path: '', component: MessagesComponent },
   { path: 'messages', component: MessagesComponent },
+  { path: 'start', component: RegistrationComponent },
+
 ];
 /*Routes */
 
 @NgModule({
   exports: [
     CdkTableModule,
+    MatChipsModule,
+    MatBadgeModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
     MatCheckboxModule,
-    MatChipsModule,
     MatStepperModule,
     MatDatepickerModule,
     MatDialogModule,
@@ -157,7 +165,8 @@ export class DemoMaterialModule { }
     PhotoModalComponent,
     DiscountModalComponent,
     OutgoingModalComponent,
-    MessagePreviewComponent
+    MessagePreviewComponent,
+    ConfirmationComponent
   ],
   declarations: [
     AppComponent,
@@ -169,9 +178,11 @@ export class DemoMaterialModule { }
     PhotoModalComponent,
     DiscountModalComponent,
     MessagePreviewComponent,
+    ConfirmationComponent,
     OutgoingModalComponent,
     ProductsComponent,
     MessagesComponent,
+    RegistrationComponent,
     OrdersComponent,
     OutgoingsComponent,
     LoginComponent,
@@ -180,10 +191,15 @@ export class DemoMaterialModule { }
   ],
   bootstrap: [AppComponent],
   providers: [
-    {provide: DateAdapter, useClass: MyDateAdapter},
+    { provide: DateAdapter, useClass: MyDateAdapter},
     { provide: LOCALE_ID, useValue: 'ru-RU' },
     { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
     { provide: MatPaginatorIntl, useClass: CustomPaginator },
+    // { provide: MAT_CHIPS_DEFAULT_OPTIONS,
+    //   useValue: {
+    //     separatorKeyCodes: [ENTER, COMMA]
+    //   }
+    // },
     AppConfig,
     ClientService,
     UserService

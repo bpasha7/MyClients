@@ -10,25 +10,6 @@
     max-width: 500px;
     margin: auto;
 }
-::-webkit-scrollbar {
-    max-width: 4px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #888; 
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
 .my-header{
     position: fixed;
     top: 0;
@@ -64,4 +45,7 @@
     position: absolute;
     bottom: 0px; 
     width: 100%
+}
+.right-elements{
+    margin-left: auto;
 }

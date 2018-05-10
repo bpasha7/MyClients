@@ -9,5 +9,6 @@ namespace MyClientsBase.Helpers
     public int PassDaysExpired { get; set; }
     public long MaxImageSize { get; set; }
     public int PhotoSize { get; set; }
+    public int PhotoProductSize { get; set; }
   }
 }

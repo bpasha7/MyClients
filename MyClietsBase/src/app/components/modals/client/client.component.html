@@ -13,7 +13,7 @@
   <div class="container-row">
     <mat-form-field>
       <mat-icon matPrefix>phone</mat-icon>
-      <input type="tel" matInput placeholder="Телефон" [(ngModel)]="client.phone">
+      <input matInput placeholder="Телефон" [(ngModel)]="client.phone" type="tel">
     </mat-form-field>
     <mat-form-field>
       <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="client.birthday" disabled>
@@ -24,20 +24,23 @@
   <div class="container-column">
       <mat-form-field>
           <mat-icon matPrefix>message</mat-icon>
-        <input matInput placeholder="Соц. сети" [(ngModel)]="client.link" >
+        <input matInput #inputSocial maxlength="128" placeholder="Соц. сети" [(ngModel)]="client.link" >
+        <mat-hint align="end">{{inputSocial.value?.length || 0}}/128</mat-hint>
       </mat-form-field>
       <mat-form-field>
           <mat-icon matPrefix>photo library</mat-icon>
-        <input matInput placeholder="Instagram" [(ngModel)]="client.linkPhoto" >
+        <input matInput #inputInstagram maxlength="128" placeholder="Instagram" [(ngModel)]="client.linkPhoto" >
+        <mat-hint align="end">{{inputInstagram.value?.length || 0}}/128</mat-hint>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Дополнительно" [(ngModel)]="client.commentary" >
+        <input matInput #inputComentary placeholder="Дополнительно" maxlength="128" [(ngModel)]="client.commentary" >
+        <mat-hint align="end">{{inputComentary.value?.length || 0}}/128</mat-hint>
       </mat-form-field>
     </div>
 </div>
 <div mat-dialog-actions style="display: block">
   <button mat-button class="button-cancel" (click)="onNoClick()">ОТМЕНА</button>
   <!-- <button mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>ДОБАВИТЬ</button> -->
-  <button *ngIf="client.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
-  <button *ngIf="client.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
+  <button [disabled]="inProc" *ngIf="client.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
+  <button [disabled]="inProc" *ngIf="client.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
 </div>

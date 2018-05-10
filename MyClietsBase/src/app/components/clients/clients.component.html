@@ -1,21 +1,21 @@
-<div class="clients-table-container">
-    <mat-card class="clients-search-card">
-        <mat-form-field [floatLabel]="'never'" class="">
-            <mat-icon matPrefix>search</mat-icon>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
-        </mat-form-field>
-        <!-- <button mat-raised-button (click)="openDialog()" color="accent">Новый
-</button> -->
-    </mat-card>
+<div class="container">
+    <div class="search-card">
+        <mat-card>
+            <mat-form-field [floatLabel]="'never'" class="">
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск" type="search">
+            </mat-form-field>
+        </mat-card>
+    </div>
 </div>
-<div class="clients-table-container last">
+<div class="container last">
 
     <mat-table #table [dataSource]="dataSource" matSort>
 
         <!-- Name Column -->
         <ng-container matColumnDef="lastName">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Клиент </mat-header-cell>
-            <mat-cell *matCellDef="let row" routerLink="/client/{{row.id}}"> {{row.lastName}} {{row.firstName}} </mat-cell>
+            <mat-cell class="pointer" *matCellDef="let row" routerLink="/client/{{row.id}}"> {{row.lastName}} {{row.firstName}} </mat-cell>
         </ng-container>
 
         <!-- Contacts Column -->
@@ -61,7 +61,7 @@
         </mat-row>
     </mat-table>
     <!-- *ngIf="clients?.length > 0" -->
-    <mat-paginator #paginator [length]="clients.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+    <mat-paginator #paginator [length]="clients.length" [pageSize]="15" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
 </div>
 <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
     <mat-icon aria-label="">add</mat-icon>

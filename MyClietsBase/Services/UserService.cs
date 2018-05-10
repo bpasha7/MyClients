@@ -3,6 +3,7 @@ using Data.EF.Entities;
 using Data.EF.UnitOfWork;
 using Data.Reports;
 using Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using MyClientsBase.Helpers;
 using System;
 using System.Collections.Generic;
@@ -25,16 +26,18 @@ namespace MyClientsBase.Services
     User GetUserInfo(int userId);
     void UpdateUserPassword(int userId, string password);
     void CreateProduct(Product product);
-    void UpdateProduct(Product product);
+    void SetAsRemovedProduct(int userId, int productId);
+    void UpdateProduct(Product product, int done);
+    void SetPhotoFlag(int userId, int productId);
     void UpdateDiscount(Discount discount);
     void CreateDiscount(Discount discount);
-    void CreateOrder(Order order);
     void CreateOutgoing(Outgoing outgoing);
+    void UpdateOutgoing(int userId, Outgoing outgoing);
+    void DeleteOutgoing(int userId, int outgoingId);
     void AddMessage(Message message);
     void SetMessageAsRead(int userId, int messageId);
     IList<Product> GetProducts(int userId);
     IList<Discount> GetDiscounts(int userId);
-    IList<Order> GetCurrentOrders(int userId);
     IList<Message> GetMessages(int userId);
     int GetCountUnreadMessages(int userId);
     IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
@@ -51,15 +54,20 @@ namespace MyClientsBase.Services
     private IRepository<Product> _productsRepository;
 
     private IRepository<Discount> _discountsRepository;
+
     private IRepository<Outgoing> _outgoingsRepository;
+
+    private IRepository<Message> _messagesRepository;
 
     public UserService(ApplicationDbContext context)
     {
+      
       _unitOfWork = new UnitOfWork(context);
       _repository = _unitOfWork.EfRepository<User>();
       _productsRepository = _unitOfWork.EfRepository<Product>();
       _discountsRepository = _unitOfWork.EfRepository<Discount>();
       _outgoingsRepository = _unitOfWork.EfRepository<Outgoing>();
+      _messagesRepository = _unitOfWork.EfRepository<Message>();
     }
     #region Password Methods
     private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -104,6 +112,9 @@ namespace MyClientsBase.Services
       if (user == null)
         return null;
 
+      if (user.Activated == false)
+        throw new AppException("Обратитесь к администратору для активации!");
+
       // check if password is correct
       if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
         return null;
@@ -124,24 +135,9 @@ namespace MyClientsBase.Services
       _repository.Save();
     }
 
-    public void CreateOrder(Order order)
-    {
-      _repository.Find(u => u.Id == order.UserId, o => o.Orders).Orders.Add(order);
-      _repository.Save();
-    }
-
-    public IList<Order> GetCurrentOrders(int userId)
-    {
-      return _repository.Find(u => u.Id == userId, o => o.Orders)
-        .Orders.Where(e => e.Date >= DateTime.Now.Date && e.Removed != true)
-        .OrderByDescending(o => o.Date)
-        .ToList();
-    }
-
-
     public IList<Product> GetProducts(int userId)
     {
-      return _repository.Find(u => u.Id == userId, p => p.Products).Products.OrderBy(o => o.Name).ToList();
+      return _productsRepository.Query(p => p.UserId == userId && !p.IsRemoved).OrderBy(o => o.Name).ToList();
     }
 
     public IList<Discount> GetDiscounts(int userId)
@@ -155,8 +151,8 @@ namespace MyClientsBase.Services
       if (string.IsNullOrWhiteSpace(password))
         throw new AppException("Password is required");
 
-      if (_repository.Count(x => x.Login == user.Login) != 0)
-        throw new AppException("Login " + user.Login + " is already taken!");
+      if (_repository.Count(x => x.Login == user.Login || x.Email == user.Email) != 0)
+        throw new AppException("Логини или Почта уже заняты!");
 
       byte[] passwordHash, passwordSalt;
       CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -167,22 +163,44 @@ namespace MyClientsBase.Services
 
       return user;
     }
-    public void UpdateProduct(Product product)
+    public void UpdateProduct(Product product, int done)
     {
+      var old = _productsRepository.Query(p => p.Id == product.Id).AsNoTracking().SingleOrDefault();
+      if (old?.Price != product.Price)
+        throw new AppException($"Есть записи {done} шт., нельзя обновить цену!");
       _productsRepository.Update(product);
-      _repository.Save();
+      //_repository.Save();
     }
 
     public void UpdateDiscount(Discount discount)
     {
       _discountsRepository.Update(discount);
-      _repository.Save();
+     // _repository.Save();
     }
 
     public void CreateOutgoing(Outgoing outgoing)
     {
       _outgoingsRepository.Add(outgoing);
-      _outgoingsRepository.Save();
+      //_outgoingsRepository.Save();
+    }
+
+    public void UpdateOutgoing(int userId, Outgoing outgoing)
+    {
+      var exist = _outgoingsRepository.Count(o => o.Id == outgoing.Id && o.UserId == userId) == 1 ? true : false;
+      if(!exist)
+        throw new AppException("Вам нельзя обновить расход!");
+      outgoing.UserId = userId;
+      _outgoingsRepository.Update(outgoing);
+      //_outgoingsRepository.Save();
+    }
+
+    public void DeleteOutgoing(int userId, int outgoingId)
+    {
+      var outgoing = _outgoingsRepository.Query(o => o.UserId == userId && o.Id == outgoingId).SingleOrDefault();
+      if (outgoing == null)
+        throw new AppException("Расход не найден!");
+      _outgoingsRepository.Remove(outgoingId);
+      //_outgoingsRepository.Save();
     }
 
     public IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end)
@@ -252,7 +270,8 @@ namespace MyClientsBase.Services
 
     public int GetCountUnreadMessages(int userId)
     {
-      return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.Count(c => c.IsRead != true);
+      //return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.Count(c => c.IsRead != true);
+      return _messagesRepository.Count(messages => messages.UserId == userId && messages.IsRead != true);
     }
 
     public User GetUserInfo(int userId)
@@ -263,7 +282,7 @@ namespace MyClientsBase.Services
     public void UpdateUserPassword(int userId, string password)
     {
       if (string.IsNullOrWhiteSpace(password))
-        throw new AppException("Password is required");
+        throw new AppException("Пароль содержит пробелы!");
 
       byte[] passwordHash, passwordSalt;
       CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -273,6 +292,25 @@ namespace MyClientsBase.Services
       user.PasswordSalt = passwordSalt;
 
       _repository.Save();
+    }
+
+    public void SetPhotoFlag(int userId, int productId)
+    {
+      var product = _productsRepository.Find(p => p.UserId == userId && p.Id == productId);
+      if (product == null)
+        throw new Exception($"Услуга или товар не найдены.");
+      product.HasPhoto = true;
+      _productsRepository.Save();
+    }
+
+    public void SetAsRemovedProduct(int userId, int productId)
+    {
+      var product = _productsRepository.Find(p => p.UserId == userId && p.Id == productId);
+      if (product == null)
+        throw new Exception($"Услуга или товар не найдены.");
+      product.Name += $"[до {DateTime.Now.Date:d}]";
+      product.IsRemoved = true;
+      _productsRepository.Save();
     }
   }
 }

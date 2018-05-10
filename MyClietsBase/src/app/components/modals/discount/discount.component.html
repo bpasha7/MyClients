@@ -3,17 +3,17 @@
   <div class="container-column">
       <mat-form-field>
           <!-- <mat-icon matPrefix>message</mat-icon> -->
-        <input matInput placeholder="Название" [(ngModel)]="discount.name" >
+        <input matInput placeholder="Название" [(ngModel)]="discount.name">
       </mat-form-field>
       <mat-form-field>
           <!-- <mat-icon matPrefix>photo library</mat-icon> -->
-        <input matInput placeholder="Величина" [(ngModel)]="discount.percent" >
+        <input matInput placeholder="Величина" [(ngModel)]="discount.percent" type="number">
       </mat-form-field>
     </div>
 </div>
 <div mat-dialog-actions style="display: block">
   <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">Отмена</button>
-  <button *ngIf="discount.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
-  <button *ngIf="discount.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
+  <button [disabled]="inProc" *ngIf="discount.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
+  <button [disabled]="inProc" *ngIf="discount.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
   <!-- <button mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>Обновить</button> -->
 </div>

@@ -17,6 +17,7 @@ namespace Data.EF.Entities
         public string Name { get; set; }
         [Required]
         public float Percent { get; set; }
+        public bool IsRemoved { get; set; }
         /// <summary>
         /// User
         /// </summary>

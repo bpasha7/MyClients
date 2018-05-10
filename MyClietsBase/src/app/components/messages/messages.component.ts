@@ -10,7 +10,7 @@ import { UserService } from '../../services/index';
 })
 export class MessagesComponent implements OnInit {
   public messages: Message[] = [];
-  public unread: number = 0;//this.countUnread();;
+  public unread = 0;
   public today: Date;
   constructor(
     public messageDialog: MatDialog,
@@ -22,15 +22,16 @@ export class MessagesComponent implements OnInit {
     const now = new Date();
     this.today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     this.loadMessages();
-    this.userService.notifyMenu("Новости");
-    //this.unread = this.countUnread();
+    this.userService.notifyMenu('Новости');
+    // this.unread = this.countUnread();
   }
 
   countUnread() {
-    let count: number = 0;
+    let count = 0;
     this.messages.forEach(message => {
-      if (!message.isRead)
+      if (!message.isRead) {
         count++;
+      }
     });
     this.unread = count;
     return count;
@@ -52,6 +53,7 @@ export class MessagesComponent implements OnInit {
       data: {
         from: message.from,
         text: message.text,
+        mode: 'message'
       }
     });
     if (!message.isRead) {
@@ -60,9 +62,7 @@ export class MessagesComponent implements OnInit {
           message.isRead = true;
         },
         error => {
-          this.snackBar.open(error._body, 'Закрыть', {
-            duration: 2000,
-          });
+          this.userService.responseErrorHandle(error);
         }
       );
     }
@@ -74,17 +74,7 @@ export class MessagesComponent implements OnInit {
         this.messages = data.json().messages;
       },
       error => {
-        if (error.status === 401) {
-          this.userService.goLogin();
-          this.snackBar.open('Пароль истек!', 'Закрыть', {
-            duration: 2000,
-          });
-        }
-        else {
-          this.snackBar.open(error._body, 'Закрыть', {
-            duration: 2000,
-          });
-        }
+        this.userService.responseErrorHandle(error);
       }
     );
   }

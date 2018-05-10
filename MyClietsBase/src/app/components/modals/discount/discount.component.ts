@@ -4,6 +4,7 @@ import { Discount } from '../../../models/index';
 import { UserService } from '../../../services/index';
 import { error } from 'util';
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'discount-dialog',
     styleUrls: ['./discount.component.css'],
     templateUrl: './discount.component.html',
@@ -12,6 +13,7 @@ import { error } from 'util';
 export class DiscountModalComponent {
     public discount: Discount;
     public title: string;
+    public inProc = false;
     constructor(
         public snackBar: MatSnackBar,
         private userService: UserService,
@@ -29,6 +31,7 @@ export class DiscountModalComponent {
     }
 
     create() {
+        this.inProc = true;
         this.userService.createDiscount(this.discount).subscribe(
             data => {
                 this.discount.id = data.json().discountId;
@@ -37,31 +40,30 @@ export class DiscountModalComponent {
                 });
                 this.dialogRef.close(this.discount);
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
-                this.snackBar.open(error._body, 'Закрыть', {
-                    duration: 2000,
-                  });
+                this.inProc = false;
+                this.userService.responseErrorHandle(error);
             }
         );
     }
 
     update() {
+        this.inProc = true;
         this.userService.updateDiscount(this.discount).subscribe(
             data => {
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
                   });
-                  return 1;
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
-                this.snackBar.open(error._body, 'Закрыть', {
-                    duration: 2000,
-                  });
-                  return 0;
+                this.inProc = false;
+                this.userService.responseErrorHandle(error);
             }
         );
     }
-    
+
     onNoClick(): void {
         this.dialogRef.close();
     }

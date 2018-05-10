@@ -13,8 +13,6 @@
     
 }
 .container-column img{
-    /* border: 1px dashed darkslategrey;
-    border-radius: 10px; */
     max-height: 250px;
 }
 .button-ok{
@@ -23,10 +21,6 @@
 }
 .button-cancel{
     color:red;
-}
-mat-form-field mat-icon{
-    margin-right: 5px;
-    vertical-align: bottom;
 }
 .inputfile {
 	width: 0.1px;

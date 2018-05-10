@@ -13,6 +13,7 @@ import { error } from 'util';
 
 export class ClientModalComponent {
     public client: Client;
+    public inProc = false;
     constructor(
         public snackBar: MatSnackBar,
         private clientService: ClientService,
@@ -23,6 +24,7 @@ export class ClientModalComponent {
 
     create() {
         this.client.birthday.setHours(-this.client.birthday.getTimezoneOffset() / 60);
+        this.inProc = true;
         this.clientService.create(this.client).subscribe(
             data => {
                 this.client.id = data.json().clientId;
@@ -31,10 +33,10 @@ export class ClientModalComponent {
                 });
                 this.dialogRef.close(this.client);
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
-                this.snackBar.open(error._body, 'Закрыть', {
-                    duration: 2000,
-                });
+                this.inProc = false;
+                this.clientService.responseErrorHandle(error);
             }
         );
     }
@@ -45,16 +47,16 @@ export class ClientModalComponent {
         if (offset) {
             this.client.birthday.setHours(-offset / 60);
         }
+        this.inProc = true;
         this.clientService.update(this.client).subscribe(
             data => {
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
                 });
             },
+            // tslint:disable-next-line:no-shadowed-variable
             error => {
-                this.snackBar.open(error._body, 'Закрыть', {
-                    duration: 2000,
-                });
+                this.clientService.responseErrorHandle(error);
             }
         );
     }
@@ -62,6 +64,6 @@ export class ClientModalComponent {
 
     onNoClick(): void {
         this.dialogRef.close(this.client);
-        //this.dialogRef.close();
+        // this.dialogRef.close();
     }
 }

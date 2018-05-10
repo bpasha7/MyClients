@@ -1,29 +1,4 @@
-<div class="message-container">
-  <!-- <mat-list>
-    <mat-list-item class="button" *ngFor="let message of messages" (click)="messageClick(message)">
-
-      <mat-icon *ngIf="message.type == 1" color="primary" mat-list-icon>info</mat-icon>
-      <mat-icon *ngIf="message.type == 2" mat-list-icon>person_outline</mat-icon>
-
-      <h4 mat-line>
-        <mat-icon *ngIf="checkStatus(message) == 0" class="message-fab" color="warn" aria-label="Новое сообщение">
-          fiber_new
-        </mat-icon>
-        <mat-icon *ngIf="checkStatus(message) == 1" class="message-fab" style="font-size: 15px; height: 20px;" color="primary" aria-label="Непрочитанное сообщение">
-          fiber_manual_record
-        </mat-icon>
-        <mat-icon *ngIf="checkStatus(message) == 2" class="message-fab" style="color: green" color="primary" aria-label="Непрочитанное сообщение">
-          done
-        </mat-icon>
-        {{message.from}}
-        <span class="time-span-label">{{message.date | date:'MMMM d'}}</span>
-      </h4>
-      <p mat-line>{{message.text}}</p>
-      <mat-divider></mat-divider>
-    </mat-list-item>
-
-  </mat-list> -->
-
+<div class="container">
   <mat-nav-list class="my-list-menu">
       <h3 *ngIf="countUnread() > 0" mat-subheader>Непрочитанных: {{unread}}</h3>
       <mat-list-item *ngFor="let message of messages" (click)="messageClick(message)">

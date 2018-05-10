@@ -175,7 +175,7 @@ namespace MyClientsBase.Controllers
         if (client == null)
           throw new AppException("Клиент не найден в базе!");
         var old = client.Orders.Where(o => o.Date < DateTime.Now.Date).OrderByDescending(o => o.Date).ToList();
-        var current = client.Orders.Where(o => o.Date >= DateTime.Now.Date).OrderByDescending(o => o.Date).ToList();
+        var current = client.Orders.Where(o => o.Date >= DateTime.Now.Date).OrderBy(o => o.Date).ToList();
         return Ok(new
         {
           Client = _mapper.Map<ClientDto>(client),
@@ -225,7 +225,7 @@ namespace MyClientsBase.Controllers
     }
 
     [HttpPost, DisableRequestSizeLimit, Route("{id}/photo")]
-    public async Task<IActionResult> UploadFiles(int id)
+    public async Task<IActionResult> UploadFile(int id)
     {
       try
       {

@@ -2,19 +2,6 @@
     display: flex;
     flex-direction: column;
 }
-.container-row{
-    display: flex;
-    flex-direction: row;
-}
-.container-column > * {
-    width: 100%;
-}
-.container-row > * {
-    width: 48%;
-}
-.container-row :last-child {
-    margin-left: 2%;
-}
 .button-ok{
     color: green;
     float: right;
@@ -22,7 +9,7 @@
 .button-cancel{
     color:red;
 }
-mat-form-field mat-icon{
-    margin-right: 5px;
-    vertical-align: bottom;
+.image-preview{
+    display: block;
+    margin: auto;
 }

@@ -1,5 +1,5 @@
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 export class AppService {
     private messageSource;
@@ -32,5 +32,20 @@ export class AppService {
     }
     public goLogin() {
         this.router.navigate(['/login']);
+    }
+    protected showSnackBar(message: string) {
+        const data = {
+            type: 'snack',
+            text: message,
+        }
+        this.messageSource.next(data);
+    }
+    public responseErrorHandle(error: any) {
+        if (error.status === 401) {
+            this.showSnackBar('Пароль истек!');
+            this.goLogin();
+        } else {
+            this.showSnackBar(error._body);
+        }
     }
 }

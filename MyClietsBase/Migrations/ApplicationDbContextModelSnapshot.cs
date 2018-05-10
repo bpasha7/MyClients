@@ -59,6 +59,8 @@ namespace MyClientsBase.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("IsRemoved");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128);
@@ -117,6 +119,8 @@ namespace MyClientsBase.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime");
 
+                    b.Property<int?>("DiscountId");
+
                     b.Property<string>("Location");
 
                     b.Property<int?>("ProductId");
@@ -131,11 +135,49 @@ namespace MyClientsBase.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("DiscountId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Data.EF.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("OrderId");
+
+                    b.Property<int?>("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrdersItems");
+                });
+
+            modelBuilder.Entity("Data.EF.Entities.OrderPrepayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("OrderId");
+
+                    b.Property<decimal>("Total");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("OrderPrepayment");
                 });
 
             modelBuilder.Entity("Data.EF.Entities.Outgoing", b =>
@@ -166,6 +208,10 @@ namespace MyClientsBase.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("HasPhoto");
+
+                    b.Property<bool>("IsRemoved");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128);
@@ -185,6 +231,17 @@ namespace MyClientsBase.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Activated");
+
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Gmail")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -222,7 +279,7 @@ namespace MyClientsBase.Migrations
             modelBuilder.Entity("Data.EF.Entities.Message", b =>
                 {
                     b.HasOne("Data.EF.Entities.User", "UserInfo")
-                        .WithMany()
+                        .WithMany("Messages")
                         .HasForeignKey("UserId");
                 });
 
@@ -232,19 +289,38 @@ namespace MyClientsBase.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("ClientId");
 
-                    b.HasOne("Data.EF.Entities.Product", "ProductInfo")
+                    b.HasOne("Data.EF.Entities.Discount", "DiscountInfo")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("DiscountId");
 
                     b.HasOne("Data.EF.Entities.User", "UserInfo")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Data.EF.Entities.OrderItem", b =>
+                {
+                    b.HasOne("Data.EF.Entities.Order", "OrderInfo")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("Data.EF.Entities.Product", "ProductInfo")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("Data.EF.Entities.OrderPrepayment", b =>
+                {
+                    b.HasOne("Data.EF.Entities.Order", "OrderInfo")
+                        .WithOne("Prepayment")
+                        .HasForeignKey("Data.EF.Entities.OrderPrepayment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Data.EF.Entities.Outgoing", b =>
                 {
                     b.HasOne("Data.EF.Entities.User", "UserInfo")
-                        .WithMany()
+                        .WithMany("Outgoings")
                         .HasForeignKey("UserId");
                 });
 

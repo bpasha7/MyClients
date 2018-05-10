@@ -1,9 +1,10 @@
-/** 
- * Front end configurations 
+/**
+ * Front end configurations
 */
 export class AppConfig {
-    public readonly apiUrl = 'http://localhost:4201/api';
-    public readonly photoUrl = 'http://localhost:4201/photo/';
-    // public readonly apiUrl = 'http://api.bizmak.ru/api';
-    // public readonly photoUrl = 'http://api.bizmak.ru/photo/';
-  };
+    private readonly _host = 'http://localhost:4201';
+    // private readonly _host = 'http://api.bizmak.ru';
+    public readonly apiUrl = this._host + '/api';
+    public readonly photoUrl = this._host + '/photo/';
+    public readonly defaultPhoto = this._host + '/photo/product.jpg';
+  }
