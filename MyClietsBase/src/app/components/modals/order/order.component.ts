@@ -155,7 +155,7 @@ export class OrderModalComponent implements OnInit {
         );
     }
     validate() {
-        if (this.selectedProducts.length !== 0) {
+        if (this.selectedProducts.length === 0) {
             this.snackBar.open('Не выбраны позиции!', 'Закрыть', {
                 duration: 2000,
             });
@@ -181,7 +181,7 @@ export class OrderModalComponent implements OnInit {
      * Create new one
      */
     create() {
-        if (!this.validate) {
+        if (!this.validate()) {
             return;
         }
         this.inProc = true;
@@ -204,7 +204,7 @@ export class OrderModalComponent implements OnInit {
      * Update order
      */
     update() {
-        if (!this.validate) {
+        if (!this.validate()) {
             return;
         }
         this.inProc = true;
