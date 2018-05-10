@@ -62,16 +62,7 @@ export class ClientComponent implements OnInit {
                 this.photo = this.config.photoUrl + localStorage.getItem('userHash') + '/' + this.client.id + '.jpg';
             },
             error => {
-                if (error.status === 401) {
-                    this.userService.goLogin();
-                    this.snackBar.open('Пароль истек!', 'Закрыть', {
-                        duration: 2000,
-                    });
-                } else {
-                    this.snackBar.open(error._body, 'Закрыть', {
-                        duration: 2000,
-                    });
-                }
+                this.userService.responseErrorHandle(error);
             }
         );
     }

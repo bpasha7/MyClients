@@ -7,3 +7,11 @@
     bottom: 35px;
     right: 15px;
 }
+.container-row > * {
+    width: 110px;
+    margin: auto;
+}
+.container-row :last-child {
+    width: 40px;
+    margin-left: 2%;
+}

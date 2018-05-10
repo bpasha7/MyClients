@@ -56,9 +56,7 @@ export class RegistrationComponent implements OnInit {
       }, 2500);
       },
       error => {
-          this.snackBar.open(error._body, 'Закрыть', {
-            duration: 2000,
-          });
+        this.userService.responseErrorHandle(error);
       }
     );
   }

@@ -62,9 +62,7 @@ export class MessagesComponent implements OnInit {
           message.isRead = true;
         },
         error => {
-          this.snackBar.open(error._body, 'Закрыть', {
-            duration: 2000,
-          });
+          this.userService.responseErrorHandle(error);
         }
       );
     }
@@ -76,16 +74,7 @@ export class MessagesComponent implements OnInit {
         this.messages = data.json().messages;
       },
       error => {
-        if (error.status === 401) {
-          this.userService.goLogin();
-          this.snackBar.open('Пароль истек!', 'Закрыть', {
-            duration: 2000,
-          });
-        } else {
-          this.snackBar.open(error._body, 'Закрыть', {
-            duration: 2000,
-          });
-        }
+        this.userService.responseErrorHandle(error);
       }
     );
   }

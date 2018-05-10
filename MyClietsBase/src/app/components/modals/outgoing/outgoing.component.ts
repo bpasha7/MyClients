@@ -44,9 +44,7 @@ export class OutgoingModalComponent {
             // tslint:disable-next-line:no-shadowed-variable
             error => {
                 this.inProc = false;
-                this.snackBar.open(error._body, 'Закрыть', {
-                    duration: 2000,
-                  });
+                this.userService.responseErrorHandle(error);
             }
         );
     }
@@ -64,9 +62,7 @@ export class OutgoingModalComponent {
             error => {
                 this.inProc = false;
                 // this.dialogRef.close(0);
-                this.snackBar.open(error._body, 'Закрыть', {
-                    duration: 2000,
-                  });
+                this.userService.responseErrorHandle(error);
             }
         );
     }

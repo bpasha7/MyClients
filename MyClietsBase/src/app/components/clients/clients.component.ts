@@ -39,16 +39,7 @@ export class ClientsComponent implements OnInit {
                 this.initDataSource();
             },
             error => {
-                if (error.status === 401) {
-                    this.clientService.goLogin();
-                    this.snackBar.open('Пароль истек!', 'Закрыть', {
-                      duration: 2000,
-                    });
-                  } else {
-                    this.snackBar.open(error._body, 'Закрыть', {
-                      duration: 2000,
-                    });
-                  }
+                this.clientService.responseErrorHandle(error);
             }
         );
     }

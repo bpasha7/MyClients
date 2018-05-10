@@ -36,9 +36,7 @@ export class ClientModalComponent {
             // tslint:disable-next-line:no-shadowed-variable
             error => {
                 this.inProc = false;
-                this.snackBar.open(error._body, 'Закрыть', {
-                    duration: 2000,
-                });
+                this.clientService.responseErrorHandle(error);
             }
         );
     }
@@ -58,10 +56,7 @@ export class ClientModalComponent {
             },
             // tslint:disable-next-line:no-shadowed-variable
             error => {
-                this.inProc = false;
-                this.snackBar.open(error._body, 'Закрыть', {
-                    duration: 2000,
-                });
+                this.clientService.responseErrorHandle(error);
             }
         );
     }
