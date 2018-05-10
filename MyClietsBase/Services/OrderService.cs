@@ -280,7 +280,7 @@ namespace MyClientsBase.Services
     public IList<Order> GetCurrentOrders(int userId)
     {
 
-      return _repository.Query(e => e.Date >= DateTime.Now.Date && e.Removed != true)//, oi => oi.Items)
+      return _repository.Query(e => e.UserId == userId && e.Date >= DateTime.Now.Date && e.Removed != true)//, oi => oi.Items)
         .Include(oi => oi.Items)
           .ThenInclude( i => i.ProductInfo)
         //.SelectMany(i. => i.ProductInfo)
