@@ -39,15 +39,18 @@ export class OrderModalComponent implements OnInit {
         private userService: UserService,
         public dialogRef: MatDialogRef<OrderModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) {
+        this.products = data.products;
         this.order = data.order;
     }
 
     ngOnInit(): void {
         this.photoDir = this.config.photoUrl + localStorage.getItem('userHash') + '/';
-        const myDate = new Date();
-        this.time =  ('0' + myDate.getHours()).slice(-2) + ':' + ('0' + myDate.getMinutes()).slice(-2);
+        //const myDate = new Date();
+        this.order.date = new Date(this.order.date);
+        this.order.datePrepay = new Date(this.order.datePrepay);
+        this.time = ('0' + this.order.date.getHours()).slice(-2) + ':' + ('0' + this.order.date.getMinutes()).slice(-2);
         this.productsSelectCtrl = new FormControl();
-        this.loadProducts();
+        this.initProducts();
         this.loadDiscounts();
     }
     //#region Products select control
@@ -100,9 +103,9 @@ export class OrderModalComponent implements OnInit {
 
         // Reset the input value
         if (input) {
-          input.value = '';
+            input.value = '';
         }
-      }
+    }
     /**
      * Clear selected product
      * @param e
@@ -114,29 +117,20 @@ export class OrderModalComponent implements OnInit {
     // }
     //#endregion
     /**
-     * Loading products and create filter
+     * Init products and create filter
      */
-    loadProducts() {
-        this.userService.getProducts().subscribe(
-            data => {
-                this.products = data.json().products;
-                this.filteredProducts = this.productsSelectCtrl.valueChanges
-                    .pipe(
-                        startWith<string | Product>(''),
-                        map(value => typeof value === 'string' ? value : value.name),
-                        map(name => name ? this.filterProducts(name) : this.products.slice())
-                    );
-                if (this.order.productsId !== undefined) {
-                    this.order.productsId.forEach(productId => {
-                        this.selectedProducts.push(this.products.find(p => p.id === productId));
-                    });
-                }
-            },
-            // tslint:disable-next-line:no-shadowed-variable
-            error => {
-                this.userService.responseErrorHandle(error);
-            }
-        );
+    initProducts() {
+        this.filteredProducts = this.productsSelectCtrl.valueChanges
+            .pipe(
+                startWith<string | Product>(''),
+                map(value => typeof value === 'string' ? value : value.name),
+                map(name => name ? this.filterProducts(name) : this.products.slice())
+            );
+        if (this.order.productsId !== undefined) {
+            this.order.productsId.forEach(productId => {
+                this.selectedProducts.push(this.products.find(p => p.id === productId));
+            });
+        }
     }
     /**
      * Loading discounts
@@ -191,6 +185,7 @@ export class OrderModalComponent implements OnInit {
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
                 });
+                this.order.label = this.selectedProducts.map(p => p.name).toString();
                 this.dialogRef.close(1);
             },
             // tslint:disable-next-line:no-shadowed-variable
@@ -213,6 +208,7 @@ export class OrderModalComponent implements OnInit {
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
                 });
+                this.order.label = this.selectedProducts.map(p => p.name).toString();                
                 this.dialogRef.close(1);
             },
             // tslint:disable-next-line:no-shadowed-variable

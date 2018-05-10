@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DatePipe } from '@angular/common';
-import { Client, Order, Orders } from '../../models/index';
+import { Client, Order, Orders, Product } from '../../models/index';
 import { ClientService, UserService } from '../../services/index';
 import { OrderModalComponent, PhotoModalComponent, ClientModalComponent } from '../modals/index';
 import { AppConfig } from '../../app.config';
@@ -21,6 +21,10 @@ export class ClientComponent implements OnInit {
     public currentNotCanceled = 0;
     public oldNotCanceled = 0;
     public photo = '';
+    /**
+     * Current product list
+     */
+    public products: Product[] = [];
     public today: Date;
     constructor(
         public config: AppConfig,
@@ -41,6 +45,15 @@ export class ClientComponent implements OnInit {
         this.route.params.subscribe(params => {
             this.loadClientInfo(params['id']);
         });
+        this.userService.getProducts().subscribe(
+            data => {
+                this.products = data.json().products;
+            },
+            // tslint:disable-next-line:no-shadowed-variable
+            error => {
+                this.userService.responseErrorHandle(error);
+            }
+        );
     }
 
     copyDone() {
@@ -112,7 +125,8 @@ export class ClientComponent implements OnInit {
             maxWidth: '310px',
             width: 'auto',
             data: {
-                order: newOrder
+                order: newOrder,
+                products: this.products
             }
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -143,7 +157,8 @@ export class ClientComponent implements OnInit {
             maxWidth: '310px',
             width: 'auto',
             data: {
-                order: temp
+                order: temp,
+                products: this.products
             }
         });
         dialogRef.afterClosed().subscribe(result => {
