@@ -1,29 +1,9 @@
-.outgoings-container{
-    min-width: 310px;
-    margin: 0 0 3px 0;
+.data-pickers-block{
+    width: 300px;
+    margin: auto;
 }
 .add-fixed-button{
     position: fixed;
     bottom: 35px;
     right: 15px;
-}
-.data-pickers-block{
-    width: 300px;
-    margin: auto;
-}
-.container-row{
-    display: flex;
-    flex-direction: row;
-}
-.container-row > * {
-    /* width: 48%; */
-    width: 110px;
-    margin: auto;
-}
-.container-row :last-child {
-    width: 40px;
-    margin-left: 2%;
-}
-.last{
-    padding-bottom: 40px;
 }

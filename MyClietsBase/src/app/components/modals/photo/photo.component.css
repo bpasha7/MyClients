@@ -22,10 +22,6 @@
 .button-cancel{
     color:red;
 }
-mat-form-field mat-icon{
-    margin-right: 5px;
-    vertical-align: bottom;
-}
 .inputfile {
 	width: 0.1px;
 	height: 0.1px;

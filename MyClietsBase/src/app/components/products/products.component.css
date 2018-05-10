@@ -1,29 +1,4 @@
-.social-button mat-icon{
-    vertical-align: middle;
-}
-.link-text{
-    text-decoration: none;
-    color: rgba(0,0,0,.87);
-}
-mat-form-field mat-icon{
-    margin-right: 10px;
-    vertical-align: bottom;
-}
-.table-container{
-    min-width: 310px;
-    margin: 0 3px 3px 3px;
-}
-.search-card{
-    padding: 0px 10px 0px 10px;
-}
-.search-card mat-form-field{
-    width: 100%;
-}
-.search-card button{
-    margin-left: 10px;
-}
 .add-fixed-button{
-    z-index: 1;
     position: fixed;
     bottom: 35px;
     right: 15px;
@@ -31,26 +6,14 @@ mat-form-field mat-icon{
 ::ng-deep .mat-paginator .mat-form-field{
     width: 35px;
 }
-.last{
-    padding-bottom: 40px;
-}
 .search-fixed-button{
     z-index: 1;
     position: fixed;
     bottom: 35px;
     right: 65px;
 }
-.mat-tab-labels{
-    justify-content: center; /* align items in Main Axis */
-}
 ::ng-deep .mat-tab-labels{
     justify-content: center; /* align items in Main Axis */
-}
-.pressed{
-    color: red;
-}
-.unpressed{
-    color: green;
 }
 .product-photo{
     object-fit: contain;

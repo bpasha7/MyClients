@@ -1,15 +1,17 @@
-<div class="table-container" *ngIf="products?.length > 0 && showFilter">
-  <mat-card class="search-card">
-    <mat-form-field [floatLabel]="'never'" class="">
-      <mat-icon matPrefix>search</mat-icon>
-      <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Поиск" type="search">
-    </mat-form-field>
-  </mat-card>
+<div class="container" *ngIf="products?.length > 0 && showFilter">
+  <div class="search-card">
+    <mat-card>
+      <mat-form-field [floatLabel]="'never'" class="">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Поиск" type="search">
+      </mat-form-field>
+    </mat-card>
+  </div>
 </div>
 <mat-tab-group class="demo-tab-group" color="primary" headerPosition="center" (selectedTabChange)="selectedTabChange($event)">
   <mat-tab label="Услуги">
     <!-- *ngIf="products?.length > 0" -->
-    <div class="table-container last">
+    <div class="container last">
       <mat-table [dataSource]="productDataSorce" #sortProducts="matSort" matSort>
 
         <!-- Name Column -->
@@ -34,19 +36,11 @@
             <span class="warped-name pointer" [matMenuTriggerFor]="menu"> {{product.name}} </span>
           </mat-cell>
         </ng-container>
-
         <!-- Price Column -->
         <ng-container matColumnDef="price">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Стоимость </mat-header-cell>
           <mat-cell *matCellDef="let product"> {{product.price}} </mat-cell>
         </ng-container>
-
-        <!-- Action Column -->
-        <!-- <ng-container matColumnDef="action" >
-          <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-          <mat-cell *matCellDef="let product">  </mat-cell>
-        </ng-container> -->
-
         <mat-header-row *matHeaderRowDef="displayedProductColumns"></mat-header-row>
         <mat-row *matRowDef="let product; columns: displayedProductColumns;">
         </mat-row>
@@ -54,16 +48,10 @@
 
       <mat-paginator #paginatorProducts [length]="products.length" [pageSize]="15" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
     </div>
-    <!-- <button mat-mini-fab color="primary" class="search-fixed-button" (click)="openDialog()">
-      <mat-icon aria-label="">search</mat-icon>
-    </button>
-    <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
-      <mat-icon aria-label="">add</mat-icon>
-    </button> -->
   </mat-tab>
   <mat-tab label="Скидки">
     <!-- *ngIf="discounts?.length > 0" -->
-    <div class="table-container last">
+    <div class="container last">
       <mat-table [dataSource]="discountDataSorce" #sortDiscounts="matSort" matSort>
 
         <!-- Name Column -->
@@ -85,9 +73,6 @@
 
       <mat-paginator #paginatorDiscounts [length]="discounts.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
     </div>
-    <!-- <button mat-mini-fab color="primary" class="add-fixed-button" (click)="openDialog()">
-          <mat-icon aria-label="">add</mat-icon>
-        </button> -->
   </mat-tab>
 </mat-tab-group>
 <button mat-mini-fab [ngStyle]="{'background': showFilter ? 'orange': 'green'}" class="search-fixed-button" (click)="showHideFilter()">

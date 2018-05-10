@@ -1,5 +1,5 @@
-<div class="outgoings-container">
-  <mat-card class="search-card">
+<div class="container">
+  <mat-card>
     <mat-card-title>Выбор периода</mat-card-title>
     <div class="container-row data-pickers-block">
       <mat-form-field>
@@ -18,7 +18,7 @@
     </div>
   </mat-card>
 </div>
-<div class="outgoings-container last">
+<div class="container last">
   <mat-nav-list class="my-list-menu">
     <h3 mat-subheader>Всего:&nbsp;<span *ngIf="!process">{{sum}} &#x20bd;</span>
       <mat-spinner *ngIf="process" diameter="15"></mat-spinner></h3>
