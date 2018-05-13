@@ -100,8 +100,8 @@ namespace MyClientsBase.Services
            Year = rep.Key.Y,
            Month = rep.Key.Month,
            MonthNumber = rep.Key.MonthNumber,
-           Total = //rep.Sum(s => s.Total)
-           rep.Sum(s => (s.DatePrepay >= dateStart.Date && s.DatePrepay <= dateEnd.Date) ? s.Total + s.Prepay : s.Total)
+           Total = rep.Sum(s => s.Total)
+           //rep.Sum(s => (s.DatePrepay >= dateStart.Date && s.DatePrepay <= dateEnd.Date) ? s.Total + s.Prepay : s.Total)
          }
         )
         //.OrderBy(m => m.Year)
@@ -109,9 +109,11 @@ namespace MyClientsBase.Services
 
       var prepaymentsData = _repositoryPrepayment
         .Query(op =>
-        op.Date >= dateStart.Date && op.Date <= dateEnd.Date
+        //((
+        op.Date >= dateStart.Date && op.Date <= dateEnd.Date//) || op.OrderInfo.Date > dateEnd.Date)
         && op.OrderInfo.Removed != true
-        && op.OrderInfo.Date > dateEnd.Date)
+        && op.OrderInfo.UserId == userId
+        )
         .Include(order => order.OrderInfo)
         .Select(
         field => new
@@ -154,11 +156,11 @@ namespace MyClientsBase.Services
         }
       }
 
-      var onlyPrepay = prepaymentsData.Sum(op => op.Total);
+      var prepayments = prepaymentsData.Sum(op => op.Total);
 
-      var prepayments = dataSource.Where(order => order.DatePrepay >= dateStart.Date && order.DatePrepay <= dateEnd.Date)
-        .Sum(order => order.Prepay);
-      prepayments += onlyPrepay;
+      //var prepayments = dataSource.Where(order => order.DatePrepay >= dateStart.Date && order.DatePrepay <= dateEnd.Date)
+      //  .Sum(order => order.Prepay);
+      //prepayments += onlyPrepay;
 
 
       //var report = new List<ProductsReport>();// dataSource
