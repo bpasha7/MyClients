@@ -6,6 +6,8 @@
 /tmp
 /out-tsc
 
+/temp
+
 # dependencies
 /node_modules
 
