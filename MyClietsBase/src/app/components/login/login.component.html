@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="login-form" ng-cloak="" layout="column">
+    <mat-card>
+      <mat-card-title style="text-align: center;">
+        <span class="mat-headline">Вход в систему</span>
+      </mat-card-title>
+      <mat-card-content>
+        <div layout="row">
+          <mat-icon class="icon-field">person</mat-icon>
+          <mat-form-field class="input-field">
+            <input matInput placeholder="Логин" [(ngModel)]="user.login">
+          </mat-form-field>
+        </div>
+        <div layout="row">
+          <mat-icon class="icon-field">vpn_key</mat-icon>
+          <mat-form-field class="input-field">
+            <input matInput placeholder="Пароль" [(ngModel)]="user.password" type="password">
+          </mat-form-field>
+        </div>
+        <div *ngIf="!loading" layout="row">
+          <button mat-button (click)="login()" style="margin-left: 32%;">Войти</button>
+        </div>
+      </mat-card-content>
+      <mat-progress-bar *ngIf="loading" class="login-progress" mode="indeterminate">
+      </mat-progress-bar>
+    </mat-card>
+  </div>
+  <button mat-button routerLink="/start" style="display:block; margin: auto; margin-top: 15px; color: green">Регистрация</button>
+</div>

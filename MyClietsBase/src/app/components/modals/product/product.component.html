@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>{{ title }} </h1>
+<div mat-dialog-content>
+  <div class="container-column">
+    <mat-form-field>
+      <!-- <mat-icon matPrefix>message</mat-icon> -->
+      <input matInput placeholder="Название" [(ngModel)]="product.name">
+    </mat-form-field>
+    <mat-form-field>
+      <!-- <mat-icon matPrefix>photo library</mat-icon> -->
+      <input matInput placeholder="Цена" [(ngModel)]="product.price" type="number">
+    </mat-form-field>
+    <!-- <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="1">Удалить</button> -->
+  </div>
+</div>
+<div mat-dialog-actions style="display: block">
+  <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">ОТМЕНА</button>
+  <button [disabled]="inProc" *ngIf="product.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
+  <button [disabled]="inProc" *ngIf="product.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
+  <!-- <button mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>Обновить</button> -->
+</div>

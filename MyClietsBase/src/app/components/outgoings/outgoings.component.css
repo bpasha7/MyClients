@@ -1,0 +1,17 @@
+.data-pickers-block{
+    width: 300px;
+    margin: auto;
+}
+.add-fixed-button{
+    position: fixed;
+    bottom: 35px;
+    right: 15px;
+}
+.container-row > * {
+    width: 110px;
+    margin: auto;
+}
+.container-row :last-child {
+    width: 40px;
+    margin-left: 2%;
+}

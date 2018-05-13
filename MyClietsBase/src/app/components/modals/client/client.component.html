@@ -1,6 +1,5 @@
 <h1 mat-dialog-title>Новый клиент</h1>
-<div mat-dialog-content class="">
-  <!-- <p>Заполните данные</p> -->
+<div mat-dialog-content>
   <div class="container-row">
     <mat-form-field>
       <input matInput placeholder="Фамилия"  [(ngModel)]="client.lastName" required>
@@ -9,29 +8,39 @@
       <input matInput placeholder="Имя" [(ngModel)]="client.firstName" required>
     </mat-form-field>
   </div>
+  <div class="container-column">
+  </div>
   <div class="container-row">
     <mat-form-field>
       <mat-icon matPrefix>phone</mat-icon>
-      <input type="tel" matInput placeholder="Телефон" [(ngModel)]="client.phone">
+      <input matInput placeholder="Телефон" [(ngModel)]="client.phone" type="tel">
     </mat-form-field>
     <mat-form-field>
-      <input matInput [matDatepicker]="dp3" placeholder="Дата рождения" [(ngModel)]="client.birthday" disabled>
-      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-      <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+      <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="client.birthday" disabled>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi="true" #picker startView="multi-year" disabled="false"></mat-datepicker>
     </mat-form-field>
   </div>
   <div class="container-column">
       <mat-form-field>
           <mat-icon matPrefix>message</mat-icon>
-        <input matInput placeholder="Соц. сети" [(ngModel)]="client.link" required>
+        <input matInput #inputSocial maxlength="128" placeholder="Соц. сети" [(ngModel)]="client.link" >
+        <mat-hint align="end">{{inputSocial.value?.length || 0}}/128</mat-hint>
       </mat-form-field>
       <mat-form-field>
           <mat-icon matPrefix>photo library</mat-icon>
-        <input matInput placeholder="Instagram" [(ngModel)]="client.photoLink" required>
+        <input matInput #inputInstagram maxlength="128" placeholder="Instagram" [(ngModel)]="client.linkPhoto" >
+        <mat-hint align="end">{{inputInstagram.value?.length || 0}}/128</mat-hint>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput #inputComentary placeholder="Дополнительно" maxlength="128" [(ngModel)]="client.commentary" >
+        <mat-hint align="end">{{inputComentary.value?.length || 0}}/128</mat-hint>
       </mat-form-field>
     </div>
 </div>
 <div mat-dialog-actions style="display: block">
-  <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">Отмена</button>
-  <button mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>Добавить</button>
+  <button mat-button class="button-cancel" (click)="onNoClick()">ОТМЕНА</button>
+  <!-- <button mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>ДОБАВИТЬ</button> -->
+  <button [disabled]="inProc" *ngIf="client.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
+  <button [disabled]="inProc" *ngIf="client.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
 </div>

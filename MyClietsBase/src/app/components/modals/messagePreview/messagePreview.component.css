@@ -1,0 +1,15 @@
+.container-column{
+    display: flex;
+    flex-direction: column;
+}
+.button-ok{
+    color: green;
+    float: right;
+}
+.button-cancel{
+    color:red;
+}
+.image-preview{
+    display: block;
+    margin: auto;
+}

@@ -13,5 +13,7 @@ namespace Data.DTO.Entities
         public DateTime Birthday { get; set; }
         public string Link { get; set; }
         public string LinkPhoto { get; set; }
+        public int UserId { get; set; }
+        public string Commentary { get; set; }
     }
 }

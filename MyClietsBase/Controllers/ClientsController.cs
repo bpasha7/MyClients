@@ -13,14 +13,17 @@ using Microsoft.Extensions.Options;
 using MyClientsBase.Helpers;
 using MyClientsBase.Services;
 using Microsoft.AspNetCore.Cors;
+using System.IO;
+using System.Security.Claims;
 
 namespace MyClientsBase.Controllers
 {
-    [EnableCors("MyPolicy")]
-    [Produces("application/json")]
-    [Route("api/Clients")]
-    public class ClientsController : Controller
-    {
+  [Authorize]
+  [EnableCors("MyPolicy")]
+  [Produces("application/json")]
+  [Route("api/Clients")]
+  public class ClientsController : Controller
+  {
     /// <summary>
     /// User Servise to work with database
     /// </summary>
@@ -49,11 +52,14 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
       }
     }
-
-    [AllowAnonymous]
+    /// <summary>
+    /// Creating new client
+    /// </summary>
+    /// <param name="clientDto"></param>
+    /// <returns></returns>
     [HttpPost("create")]
     public IActionResult Create([FromBody]ClientDto clientDto)
     {
@@ -63,11 +69,19 @@ namespace MyClientsBase.Controllers
 
         if (client == null)
           throw new AppException("Не удалось создать нового клиента!");
-        client.UserId = 1;
+
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        if (userId <= 0)
+          throw new AppException("Запрещено создать нового клиента!");
+
+        client.UserId = userId;
+
         _clientService.Create(client);
         return Ok(new
         {
-          Message = "Клиент добавлен!"
+          Message = "Клиент добавлен!",
+          ClientId = client.Id
         });
       }
       catch (AppException ex)
@@ -76,19 +90,60 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="clientDto"></param>
+    /// <returns></returns>
+    [HttpPut("update")]
+    public IActionResult UpdateClient([FromBody]ClientDto clientDto)
+    {
+      try
+      {
+        var client = _mapper.Map<Client>(clientDto);
+
+        if (client == null)
+          throw new AppException("Не удалось обновить клиента!");
+
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        if (client.UserId != userId)
+          throw new AppException("Запрещено обновить клиента!");
+
+        _clientService.Update(client);
+        return Ok(new
+        {
+          Message = "Данные клиента обновлены!"
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }
 
+    /// <summary>
+    /// Get all clients
+    /// </summary>
+    /// <returns></returns>
     // GET: api/Clients
-    [AllowAnonymous]
     [HttpGet]
-          public IActionResult Get()
-          {
+    public IActionResult Get()
+    {
       try
       {
-        var clients = _clientService.Get();
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        var clients = _clientService.GetClients(userId);
         return Ok(new
         {
           Clients = clients
@@ -100,34 +155,138 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogError($"{ex}");
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+    /// <summary>
+    /// Get client info
+    /// </summary>
+    /// <param name="id">user id</param>
+    /// <returns></returns>
+    // GET: api/Clients/5
+    [HttpGet("{id}", Name = "Get")]
+    public IActionResult Get(int id)
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        var client = _clientService.Get(userId, id);
+        if (client == null)
+          throw new AppException("Клиент не найден в базе!");
+        var old = client.Orders.Where(o => o.Date < DateTime.Now.Date).OrderByDescending(o => o.Date).ToList();
+        var current = client.Orders.Where(o => o.Date >= DateTime.Now.Date).OrderBy(o => o.Date).ToList();
+        return Ok(new
+        {
+          Client = _mapper.Map<ClientDto>(client),
+          Orders = new
+          {
+            Old = _mapper.Map<OrderDto[]>(old),
+            Current = _mapper.Map<OrderDto[]>(current)
+          }
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }
 
-          /*/ GET: api/Clients/5
-          [HttpGet("{id}", Name = "Get")]
-          public string Get(int id)
-          {
-              return "value";
-          }
+    [HttpGet("{id}/orders")]
+    public IActionResult GetOrders(int id)
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
-          // POST: api/Clients
-          [HttpPost]
-          public void Post([FromBody]string value)
-          {
-          }
-
-          // PUT: api/Clients/5
-          [HttpPut("{id}")]
-          public void Put(int id, [FromBody]string value)
-          {
-          }
-
-          // DELETE: api/ApiWithActions/5
-          [HttpDelete("{id}")]
-          public void Delete(int id)
-          {
-          }*/
+        var orders = _clientService.GetOrders(userId, id);
+        var old = orders.Where(o => o.Date < DateTime.Now.Date).ToList();
+        var current = orders.Where(o => o.Date >= DateTime.Now.Date).ToList();
+        return Ok(new
+        {
+          Old = _mapper.Map<OrderDto[]>(old),
+          Current = _mapper.Map<OrderDto[]>(current)
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
     }
+
+    [HttpPost, DisableRequestSizeLimit, Route("{id}/photo")]
+    public async Task<IActionResult> UploadFile(int id)
+    {
+      try
+      {
+        var file = Request.Form.Files.FirstOrDefault();
+        if (file == null)
+          throw new AppException("Empty file!");
+        if (file.Length > _appSettings.MaxImageSize * 1024)
+          throw new AppException("Слишком большое изображени");
+        //combine path to user folder using md5 hash
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        var userName = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+        var hash = AppFileSystem.GetUserMD5(userId, User.Identity.Name);
+        //create directory in not exist
+        var path = $"{Directory.GetCurrentDirectory()}{_appSettings.PhotoFolder}{hash}";
+        if (!Directory.Exists(path))
+          Directory.CreateDirectory(path);
+        path += $"\\{id}";
+
+        if (System.IO.File.Exists(path + ".jpg"))
+          System.IO.File.Delete(path + ".jpg");
+        using (FileStream fstream = new FileStream(path + ".new", FileMode.Create))
+        {
+          await file.CopyToAsync(fstream);
+        }
+        if (!AppFileSystem.CompressImage(path, _appSettings.PhotoSize))
+        {
+          _logger.LogError($"File {path} was not compressed and deleted!");
+          throw new AppException("Ошибка загрузки файла.");
+        }
+        return Ok(new
+        {
+
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+    /*    
+              // POST: api/Clients
+              [HttpPost]
+              public void Post([FromBody]string value)
+              {
+              }
+
+              // PUT: api/Clients/5
+              [HttpPut("{id}")]
+              public void Put(int id, [FromBody]string value)
+              {
+              }
+
+              // DELETE: api/ApiWithActions/5
+              [HttpDelete("{id}")]
+              public void Delete(int id)
+              {
+              }*/
+  }
 }

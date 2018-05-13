@@ -1,0 +1,102 @@
+<div class="container">
+    <mat-card class="item-contaner">
+        <div>
+            <img img mat-card-image class="client-photo" [src]="photo" alt="">
+            <div class="client-menu-bar">
+                <button mat-mini-fab style="vertical-align: bottom;" color="primary">
+                    <a class="link-text" href="{{client.link}}" target="blank">
+                        <mat-icon aria-label="">public</mat-icon>
+                    </a>
+                </button>
+                <button mat-mini-fab color="warn" [matMenuTriggerFor]="contactMenu">
+                    <mat-icon aria-label="">phone</mat-icon>
+                </button>
+                <mat-menu #contactMenu="matMenu">
+                    <button mat-menu-item>
+                        <a class="phone-text" href="tel:{{client.phone}}">
+                            <mat-icon>phone</mat-icon>
+                            <span>Звонок</span>
+                        </a>
+                    </button>
+                    <button mat-menu-item ngxClipboard [cbContent]="client.phone" (click)="copyDone()">
+                        <mat-icon>content_copy
+                        </mat-icon>
+                        <span>Копировать</span>
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+        <mat-card-title>{{client.lastName}} {{client.firstName}}
+
+        </mat-card-title>
+        <button mat-icon-button class="edit-button" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editProfile()">
+                <mat-icon style="color: black;">
+                    mode_edit
+                </mat-icon>
+                <span>Изменить</span>
+            </button>
+            <button mat-menu-item (click)="openPhotoDialog()">
+                <mat-icon style="color: black;">
+                    add_a_photo
+                </mat-icon>
+                <span>Фото</span>
+            </button>
+        </mat-menu>
+        <mat-card-subtitle>{{client.commentary}}</mat-card-subtitle>
+        <mat-card-content>
+            <p>
+                День рождения: {{client.birthday | date:'longDate'}}
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="openNewOrderDialog()">Записать</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<div class="client-container">
+    <!-- <mat-accordion> -->
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                История
+            </mat-panel-title>
+            <mat-panel-description>
+                <mat-spinner *ngIf="orders.current == null || orders.old == null" diameter="15"></mat-spinner>
+                <span *ngIf="orders.current != null || orders.old != null">Всего {{currentNotCanceled + oldNotCanceled}} записи</span>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+            <h3 mat-subheader>Текущие: {{currentNotCanceled}}</h3>
+            <mat-list-item *ngFor="let order of orders.current" [ngClass]="{'removed-order' : order.removed}">
+                <mat-icon mat-list-icon  (click)="openEditOrderDialog(order)">date_range</mat-icon>
+                <h4 mat-line (click)="openEditOrderDialog(order)">{{ order.date | date:'d MMMM, H:mm' }}</h4>
+                <p mat-line> {{ order.label }}</p>
+                <button *ngIf="!order.removed" (click)="changeStatus(order)" mat-icon-button color="warn">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <button *ngIf="order.removed" (click)="changeStatus(order)" mat-icon-button color="primary">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <h3 mat-subheader>Прошлые: {{oldNotCanceled}}</h3>
+            <mat-list-item *ngFor="let order of orders.old" [ngClass]="{'removed-order' : order.removed}">
+                <mat-icon mat-list-icon  (click)="openEditOrderDialog(order)">date_range</mat-icon>
+                <h4 mat-line  (click)="openEditOrderDialog(order)">{{ order.date | date:'d MMMM, H:mm' }}</h4>
+                <p mat-line> {{ order.label }} </p>
+                <button *ngIf="!order.removed" (click)="changeStatus(order)" mat-icon-button color="warn">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <button *ngIf="order.removed" (click)="changeStatus(order)" mat-icon-button color="primary">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-expansion-panel>
+    <!-- </mat-accordion> -->
+</div>

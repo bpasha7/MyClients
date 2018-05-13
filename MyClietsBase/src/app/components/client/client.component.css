@@ -1,0 +1,28 @@
+.phone-text{
+    text-decoration: none;
+    color: rgba(0,0,0,.87);
+}
+.link-text{
+    text-decoration: none;
+    color: white;
+}
+/* mat-form-field mat-icon{
+    margin-right: 10px;
+    vertical-align: bottom;
+} */
+.item-contaner{
+    margin:  0px 3px 3px 3px;
+}
+.client-menu-bar{
+    float: right;
+    position: relative;
+    bottom: 70px;
+}
+.edit-button{
+    float: right;
+    bottom: 50px;
+}
+.removed-order{
+    color: red;
+    text-decoration: line-through;
+}

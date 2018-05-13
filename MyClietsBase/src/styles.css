@@ -1,1 +1,74 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+body{
+    background: aliceblue;
+}
+
+.pointer{
+    cursor: pointer;
+}
+/*Scroll*/
+::-webkit-scrollbar {
+    max-width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+/*container*/
+.container{
+    min-width: 310px;
+    margin: 0 3px 3px 3px;
+}
+/*containers rows and columns*/
+.container-row{
+    display: flex;
+    flex-direction: row;
+}
+.container-column > * {
+    width: 100%;
+}
+.container-column{
+    display: flex;
+    flex-direction: column;
+}
+.container-row > * {
+    width: 48%;
+}
+.container-row :last-child {
+    margin-left: 2%;
+}
+/*search card*/
+.search-card{
+    /* padding: 0px 10px 0px 10px; */
+}
+.search-card mat-card{
+    padding: 0px 10px;
+}
+.search-card mat-form-field{
+    width: 100%;
+}
+/*mat-icon in dialogs*/
+mat-form-field mat-icon{
+    margin-right: 5px;
+    vertical-align: bottom;
+}
+/*Last container, padding for fab buttons*/
+.last{
+    padding-bottom: 40px;
+}
+/*social buttons*/
+.social-button mat-icon{
+    vertical-align: middle;
+}

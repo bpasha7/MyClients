@@ -1,0 +1,105 @@
+<h1 mat-dialog-title>{{ title }} </h1>
+<div mat-dialog-content>
+  <div class="container-column">
+    <!-- products *ngIf="selectedProduct != null" -->
+    <mat-form-field>
+      <!-- <input matInput placeholder="Услуга" aria-label="Product" [(ngModel)]="selectedProduct" [matAutocomplete]="auto" [formControl]="productCtrl">
+      <button mat-icon-button matSuffix *ngIf="productCtrl.value && productCtrl.enabled" (click)="clearProductSelect($event)">
+        <mat-icon>clear</mat-icon>
+      </button>(remove)="remove(fruit)"          -->
+      <mat-chip-list #chipList>
+        <mat-chip
+          *ngFor="let sp of selectedProducts"
+          [selectable]="true" 
+          [removable]="true" 
+          (removed)="remove(sp)"
+          >
+          {{sp.name}}
+          <mat-icon *ngIf="true" matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Выбранные позиции"
+          #productsSelectInput
+          [formControl]="productsSelectCtrl"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event)"
+        />
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduct" (optionSelected)="selectProduct($event)">
+        <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+          <img style="vertical-align:middle;" aria-hidden src="{{generateProductPhotoUrl(product)}}" height="25" />
+          <span>{{product.name}} </span>
+          <small>{{product.price}}</small>
+        </mat-option>
+      </mat-autocomplete>
+      <!-- <mat-select placeholder="Услуга" [formControl]="productControl" (change)="calculate()" [(ngModel)]="selectedProduct" required>
+        <mat-option >Не выбрано</mat-option>
+        <mat-option *ngFor="let product of products" [value]="product">
+          {{product.name}} {{product.price}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="productControl.hasError('required')">Выберите услугу</mat-error> -->
+    </mat-form-field>
+  </div>
+
+  <div class="container-row">
+    <mat-form-field>
+      <!-- <mat-icon matSuffix>access_time</mat-icon> -->
+      <input class="my-time-picker" matInput placeholder="Время" type="time" [(ngModel)]="time">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Дата" [(ngModel)]="order.date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi="true" #picker startView="month" disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="container-row">
+    <!-- prepayment -->
+    <mat-form-field>
+      <mat-icon matPrefix>done</mat-icon>
+      <input matInput placeholder="Предоплата" (input)="calculate()" [(ngModel)]="order.prepay" type="number">
+      <mat-hint *ngIf="order.prepay != 0" align="begin">Включается в итог</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker2" placeholder="Дата" [(ngModel)]="order.datePrepay">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker touchUi="true" #picker2 startView="month" disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="container-row">
+    <!-- discount -->
+    <mat-form-field>
+      <mat-select placeholder="Скидки" value="0" [(ngModel)]="order.discountId" (openedChange)="calculate()" [formControl]="discountControl">
+        <mat-option [value]="0">Без</mat-option>
+        <mat-option *ngFor="let discount of discounts" [value]="discount.id">
+          {{discount.name}} {{100 * discount.percent}}%
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- total -->
+    <mat-form-field>
+      <mat-icon matPrefix>done_all</mat-icon>
+      <input matInput placeholder="Итого" [(ngModel)]="order.total" type="number">
+    </mat-form-field>
+  </div>
+  <div class="container-column">
+    <!-- location -->
+    <mat-form-field>
+      <mat-icon matPrefix>room</mat-icon>
+      <input matInput placeholder="Место" [(ngModel)]="order.location">
+    </mat-form-field>
+    <!-- commentary -->
+    <mat-form-field>
+      <textarea matInput placeholder="Коментарий" [(ngModel)]="order.commentary"></textarea>
+    </mat-form-field>
+  </div>
+
+</div>
+<div mat-dialog-actions style="display: block">
+  <button mat-button class="button-cancel" (click)="onNoClick()" [mat-dialog-close]="0">ОТМЕНА</button>
+  <button [disabled]="inProc" *ngIf="order.id != 0" mat-button class="button-ok" (click)="update()" cdkFocusInitial>ОБНОВИТЬ</button>
+  <button [disabled]="inProc" *ngIf="order.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
+</div>

@@ -1,0 +1,12 @@
+.link-text{
+    text-decoration: none;
+    color: rgba(0,0,0,.87);
+}
+::ng-deep .mat-paginator .mat-form-field{
+    width: 35px;
+}
+.add-fixed-button{
+    position: fixed;
+    bottom: 35px;
+    right: 15px;
+}

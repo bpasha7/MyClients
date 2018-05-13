@@ -1,21 +1,3 @@
-.container-column{
-    display: flex;
-    flex-direction: column;
-}
-.container-row{
-    display: flex;
-    flex-direction: row;
-}
-.container-column > * {
-    width: 100%;
-}
-.container-row > * {
-    width: 48%;
-}
-.container-row :last-child {
-    margin-left: 2%;
-}
-/*sdffsdf*/
 .button-ok{
     color: green;
     float: right;
@@ -24,6 +6,7 @@
     color:red;
 }
 mat-form-field mat-icon{
-    margin-right: 10px;
-    vertical-align: bottom;
+    font-size: 18px;
+    margin-right: 3px;
+    vertical-align: text-top;
 }

@@ -1,0 +1,35 @@
+.add-fixed-button{
+    position: fixed;
+    bottom: 35px;
+    right: 15px;
+}
+::ng-deep .mat-paginator .mat-form-field{
+    width: 35px;
+}
+.search-fixed-button{
+    z-index: 1;
+    position: fixed;
+    bottom: 35px;
+    right: 65px;
+}
+::ng-deep .mat-tab-labels{
+    justify-content: center; /* align items in Main Axis */
+}
+.product-photo{
+    object-fit: contain;
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    border-radius: 10px;
+    vertical-align: middle;
+}
+.main-column{
+    flex: 3;
+}
+.warped-name{
+    display: inline-grid;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 70%;
+}

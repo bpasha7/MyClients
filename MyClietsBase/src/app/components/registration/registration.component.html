@@ -1,0 +1,74 @@
+<mat-card class="">
+  <mat-card-header>
+    <mat-card-title><h1>Регистрация</h1></mat-card-title>
+    <mat-card-subtitle>Пройдите регистрацию</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-vertical-stepper [linear]="true">
+      <mat-step [stepControl]="userInfoFormGroup">
+        <form [formGroup]="userInfoFormGroup" class="from-many-fields">
+          <ng-template matStepLabel>Персональные данные</ng-template>
+          <mat-form-field>
+            <input matInput #name minlength="5" maxlength="128" placeholder="Фимилия и имя" [(ngModel)]="newUser.name" formControlName="userInfoCtrl"
+              required>
+            <mat-hint align="end">{{name.value.length}} / 128</mat-hint>
+            <mat-hint align="start">Не менее 5 символов</mat-hint>
+          </mat-form-field>
+          <!-- <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="newUser.birthday" formControlName="userInfoCtrl" disabled>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker touchUi="true" #picker startView="multi-year" disabled="false"></mat-datepicker>
+          </mat-form-field> -->
+          <mat-form-field>
+            <input matInput type="email" placeholder="Email" [formControl]="emailFormControl" [(ngModel)]="newUser.email" [errorStateMatcher]="matcher">
+            <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Пожалуйста, введите правильный адрес
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Необходим Email
+            </mat-error>
+          </mat-form-field>
+          <div>
+            <button mat-raised-button color="primary" matStepperNext>Продолжить</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="accountInfoFormGroup">
+        <form [formGroup]="accountInfoFormGroup" class="from-many-fields">
+          <ng-template matStepLabel>Логин и пароль</ng-template>
+          <mat-form-field>
+            <input matInput #login minlength="5" maxlength="50" placeholder="Логин" [(ngModel)]="newUser.login" formControlName="loginCtrl"
+              required>
+            <mat-hint align="end">{{login.value.length}} / 50</mat-hint>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput minlength="8" type="password" placeholder="Пароль" [(ngModel)]="newUser.password" formControlName="passwordCtrl"
+              required>
+            <mat-hint align="start">Не менее 8 символов</mat-hint>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput minlength="8" type="password" placeholder="Подтверждение" [(ngModel)]="password" formControlName="passwordConfirmCtrl"
+              required>
+            <mat-hint *ngIf="newUser.password != password" align="start">
+              <strong>Пароли не совападают</strong>></mat-hint>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Вернуться</button>
+            <button mat-raised-button color="primary" matStepperNext>Продолжить</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Завершение</ng-template>
+        <div>
+          <button mat-button matStepperPrevious>Вернуться</button>
+          <button mat-button (click)="register()">Создать</button>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
+  </mat-card-content>
+  <!-- <mat-card-actions>
+    <button mat-button>ПРИМЕНИТЬ</button>
+  </mat-card-actions> -->
+</mat-card>

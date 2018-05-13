@@ -1,3 +1,15 @@
+.page .my-header{
+    max-width: 500px;
+    margin: auto;
+}
+.page .my-footer{
+    max-width: 500px;
+    margin: auto;
+}
+.page .my-container{
+    max-width: 500px;
+    margin: auto;
+}
 .my-header{
     position: fixed;
     top: 0;
@@ -6,6 +18,7 @@
 }
 .my-footer{
     position: fixed;
+    height: 35px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -13,7 +26,7 @@
 .my-container{
     position: absolute;
     top: 60px;
-    bottom: 60px;
+    bottom: 35px;
     left: 0;
     right: 0;
 }
@@ -27,4 +40,12 @@
     height: 98%;
     width: 100%;
     padding-top: 2%;
+}
+.my-list-down-menu{
+    position: absolute;
+    bottom: 0px; 
+    width: 100%
+}
+.right-elements{
+    margin-left: auto;
 }
