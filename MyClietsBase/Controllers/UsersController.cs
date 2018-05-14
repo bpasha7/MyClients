@@ -333,10 +333,13 @@ namespace MyClientsBase.Controllers
     public IActionResult Register([FromBody]UserDto userDto)
     {
       User user = _mapper.Map<User>(userDto);
-
       try
       {
         _userService.Create(user, userDto.Password);
+
+        _logger.LogInformation($"New User #{user.Id}");
+
+
         return Ok(new
         {
           Message = "Учетная запиь создана."

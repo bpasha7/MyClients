@@ -35,6 +35,8 @@ namespace MyClientsBase.Controllers
 
         _userService.CreateProduct(product);
 
+        _logger.LogInformation($"User #{userId}, CreateProduct #{product.Id}");
+
         return Ok(new
         {
           Message = "Услуга добавлена!",
@@ -64,6 +66,10 @@ namespace MyClientsBase.Controllers
           throw new AppException("Слишком большое изображени");
         //combine path to user folder using md5 hash
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        _logger.LogInformation($"User #{userId}, UploadProductPhoto #{id}");
+
+
         var userName = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
         var hash = AppFileSystem.GetUserMD5(userId, User.Identity.Name);
         //create directory in not exist
@@ -106,6 +112,9 @@ namespace MyClientsBase.Controllers
       try
       {
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        _logger.LogInformation($"User #{userId}, GetProducts");
+
         var products = _userService.GetProducts(userId);
         return Ok(new
         {
@@ -129,6 +138,9 @@ namespace MyClientsBase.Controllers
       try
       {
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        _logger.LogInformation($"User #{userId}, RemoverProduct #{id}");
+
         _userService.SetAsRemovedProduct(userId, id);
         return Ok(new
         {
@@ -157,6 +169,9 @@ namespace MyClientsBase.Controllers
           throw new AppException("Неверный данные!");
 
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        _logger.LogInformation($"User #{userId}, UpdateProduct #{product.Id}");
+
 
         if (product.UserId != userId)
           throw new AppException("Вам нельзя обновить услугу!");

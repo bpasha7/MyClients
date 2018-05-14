@@ -27,9 +27,9 @@ namespace Data.DTO.Entities
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public int ClientId { get; set; }
+        public string ClientName { get; set; }
         public string Location { get; set; }
         public string Label { get; set; }
         public bool Removed { get; set; }
-        
     }
 }

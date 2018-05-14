@@ -95,6 +95,17 @@ namespace Data.EF.Entities
                 //return Items != null ? "" : Items.Select(p => p.ProductInfo.Name).Aggregate((i, j) => i + ", " + j);
             }
         }
+        /// <summary>
+        /// Client short name
+        /// </summary>
+        [NotMapped]
+        public string ClientName {
+            get
+            {
+                return ClientInfo == null ? "" : $"{ClientInfo.FirstName} {ClientInfo.LastName[0]}.";
+            }
+        }
+
         #endregion 
     }
 }

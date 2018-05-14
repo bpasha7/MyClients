@@ -283,8 +283,9 @@ namespace MyClientsBase.Services
     {
 
       return _repository.Query(e => e.UserId == userId && e.Date >= DateTime.Now.Date && e.Removed != true)//, oi => oi.Items)
-        .Include(oi => oi.Items)
-          .ThenInclude( i => i.ProductInfo)
+        .Include(o=>o.ClientInfo)
+        //.Include(oi => oi.Items)
+        //  .ThenInclude( i => i.ProductInfo)
         //.SelectMany(i. => i.ProductInfo)
         .OrderByDescending(o => o.Date)
         .AsNoTracking()

@@ -78,6 +78,10 @@ namespace MyClientsBase.Controllers
         client.UserId = userId;
 
         _clientService.Create(client);
+
+        _logger.LogInformation($"User #{userId}, CreateClient #{client.Id}");
+
+
         return Ok(new
         {
           Message = "Клиент добавлен!",
@@ -114,6 +118,9 @@ namespace MyClientsBase.Controllers
         if (client.UserId != userId)
           throw new AppException("Запрещено обновить клиента!");
 
+        _logger.LogInformation($"User #{userId}, UpdateClient #{client.Id}");
+
+
         _clientService.Update(client);
         return Ok(new
         {
@@ -143,7 +150,11 @@ namespace MyClientsBase.Controllers
       {
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
+        _logger.LogInformation($"User #{userId}, GetClients");
+
+
         var clients = _clientService.GetClients(userId);
+
         return Ok(new
         {
           Clients = clients
@@ -174,6 +185,10 @@ namespace MyClientsBase.Controllers
         var client = _clientService.Get(userId, id);
         if (client == null)
           throw new AppException("Клиент не найден в базе!");
+
+        _logger.LogInformation($"User #{userId}, GetClient #{client.Id}");
+
+
         var old = client.Orders.Where(o => o.Date < DateTime.Now.Date).OrderByDescending(o => o.Date).ToList();
         var current = client.Orders.Where(o => o.Date >= DateTime.Now.Date).OrderBy(o => o.Date).ToList();
         return Ok(new
@@ -203,6 +218,7 @@ namespace MyClientsBase.Controllers
       try
       {
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        _logger.LogInformation($"To Delete");
 
         var orders = _clientService.GetOrders(userId, id);
         var old = orders.Where(o => o.Date < DateTime.Now.Date).ToList();
@@ -236,6 +252,9 @@ namespace MyClientsBase.Controllers
           throw new AppException("Слишком большое изображени");
         //combine path to user folder using md5 hash
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        _logger.LogInformation($"User #{userId}, UploadClientPhoto #{id}");
+
         var userName = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
         var hash = AppFileSystem.GetUserMD5(userId, User.Identity.Name);
         //create directory in not exist

@@ -31,9 +31,7 @@ namespace MyClientsBase.Controllers
 
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         order.UserId = userId;
-
-        
-
+       
         if (orderDto.Prepay != 0)
         {
           order.Prepayment = new OrderPrepayment
@@ -43,13 +41,15 @@ namespace MyClientsBase.Controllers
           };
         }
 
-
         if (order.DiscountId == 0)
         {
           order.DiscountId = null;
         }
 
         _orderService.CreateOrder(order, orderDto.ProductsId);
+
+        _logger.LogInformation($"User #{userId}, CreateOrder #{order.Id}");
+
 
         return Ok(new
         {
@@ -83,6 +83,9 @@ namespace MyClientsBase.Controllers
         if (order.UserId != userId)
           throw new AppException("Вам нельзя обновить услугу!");
         OrderPrepayment op = null;
+
+        _logger.LogInformation($"User #{userId}, UpdateOrder #{order.Id}");
+
 
         if (orderDto.Prepay != 0)
         {
@@ -124,7 +127,7 @@ namespace MyClientsBase.Controllers
       {
 
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-
+        _logger.LogInformation($"User #{userId}, SetOrdersAsRemoved #{id}");
         _orderService.ChangeStatus(userId, id);
         return Ok(new
         {
@@ -148,6 +151,8 @@ namespace MyClientsBase.Controllers
       try
       {
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        _logger.LogInformation($"User #{userId}, GetCurrentOrders()");
+
         var orders = _orderService.GetCurrentOrders(userId);
         var feature = orders.Where(o => o.Date.Date > DateTime.Now.Date).OrderBy(d => d.Date);
         var current = orders.Where(o => o.Date.Date == DateTime.Now.Date).OrderBy(d => d.Date);

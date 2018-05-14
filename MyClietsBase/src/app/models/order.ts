@@ -22,6 +22,7 @@ export class OrderInfo {
     date: Date;
     clientId: number;
     label: string;
+    clientName: string;
     location: string;
-    removed: boolean;    
+    removed: boolean;
 }
