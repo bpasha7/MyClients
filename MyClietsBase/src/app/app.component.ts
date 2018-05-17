@@ -26,7 +26,10 @@ export class AppComponent implements OnInit {
     sanitizer: DomSanitizer
   ) {
     iconReg
-      .addSvgIcon('instagram', sanitizer.bypassSecurityTrustResourceUrl('/assets/instagram.svg'));
+      .addSvgIcon('instagram', sanitizer.bypassSecurityTrustResourceUrl('/assets/instagram.svg'))
+      .addSvgIcon('pay', sanitizer.bypassSecurityTrustResourceUrl('/assets/pay.svg'))
+      .addSvgIcon('percentage', sanitizer.bypassSecurityTrustResourceUrl('/assets/percentage.svg'));
+
     const user = localStorage.getItem('currentUser');
     this.isLogined = user ? true : false;
   }
