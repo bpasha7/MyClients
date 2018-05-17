@@ -49,10 +49,15 @@ export class OrderModalComponent implements OnInit {
         this.order.date = new Date(this.order.date);
         this.order.datePrepay = new Date(this.order.datePrepay);
         // tslint:disable-next-line:max-line-length
-        this.time = '0' + (this.order.date.getHours() - this.order.date.getTimezoneOffset() / 60).toString().slice(-2)  + ':' + ('0' + this.order.date.getMinutes()).slice(-2);
+        this.time = ('0' + this.order.date.getHours()).slice(-2) + ':' + ('0' + this.order.date.getMinutes()).slice(-2);
         this.productsSelectCtrl = new FormControl();
         this.initProducts();
         this.loadDiscounts();
+    }
+
+    setTime() {
+        const myDate = new Date();
+        this.time = ('0' + myDate.getHours()).slice(-2) + ':' + ('0' + myDate.getMinutes()).slice(-2);
     }
     //#region Products select control
 
@@ -140,8 +145,11 @@ export class OrderModalComponent implements OnInit {
         this.userService.getDiscounts().subscribe(
             data => {
                 this.discounts = data.json().discounts;
+                if (this.order.discountId > 0) {
+                    this.discountControl.setValue(this.order.discountId);
+                }
                 //this.discounts.push({id: 0, name: 'Без'})
-                this.discountControl.setValue(0);
+                //this.discountControl.setValue(0);
             },
             // tslint:disable-next-line:no-shadowed-variable
             error => {
@@ -209,7 +217,7 @@ export class OrderModalComponent implements OnInit {
                 this.snackBar.open(data.json().message, 'Закрыть', {
                     duration: 2000,
                 });
-                this.order.label = this.selectedProducts.map(p => p.name).toString();                
+                this.order.label = this.selectedProducts.map(p => p.name).toString();
                 this.dialogRef.close(1);
             },
             // tslint:disable-next-line:no-shadowed-variable

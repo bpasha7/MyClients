@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{ title }} </h1>
+<!-- <h1 mat-dialog-title>{{ title }}</h1> -->
 <div mat-dialog-content>
   <div class="container-column">
     <!-- products *ngIf="selectedProduct != null" -->
@@ -47,7 +47,7 @@
 
   <div class="container-row">
     <mat-form-field>
-      <!-- <mat-icon matSuffix>access_time</mat-icon> -->
+      <mat-icon (click)="setTime()" matSuffix>access_time</mat-icon>
       <input class="my-time-picker" matInput placeholder="Время" type="time" [(ngModel)]="time">
     </mat-form-field>
     <mat-form-field>
@@ -61,7 +61,7 @@
     <mat-form-field>
       <mat-icon matPrefix>done</mat-icon>
       <input matInput placeholder="Предоплата" (input)="calculate()" [(ngModel)]="order.prepay" type="number">
-      <mat-hint *ngIf="order.prepay != 0" align="begin">Включается в итог</mat-hint>
+      <mat-hint *ngIf="order.prepay != 0" align="begin">Вычетается</mat-hint>
     </mat-form-field>
     <mat-form-field>
       <input matInput [matDatepicker]="picker2" placeholder="Дата" [(ngModel)]="order.datePrepay">
