@@ -10,5 +10,24 @@ namespace MyClientsBase.Helpers
     public long MaxImageSize { get; set; }
     public int PhotoSize { get; set; }
     public int PhotoProductSize { get; set; }
+    public BounusesList Bonuses { get; set; }
+    public BounusTypes BonusTypes { get; set; }
   }
+  public class BounusesList
+  {
+    public decimal NewClient { get; set; }
+    public decimal NewPrice { get; set; }
+
+  }
+  public class BounusTypes
+  {
+    public int NewClient { get; set; }
+    public int NewPrice { get; set; }
+
+  }
+  //public class Bounus
+  //{
+  //  public string Name { get; set; }
+  //  public decimal Value { get; set; }
+  //}
 }

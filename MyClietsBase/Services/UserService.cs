@@ -42,6 +42,7 @@ namespace MyClientsBase.Services
     int GetCountUnreadMessages(int userId);
     IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
     IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd);
+    void IncomeBonus(int userId, int type, decimal total);
   }
   public class UserService : IUserService
   {
@@ -58,6 +59,7 @@ namespace MyClientsBase.Services
     private IRepository<Outgoing> _outgoingsRepository;
 
     private IRepository<Message> _messagesRepository;
+    private IRepository<BonusIncome> _bonusRepository;
 
     public UserService(ApplicationDbContext context)
     {
@@ -68,6 +70,7 @@ namespace MyClientsBase.Services
       _discountsRepository = _unitOfWork.EfRepository<Discount>();
       _outgoingsRepository = _unitOfWork.EfRepository<Outgoing>();
       _messagesRepository = _unitOfWork.EfRepository<Message>();
+      _bonusRepository = _unitOfWork.EfRepository<BonusIncome>();
     }
     #region Password Methods
     private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -311,6 +314,18 @@ namespace MyClientsBase.Services
       product.Name += $"[до {DateTime.Now.Date:d}]";
       product.IsRemoved = true;
       _productsRepository.Save();
+    }
+
+    public void IncomeBonus(int userId, int type, decimal total)
+    {
+      var bonus = new BonusIncome
+      {
+        Total = total,
+        TypeId = type,
+        UserId = userId,
+        Date = DateTime.Now
+      };
+      _bonusRepository.Add(bonus);
     }
   }
 }

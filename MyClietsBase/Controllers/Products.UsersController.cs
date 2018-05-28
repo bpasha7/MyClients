@@ -37,6 +37,11 @@ namespace MyClientsBase.Controllers
 
         _logger.LogInformation($"User #{userId}, CreateProduct #{product.Id}");
 
+        _userService.IncomeBonus(userId, _appSettings.BonusTypes.NewPrice, _appSettings.Bonuses.NewPrice);
+
+        _logger.LogInformation($"User #{userId}, {_appSettings.Bonuses.NewPrice} bonus incomes");
+
+
         return Ok(new
         {
           Message = "Услуга добавлена!",
