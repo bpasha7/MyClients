@@ -50,6 +50,16 @@ namespace MyClientsBase.Controllers
 
         _logger.LogInformation($"User #{userId}, CreateOrder #{order.Id}");
 
+        var res = _userService
+          .IncomeBonus(
+          userId,
+          _appSettings.BonusTypes.NewOrder,
+          _appSettings.Bonuses.NewOrder,
+          _appSettings.BonusLimitPerDay.NewOrder
+          );
+
+        if (res)
+          _logger.LogInformation($"User #{userId}, {_appSettings.Bonuses.NewOrder} bonus incomes");
 
         return Ok(new
         {

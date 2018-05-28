@@ -12,22 +12,28 @@ namespace MyClientsBase.Helpers
     public int PhotoProductSize { get; set; }
     public BounusesList Bonuses { get; set; }
     public BounusTypes BonusTypes { get; set; }
-    public BonusLimitPerDay BonusLimits { get; set; }
+    public BonusLimitPerDay BonusLimitPerDay { get; set; }
   }
   public class BounusesList
   {
     public decimal NewClient { get; set; }
     public decimal NewPrice { get; set; }
+    public decimal NewOutgoing { get; set; }
+    public decimal NewOrder{ get; set; }
   }
   public class BounusTypes
   {
     public int NewClient { get; set; }
     public int NewPrice { get; set; }
+    public int NewOutgoing { get; set; }
+    public int NewOrder { get; set; }
   }
   public class BonusLimitPerDay
   {
     public int NewClient { get; set; }
     public int NewPrice { get; set; }
+    public int NewOutgoing { get; set; }
+    public int NewOrder { get; set; }
   }
   //public class Bounus
   //{

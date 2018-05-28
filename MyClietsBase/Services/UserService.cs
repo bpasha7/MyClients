@@ -63,7 +63,7 @@ namespace MyClientsBase.Services
 
     public UserService(ApplicationDbContext context)
     {
-      
+
       _unitOfWork = new UnitOfWork(context);
       _repository = _unitOfWork.EfRepository<User>();
       _productsRepository = _unitOfWork.EfRepository<Product>();
@@ -178,7 +178,7 @@ namespace MyClientsBase.Services
     public void UpdateDiscount(Discount discount)
     {
       _discountsRepository.Update(discount);
-     // _repository.Save();
+      // _repository.Save();
     }
 
     public void CreateOutgoing(Outgoing outgoing)
@@ -190,7 +190,7 @@ namespace MyClientsBase.Services
     public void UpdateOutgoing(int userId, Outgoing outgoing)
     {
       var exist = _outgoingsRepository.Count(o => o.Id == outgoing.Id && o.UserId == userId) == 1 ? true : false;
-      if(!exist)
+      if (!exist)
         throw new AppException("Вам нельзя обновить расход!");
       outgoing.UserId = userId;
       _outgoingsRepository.Update(outgoing);
@@ -212,7 +212,7 @@ namespace MyClientsBase.Services
          outgoing => outgoing.UserId == userId &&
          outgoing.Date >= begin.Date && outgoing.Date <= end.Date
         )
-        .OrderByDescending(o=>o.Date)
+        .OrderByDescending(o => o.Date)
         .ToList();
     }
 
@@ -230,9 +230,9 @@ namespace MyClientsBase.Services
 
     public IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd)
     {
-      return _repository.Find(u => u.Id ==userId, o => o.Outgoings).Outgoings
-        .Where( outgoing =>
-          outgoing.Date >= dateStart.Date && outgoing.Date <= dateEnd.Date
+      return _repository.Find(u => u.Id == userId, o => o.Outgoings).Outgoings
+        .Where(outgoing =>
+         outgoing.Date >= dateStart.Date && outgoing.Date <= dateEnd.Date
          )
         .Select(
         field => new
@@ -280,7 +280,7 @@ namespace MyClientsBase.Services
     public User GetUserInfo(int userId)
     {
       //return
-        var user = _repository.Find(u => u.Id == userId);
+      var user = _repository.Find(u => u.Id == userId);
       //_repository.
       //var balance = getUserBalance(userId);
       //user.BonusBalance = balance;
@@ -323,32 +323,58 @@ namespace MyClientsBase.Services
 
     public bool IncomeBonus(int userId, int type, decimal total, int limit)
     {
-      var userBalance = _repository.Query(u => u.Id == userId)
-        .Select(user => new
-        {
-          Total = user.BonusBalance
-        }).Single()?.Total;
-      if (userBalance + total > 50)
-        return false;
-      var count = _bonusRepository.Count(b => b.UserId == userId && b.TypeId == type && b.Date == DateTime.Now.Date);
-      if (count > limit)
-        return false;
-      var bonus = new BonusIncome
+      try
       {
-        Total = total,
-        TypeId = type,
-        UserId = userId,
-        Date = DateTime.Now
-      };
-      _bonusRepository.Add(bonus);
+        var user = _repository.Find(u => u.Id == userId);
+        // var userBalance = user.BonusBalance;
+        //  _repository.Query(u => u.Id == userId)
+        //  .Select(user => new
+        //  {
+        //    Total = user.BonusBalance
+        //  }).Single()?.Total;
 
-      return true;
+        if (user.BonusBalance + total > 50)
+          return false;
+        var count = _bonusRepository.Count(b => b.UserId == userId && b.TypeId == type && b.Date.Date == DateTime.Now.Date);
+
+        if (count >= limit)
+          return false;
+
+        var bonus = new BonusIncome
+        {
+          Total = total,
+          TypeId = type,
+          UserId = userId,
+          Date = DateTime.Now
+        };
+        _bonusRepository.Add(bonus);
+
+        user.BonusBalance += total;
+
+        _repository.Save();
+
+        return true;
+      }
+      catch (Exception ex)
+      {
+        return false;
+      }
     }
 
     private decimal getUserBalance(int userId)
     {
       return _repository.Query(u => u.Id == userId)
-        .Include(u => u.BonusIncomes).Single().BonusIncomes.Sum(b => b.Total);
+          .Select(user => new
+          {
+            Total = user.BonusBalance
+          }).Single().Total;
+      //return _repository.Query(u => u.Id == userId)
+      //  .Include(u => u.BonusIncomes).Single().BonusIncomes.Sum(b => b.Total);
     }
+    //private void updateUserBalance(int userId)
+    //{
+    //  var user = _repository.Find(u => u.Id == userId);
+    //  var balance = 
+    //}
   }
 }

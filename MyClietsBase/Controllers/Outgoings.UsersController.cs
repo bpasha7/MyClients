@@ -34,6 +34,14 @@ namespace MyClientsBase.Controllers
         outgoing.UserId = userId;
 
         _userService.CreateOutgoing(outgoing);
+
+        _logger.LogInformation($"User #{userId}, CreateOutgoing #{outgoing.Id}");
+        
+        var res = _userService.IncomeBonus(userId, _appSettings.BonusTypes.NewOutgoing, _appSettings.Bonuses.NewOutgoing, _appSettings.BonusLimitPerDay.NewOutgoing);
+
+        if (res)
+          _logger.LogInformation($"User #{userId}, {_appSettings.Bonuses.NewOutgoing} bonus incomes");
+
         return Ok(new
         {
           Message = "Расход добавлен!",
