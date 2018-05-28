@@ -53,12 +53,16 @@ namespace Data.EF.Entities
         /// </summary>
         public virtual ICollection<Order> Orders { get; set; }
         /// <summary>
-        /// Orders
+        /// Messages
         /// </summary>
         public virtual ICollection<Message> Messages { get; set; }
         /// <summary>
-        /// Orders
+        /// Outgoing
         /// </summary>
         public virtual ICollection<Outgoing> Outgoings { get; set; }
+        /// <summary>
+        /// Bonus Incomes
+        /// </summary>
+        public virtual ICollection<BonusIncome> BonusIncomes { get; set; }
     }
 }
