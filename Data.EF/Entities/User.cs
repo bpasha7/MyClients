@@ -28,7 +28,7 @@ namespace Data.EF.Entities
         public DateTime Birthday { get; set; }
         public bool Activated { get; set; }
 
-        public decimal? BonusBalance { get; set; }
+        public decimal BonusBalance { get; set; }
 
 
         [Column(TypeName = "VARBINARY(128)")]

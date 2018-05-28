@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180528074116_BonusBalance.cs" />
+    <Compile Remove="Migrations\20180528074116_BonusBalance.Designer.cs" />
+    <Compile Remove="Migrations\20180528074539_BonusBalance.cs" />
+    <Compile Remove="Migrations\20180528074539_BonusBalance.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="temp\" />
     <Folder Include="wwwroot\" />
@@ -17,7 +24,7 @@
     <PackageReference Include="FreeImage-dotnet-core" Version="4.3.6" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
-    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.6" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.11" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore.Design" Version="6.10.6" />
     <PackageReference Include="NLog" Version="4.5.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0" />
