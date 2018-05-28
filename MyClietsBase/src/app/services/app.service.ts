@@ -33,7 +33,7 @@ export class AppService {
     public goLogin() {
         this.router.navigate(['/login']);
     }
-    protected showSnackBar(message: string) {
+    public showSnackBar(message: string) {
         const data = {
             type: 'snack',
             text: message,

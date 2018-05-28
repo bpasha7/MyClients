@@ -5,12 +5,23 @@
     <mat-card-subtitle>{{user.login}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <p>
+    <h2 class="">Бонусы: <span>45</span><mat-icon [color]="'primary'" 
+      matTooltip="Заходите каждый день в программу, 
+      добавляйте клиентов, услуги, товары, а также записывайте 
+      на прием или продавайте и получайте за это бонусы!" 
+      [matTooltipPosition]="'right'"
+      >info</mat-icon></h2>
+    <section class="section-progress">
+      <span class="label-progress">0</span>
+      <mat-progress-bar class="bonus-progress" [color]="'warn'" [mode]="determinate" [value]="45"></mat-progress-bar>
+      <span class="label-progress">150</span>
+    </section>
+    <!-- <p>
       В этом разделе настраивается работа учетной записи и указываются личные данные.
-    </p>
+    </p> -->
     <mat-accordion>
       <!-- Personal data -->
-      <mat-expansion-panel>
+      <mat-expansion-panel disabled>
         <mat-expansion-panel-header>
           <mat-panel-title>
             Персональные данные
@@ -43,21 +54,26 @@
                   Телефон, Почта, ...
                 </mat-panel-description> -->
         </mat-expansion-panel-header>
+        <div [formGroup]="passwordChangeGroup" >
         <mat-form-field class="container-column">
-          <mat-icon matPrefix>vpn_key</mat-icon>
-          <input matInput type="password" placeholder="Новый пароль">
-        </mat-form-field>
-
-        <mat-form-field class="container-column">
-          <mat-icon matPrefix>vpn_key</mat-icon>
-          <input matInput type="password" placeholder="Подтверждение">
-        </mat-form-field>
-        <div class="container-column">
-          <button mat-raised-button color="primary">Принять</button>
+            <mat-icon matPrefix>vpn_key</mat-icon>
+            <input matInput minlength="8" type="password" placeholder="Пароль" [(ngModel)]="password" formControlName="passwordCtrl">
+            <mat-hint align="start">Не менее 8 символов</mat-hint>
+          </mat-form-field>
+          <mat-form-field class="container-column">
+              <mat-icon matPrefix>vpn_key</mat-icon>
+            <input matInput minlength="8" type="password" placeholder="Подтверждение" [(ngModel)]="confirmPassword" formControlName="passwordConfirmCtrl">
+            <mat-hint *ngIf="confirmPassword != password" align="start">
+              <strong>Пароли не совападают</strong></mat-hint>
+          </mat-form-field>
         </div>
+        <div class="container-column">
+          <button mat-raised-button (click)="editPassword()" color="primary" [disabled]="password.length < 8 || confirmPassword != password">Принять</button>
+        </div>
+      
       </mat-expansion-panel>
       <!-- Google calendar -->
-      <mat-expansion-panel>
+      <mat-expansion-panel disabled>
         <mat-expansion-panel-header>
           <mat-panel-title>
             Настройка Google календарь
@@ -77,6 +93,6 @@
   </mat-card-content>
   <mat-card-actions>
     <!-- <button mat-button>LIKE</button> -->
-    <button mat-button>ПРИМЕНИТЬ</button>
+    <!-- <button mat-button>К ветрине</button> -->
   </mat-card-actions>
 </mat-card>

@@ -43,6 +43,9 @@ export class UserService extends AppService {
     register(user: User) {
         return this.http.post(this.config.apiUrl + this.controller + '/register', user);
     }
+    editPassword(password: string) {
+        return this.http.patch(this.config.apiUrl + this.controller + '/password?password='+ password, null, this.jwt());
+    }
     //#endregion
     /**
      * Logout - clear local storage

@@ -5,3 +5,17 @@
 .container-column {
     width: 100%;
 }
+.bonus-progress {
+    border-radius: 10px;
+    height: 14px;
+}
+.label-progress {
+    padding-left: 3px;
+    padding-right:  3px
+}
+.section-progress {
+    display: flex;
+	-webkit-flex-direction: row;
+    flex-direction: row;
+    margin-bottom: 10px
+}

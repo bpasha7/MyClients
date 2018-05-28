@@ -39,8 +39,8 @@ export class RegistrationComponent implements OnInit {
       userInfoCtrl: ['', Validators.required]
     });
     this.accountInfoFormGroup = this._formBuilder.group({
-      passwordCtrl: ['', Validators.required],
-      passwordConfirmCtrl: ['', Validators.required, this.password === this.newUser.password],
+      passwordConfirmCtrl: ['', Validators.required, this.password === this.newUser.password],      
+      passwordCtrl: ['', Validators.required, this.password === this.newUser.password],
       loginCtrl: ['', Validators.required]
     });
   }

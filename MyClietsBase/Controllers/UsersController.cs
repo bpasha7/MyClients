@@ -230,9 +230,9 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
-
+    [AllowAnonymous]
     [HttpPatch("password")]
-    public IActionResult Get([FromBody] string password)
+    public IActionResult EditPassword([FromQuery] string password)
     {
       try
       {

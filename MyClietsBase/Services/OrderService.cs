@@ -178,7 +178,8 @@ namespace MyClientsBase.Services
       {
         var sum = order.Items.Sum(oi => oi.ProductInfo.Price);
         var count = order.Items.Count;
-        var dif = Math.Round((order.Total - sum) / count, 0);
+        
+        var dif = count == 0 ? 0 : Math.Round((order.Total - sum) / count, 0);
 
         foreach (var item in order.Items)
         {
