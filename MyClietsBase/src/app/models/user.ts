@@ -8,4 +8,5 @@ export class User {
     birthday: Date;
     email: string;
     name: string;
+    bonusBalance: number;
 }

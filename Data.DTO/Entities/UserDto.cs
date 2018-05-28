@@ -15,5 +15,6 @@ namespace Data.DTO.Entities
         public string Gmail { get; set; }
         public string Email { get; set; }
         public DateTime Birthday { get; set; }
+        public decimal BonusBalance { get; set; }
     }
 }

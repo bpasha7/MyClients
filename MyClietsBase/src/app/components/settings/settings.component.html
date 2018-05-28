@@ -5,7 +5,7 @@
     <mat-card-subtitle>{{user.login}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <h2 class="">Бонусы: <span>45</span><mat-icon [color]="'primary'" 
+    <h2 class="">Бонусы: <span>{{user.bonusBalance}}</span><mat-icon [color]="'primary'" 
       matTooltip="Заходите каждый день в программу, 
       добавляйте клиентов, услуги, товары, а также записывайте 
       на прием или продавайте и получайте за это бонусы!" 
@@ -13,8 +13,8 @@
       >info</mat-icon></h2>
     <section class="section-progress">
       <span class="label-progress">0</span>
-      <mat-progress-bar class="bonus-progress" [color]="'warn'" [mode]="determinate" [value]="45"></mat-progress-bar>
-      <span class="label-progress">150</span>
+      <mat-progress-bar class="bonus-progress" [color]="'warn'" [mode]="determinate" [value]="(user.bonusBalance / 50) * 100"></mat-progress-bar>
+      <span class="label-progress">50</span>
     </section>
     <!-- <p>
       В этом разделе настраивается работа учетной записи и указываются личные данные.

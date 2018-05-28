@@ -42,7 +42,7 @@ namespace MyClientsBase.Services
     int GetCountUnreadMessages(int userId);
     IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
     IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd);
-    void IncomeBonus(int userId, int type, decimal total);
+    bool IncomeBonus(int userId, int type, decimal total, int limit);
   }
   public class UserService : IUserService
   {
@@ -279,7 +279,12 @@ namespace MyClientsBase.Services
 
     public User GetUserInfo(int userId)
     {
-      return _repository.Find(u => u.Id == userId);
+      //return
+        var user = _repository.Find(u => u.Id == userId);
+      //_repository.
+      //var balance = getUserBalance(userId);
+      //user.BonusBalance = balance;
+      return user;
     }
 
     public void UpdateUserPassword(int userId, string password)
@@ -316,8 +321,18 @@ namespace MyClientsBase.Services
       _productsRepository.Save();
     }
 
-    public void IncomeBonus(int userId, int type, decimal total)
+    public bool IncomeBonus(int userId, int type, decimal total, int limit)
     {
+      var userBalance = _repository.Query(u => u.Id == userId)
+        .Select(user => new
+        {
+          Total = user.BonusBalance
+        }).Single()?.Total;
+      if (userBalance + total > 50)
+        return false;
+      var count = _bonusRepository.Count(b => b.UserId == userId && b.TypeId == type && b.Date == DateTime.Now.Date);
+      if (count > limit)
+        return false;
       var bonus = new BonusIncome
       {
         Total = total,
@@ -326,6 +341,14 @@ namespace MyClientsBase.Services
         Date = DateTime.Now
       };
       _bonusRepository.Add(bonus);
+
+      return true;
+    }
+
+    private decimal getUserBalance(int userId)
+    {
+      return _repository.Query(u => u.Id == userId)
+        .Include(u => u.BonusIncomes).Single().BonusIncomes.Sum(b => b.Total);
     }
   }
 }

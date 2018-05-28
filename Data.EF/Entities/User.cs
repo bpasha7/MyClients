@@ -28,6 +28,7 @@ namespace Data.EF.Entities
         public DateTime Birthday { get; set; }
         public bool Activated { get; set; }
 
+        public decimal? BonusBalance { get; set; }
 
 
         [Column(TypeName = "VARBINARY(128)")]
@@ -64,5 +65,6 @@ namespace Data.EF.Entities
         /// Bonus Incomes
         /// </summary>
         public virtual ICollection<BonusIncome> BonusIncomes { get; set; }
+
     }
 }
