@@ -102,7 +102,7 @@ namespace Data.EF.Entities
         public string ClientName {
             get
             {
-                return ClientInfo == null ? "" : $"{ClientInfo.FirstName} {ClientInfo.LastName[0]}.";
+                return ClientInfo == null ? "" : $"{ClientInfo.FirstName} {ClientInfo.LastName}";
             }
         }
 

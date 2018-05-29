@@ -42,18 +42,18 @@
 
         <mat-form-field class="container-column">
           <mat-icon matPrefix>email</mat-icon>
-          <input matInput placeholder="Почта" [(ngModel)]="user.email" value="{{user.email}}">
+          <input matInput placeholder="Почта" [(ngModel)]="user.email" value="{{user.email}}" disabled>
         </mat-form-field>
 
         <mat-form-field class="container-column">
-          <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="user.birthday" value="{{user.birthday}}">
+          <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="user.birthday" value="{{user.birthday}}" disabled>
           <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
         </mat-form-field>
 
-        <div class="container-column">
+        <!-- <div class="container-column">
           <button mat-raised-button color="primary">Принять</button>
-        </div>
+        </div> -->
       </mat-expansion-panel>
       <!-- Password panel -->
       <mat-expansion-panel>
@@ -126,7 +126,12 @@
                 <p mat-line> {{ getBonusName(bonus.typeId) }}</p>
                 <mat-divider></mat-divider>
             </mat-list-item>
-            <mat-list-item (click)="loadBonusHistory(bonusHistory.length)"><mat-icon style="margin: auto;" mat-list-icon>expand_more</mat-icon></mat-list-item>
+            <mat-list-item (click)="loadBonusHistory(bonusHistory.length)">
+              <div style="margin: auto;">
+                <mat-icon *ngIf="!inProgress" mat-list-icon>expand_more</mat-icon>
+                <mat-spinner *ngIf="inProgress" diameter="15"></mat-spinner>
+              </div>
+            </mat-list-item>
         </mat-nav-list>
     </mat-expansion-panel>
 </div>

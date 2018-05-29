@@ -49,14 +49,14 @@ export class SettingsComponent implements OnInit {
   }
 
   loadBonusHistory(skip: number) {
-    if(skip === 0 ) {
+    if( skip === 0 ) {
       this.bonusType = [];
       this.bonusHistory = [];
     }
     this.inProgress = true;
     this.userService.getBonusHistory(skip).subscribe(
       data => {
-        if(skip === 0 ) {
+        if( skip === 0 ) {
           this.bonusType = data.json().types;
           this.bonusHistory = data.json().history;
         } else {

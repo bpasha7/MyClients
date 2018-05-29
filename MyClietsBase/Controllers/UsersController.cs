@@ -342,6 +342,12 @@ namespace MyClientsBase.Controllers
         var tokenString = tokenHandler.WriteToken(token);
         var hash = AppFileSystem.GetUserMD5(user.Id, user.Login);
         _logger.LogInformation($"User #{user.Id} was logged.");
+
+        var res = _userService.IncomeBonus(user.Id, _appSettings.BonusTypes.Login, _appSettings.Bonuses.Login, _appSettings.BonusLimitPerDay.Login);
+
+        if (res)
+          _logger.LogInformation($"User #{user.Id}, {_appSettings.Bonuses.Login} bonus incomes");
+
         return Ok(new
         {
           Token = tokenString,

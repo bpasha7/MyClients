@@ -20,6 +20,7 @@ namespace MyClientsBase.Helpers
     public decimal NewPrice { get; set; }
     public decimal NewOutgoing { get; set; }
     public decimal NewOrder{ get; set; }
+    public decimal Login{ get; set; }
   }
   public class BounusTypes
   {
@@ -27,6 +28,8 @@ namespace MyClientsBase.Helpers
     public int NewPrice { get; set; }
     public int NewOutgoing { get; set; }
     public int NewOrder { get; set; }
+    public int Login { get; set; }
+
   }
   public class BonusLimitPerDay
   {
@@ -34,6 +37,8 @@ namespace MyClientsBase.Helpers
     public int NewPrice { get; set; }
     public int NewOutgoing { get; set; }
     public int NewOrder { get; set; }
+    public int Login { get; set; }
+
   }
   //public class Bounus
   //{
