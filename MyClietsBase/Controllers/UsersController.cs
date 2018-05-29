@@ -36,6 +36,10 @@ namespace MyClientsBase.Controllers
     /// </summary>
     private IOrderService _orderService;
     /// <summary>
+    /// Order Servise to work with database
+    /// </summary>
+    private IBonusService _bonusService;
+    /// <summary>
     /// Mapper
     /// </summary>
     private IMapper _mapper;
@@ -48,12 +52,13 @@ namespace MyClientsBase.Controllers
     /// </summary>
     private ILogger _logger;
 
-    public UsersController(IUserService userService, IOrderService orderService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
+    public UsersController(IBonusService bonusService, IUserService userService, IOrderService orderService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
     {
       try
       {
         _userService = userService;
         _orderService = orderService;
+        _bonusService = bonusService;
         _mapper = mapper;
         _appSettings = appSettings.Value;
         _logger = loggerFactory.CreateLogger(typeof(UsersController));
@@ -61,6 +66,33 @@ namespace MyClientsBase.Controllers
       catch (Exception ex)
       {
         _logger.LogCritical($"{ex}");
+      }
+    }
+
+    [HttpGet("bonuses")]
+    public IActionResult GetBonusHistory([FromQuery] int skip)
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        IList<BonusIncomeType> bonusTypes = new List<BonusIncomeType>();
+        var history = _bonusService.BonusHistory(userId, out bonusTypes, skip, 3);
+
+        return Ok(new
+        {
+          History = _mapper.Map<BonusIncomeDto[]>(history),
+          Types = bonusTypes
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
       }
     }
 

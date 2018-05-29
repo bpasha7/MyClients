@@ -37,14 +37,28 @@ export class UserService extends AppService {
         localStorage.setItem('userHash', hash);
         this.notifyMenu('1');
     }
+    /**
+     * Get user info
+     */
     getUserInfo() {
         return this.http.get(this.config.apiUrl + this.controller, this.jwt());
     }
+    /**
+     * Register new user
+     * @param user 
+     */
     register(user: User) {
         return this.http.post(this.config.apiUrl + this.controller + '/register', user);
     }
+    /**
+     * Edit password
+     * @param password 
+     */
     editPassword(password: string) {
         return this.http.patch(this.config.apiUrl + this.controller + '/password?password='+ password, null, this.jwt());
+    }
+    getBonusHistory(skip:number) {
+        return this.http.get(this.config.apiUrl + this.controller + '/bonuses?skip=' + skip, this.jwt());        
     }
     //#endregion
     /**

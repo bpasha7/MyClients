@@ -35,6 +35,9 @@ namespace MyClientsBase.Helpers
 
       CreateMap<Message, MessageDto>();
       CreateMap<MessageDto, Message>();
+
+      CreateMap<BonusIncome, BonusIncomeDto>();
+      CreateMap<BonusIncomeDto, BonusIncome>();
     }
   }
 }

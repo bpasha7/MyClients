@@ -19,3 +19,8 @@
     flex-direction: row;
     margin-bottom: 10px
 }
+.verify-icon{
+    vertical-align: middle;
+    color: green;
+    margin-right: 5px;
+}

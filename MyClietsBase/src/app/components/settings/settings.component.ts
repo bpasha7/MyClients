@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { TooltipPosition } from '@angular/material';
-import { User } from '../../models';
+import { User, Bonus, BonusType } from '../../models';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OutgoingModalComponent, ConfirmationComponent } from '../modals';
 
@@ -15,6 +15,9 @@ export class SettingsComponent implements OnInit {
   public user: User;
   public password = '';
   public confirmPassword = '';
+  public bonusHistory: Array<Bonus> = [];
+  public bonusType: Array<BonusType> = [];
+  public inProgress = false;
   passwordChangeGroup: FormGroup;
   constructor(
     private _formBuilder: FormBuilder,
@@ -27,6 +30,7 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.loadUserInfo();
+    this.userService.notifyMenu('Настройки');
     this.passwordChangeGroup = this._formBuilder.group({
       passwordCtrl: ['', Validators.required],
       passwordConfirmCtrl: ['', Validators.required]
@@ -39,19 +43,36 @@ export class SettingsComponent implements OnInit {
         this.user = data.json().user;
       },
       error => {
-        if (error.status === 401) {
-          this.userService.goLogin();
-          this.snackBar.open('Пароль истек!', 'Закрыть', {
-            duration: 2000,
-          });
-        }
-        else {
-          this.snackBar.open(error._body, 'Закрыть', {
-            duration: 2000,
-          });
-        }
+        this.userService.responseErrorHandle(error);
       }
     );
+  }
+
+  loadBonusHistory(skip: number) {
+    if(skip === 0 ) {
+      this.bonusType = [];
+      this.bonusHistory = [];
+    }
+    this.inProgress = true;
+    this.userService.getBonusHistory(skip).subscribe(
+      data => {
+        if(skip === 0 ) {
+          this.bonusType = data.json().types;
+          this.bonusHistory = data.json().history;
+        } else {
+          this.bonusHistory = this.bonusHistory.concat(data.json().history);
+        }  
+        this.inProgress = false;
+      },
+      error => {
+        this.userService.responseErrorHandle(error);
+        this.inProgress = false;        
+      }
+    );
+  }
+
+  getBonusName(id: number):string {
+    return this.bonusType.find(item => item.id === id).name;  
   }
 
   editPassword() {

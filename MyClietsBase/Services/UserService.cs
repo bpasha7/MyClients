@@ -326,12 +326,6 @@ namespace MyClientsBase.Services
       try
       {
         var user = _repository.Find(u => u.Id == userId);
-        // var userBalance = user.BonusBalance;
-        //  _repository.Query(u => u.Id == userId)
-        //  .Select(user => new
-        //  {
-        //    Total = user.BonusBalance
-        //  }).Single()?.Total;
 
         if (user.BonusBalance + total > 50)
           return false;

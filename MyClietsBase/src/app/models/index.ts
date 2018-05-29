@@ -6,3 +6,4 @@ export * from './discount';
 export * from './orders';
 export * from './outgoing';
 export * from './message';
+export * from './bonus';

@@ -1,7 +1,10 @@
 <mat-card class="">
   <mat-card-header>
     <div mat-card-avatar class="avatar"></div>
-    <mat-card-title>{{user.name}}</mat-card-title>
+    <mat-card-title>
+      <mat-icon class="verify-icon">verified_user</mat-icon>
+      {{user.name}}
+    </mat-card-title>
     <mat-card-subtitle>{{user.login}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
@@ -21,7 +24,7 @@
     </p> -->
     <mat-accordion>
       <!-- Personal data -->
-      <mat-expansion-panel disabled>
+      <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
             Персональные данные
@@ -31,15 +34,23 @@
               </mat-panel-description> -->
         </mat-expansion-panel-header>
 
-        <mat-form-field class="container-column">
+
+        <!-- <mat-form-field class="container-column">
           <mat-icon matPrefix>phone</mat-icon>
-          <input matInput placeholder="Телфон">
-        </mat-form-field>
+          <input matInput placeholder="Телфон" [(ngModel)]="user.phone">
+        </mat-form-field> -->
 
         <mat-form-field class="container-column">
           <mat-icon matPrefix>email</mat-icon>
-          <input matInput placeholder="Почта">
+          <input matInput placeholder="Почта" [(ngModel)]="user.email" value="{{user.email}}">
         </mat-form-field>
+
+        <mat-form-field class="container-column">
+          <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="user.birthday" value="{{user.birthday}}">
+          <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+        </mat-form-field>
+
         <div class="container-column">
           <button mat-raised-button color="primary">Принять</button>
         </div>
@@ -96,3 +107,26 @@
     <!-- <button mat-button>К ветрине</button> -->
   </mat-card-actions>
 </mat-card>
+<div class="container">
+    <mat-expansion-panel (opened)="loadBonusHistory(0)">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Накопления бонусов
+            </mat-panel-title>
+            <mat-panel-description>
+                <mat-spinner *ngIf="inProgress" diameter="15"></mat-spinner>
+                <!-- <span *ngIf="orders.current != null || orders.old != null">Всего {{currentNotCanceled + oldNotCanceled}} записи</span> -->
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+            <!-- <h3 mat-subheader>Текущие: {{currentNotCanceled}}</h3> -->
+            <mat-list-item *ngFor="let bonus of bonusHistory">
+                <mat-icon mat-list-icon style="color:green;">check_circle</mat-icon>
+                <h4 mat-line>{{ bonus.date | date:'d MMMM, H:mm' }} <span style="float: right;font-weight: bold;">+{{bonus.total}}</span></h4>
+                <p mat-line> {{ getBonusName(bonus.typeId) }}</p>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+            <mat-list-item (click)="loadBonusHistory(bonusHistory.length)"><mat-icon style="margin: auto;" mat-list-icon>expand_more</mat-icon></mat-list-item>
+        </mat-nav-list>
+    </mat-expansion-panel>
+</div>
