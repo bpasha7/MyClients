@@ -16,7 +16,7 @@
       >info</mat-icon></h2>
     <section class="section-progress">
       <span class="label-progress">0</span>
-      <mat-progress-bar class="bonus-progress" [color]="'warn'" [mode]="determinate" [value]="(user.bonusBalance / 50) * 100"></mat-progress-bar>
+      <mat-progress-bar class="bonus-progress" [color]="'warn'" [mode]="'determinate'" [value]="(user.bonusBalance / 50) * 100"></mat-progress-bar>
       <span class="label-progress">50</span>
     </section>
     <!-- <p>
@@ -48,7 +48,7 @@
         <mat-form-field class="container-column">
           <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="user.birthday" value="{{user.birthday}}" disabled>
           <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+          <mat-datepicker #picker startView="year"></mat-datepicker>
         </mat-form-field>
 
         <!-- <div class="container-column">

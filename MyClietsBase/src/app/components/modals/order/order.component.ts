@@ -145,11 +145,9 @@ export class OrderModalComponent implements OnInit {
         this.userService.getDiscounts().subscribe(
             data => {
                 this.discounts = data.json().discounts;
-                if (this.order.discountId > 0) {
-                    this.discountControl.setValue(this.order.discountId);
+                if (this.order.discountId === undefined) {
+                    this.order.discountId = 0;
                 }
-                //this.discounts.push({id: 0, name: 'Без'})
-                //this.discountControl.setValue(0);
             },
             // tslint:disable-next-line:no-shadowed-variable
             error => {
@@ -236,7 +234,8 @@ export class OrderModalComponent implements OnInit {
             sum += +sp.price;
         });
 
-        const discountVal = this.discounts.find(d => d.id === this.discountControl.value).percent;
+        const discountVal = this.discountControl.value === '' ? 0
+        : this.discounts.find(d => d.id === this.discountControl.value).percent;
 
         // const price = prepay === 0 ? sum : this.order.total;
         if (this.selectedProducts.length !== 0) {

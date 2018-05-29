@@ -121,6 +121,7 @@ export class ClientComponent implements OnInit {
         newOrder.clientId = this.client.id;
         newOrder.date = new Date();
         newOrder.datePrepay = new Date();
+        newOrder.discountId = 0;
         const dialogRef = this.clientDialog.open(OrderModalComponent, {
             maxWidth: '310px',
             width: 'auto',
