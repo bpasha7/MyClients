@@ -1,6 +1,7 @@
 <h1 mat-dialog-title>{{ title }} </h1>
 <div mat-dialog-content>
   <p *ngIf="showText">{{ text }}</p>
+  <div *ngIf="showHtml" [innerHtml]="text"></div>
   <img class="image-preview" *ngIf="showImage" src ="{{imageSrc}}"/>
 </div>
 <!-- <div mat-dialog-actions style="display: block">

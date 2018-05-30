@@ -14,6 +14,7 @@ export class MessagePreviewComponent {
     public imageSrc: string;
     public showImage = false;
     public showText = false;
+    public showHtml = false;
     constructor(
         public snackBar: MatSnackBar,
         public dialogRef: MatDialogRef<MessagePreviewComponent>,
@@ -22,7 +23,7 @@ export class MessagePreviewComponent {
                 if (data.mode === 'message') {
                     this.text = data.text;
                     this.title = data.from;
-                    this.showText = !this.showImage;
+                    this.showHtml = true; // !this.showImage;
                 }
                 if (data.mode === 'image') {
                     this.title = data.title;
