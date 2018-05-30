@@ -1,0 +1,14 @@
+.profile {
+    max-width: 800px;
+    margin: auto;
+}
+.avatar {
+    border-radius: 100%;
+    width: 90%;
+    margin: 5%;
+}
+::ng-deep mat-grid-tile .item {
+    /* max-width: 200px; 
+    /* max-height: 200px; */
+    /* padding-top: 0; */
+}

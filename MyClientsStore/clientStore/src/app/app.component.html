@@ -1,0 +1,51 @@
+<!-- <mat-card class="profile">
+    <img class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+  <mat-card-content>
+    <p>
+    </p>
+  </mat-card-content>
+</mat-card> -->
+<div class="profile" >
+<mat-grid-list cols="4" rowHeight="3:1">
+  <mat-grid-tile
+  [colspan]="1"
+  [rowspan]="3"
+  [style.background]="'red'">
+  <img class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+</mat-grid-tile>
+<mat-grid-tile
+[colspan]="3"
+[rowspan]="1"
+[style.background]="'green'">
+<h1>Master Name</h1>
+</mat-grid-tile>
+<mat-grid-tile
+[colspan]="3"
+[rowspan]="1"
+[style.background]="'yellow'">
+Yellow
+</mat-grid-tile>
+<mat-grid-tile
+[colspan]="3"
+[rowspan]="1"
+[style.background]="'orange'">
+Orange
+</mat-grid-tile> 
+</mat-grid-list>
+<mat-grid-list cols="3" rowHeight="1:1" gutterSize="5px">
+    <mat-grid-tile class="item"
+        *ngFor="let tile of tiles"
+        [colspan]="tile.cols"
+        [rowspan]="tile.rows"
+        [style.background]="tile.color">
+        <!-- <img style="min-width: 100%;
+        height: auto;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+      <div style="    width: 100%;
+      height: 100%;
+      background-image: url('https://material.angular.io/assets/img/examples/shiba2.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;"></div>
+      </mat-grid-tile>
+  </mat-grid-list>
+</div>
