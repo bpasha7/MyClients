@@ -8,7 +8,8 @@ import { AppComponent } from './app.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {
   MatCardModule,
-  MatButtonModule
+  MatButtonModule,
+  MatChipsModule
   //MatGridListModule
 } from '@angular/material';
 @NgModule({
@@ -16,6 +17,7 @@ import {
     MatCardModule,
     MatGridListModule,
     MatButtonModule,
+    MatChipsModule,
   ],
   declarations: []
 })
