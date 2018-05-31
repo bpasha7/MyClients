@@ -5,22 +5,22 @@
     </p>
   </mat-card-content>
 </mat-card> -->
+<mat-toolbar color="primary">MyStore: Смирнова Екатерина</mat-toolbar>
 <div class="profile" >
-<mat-grid-list cols="4" rowHeight="3:1">
+<mat-grid-list cols="4" rowHeight="3:1" style="max-width: 600px; margin: auto">
   <mat-grid-tile
   [colspan]="1"
   [rowspan]="3"
-  [style.background]="'red'">
-  <img class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+  >
+  <img class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg">
 </mat-grid-tile>
-<mat-grid-tile
+<!-- <mat-grid-tile
 [colspan]="3"
 [rowspan]="1"
-[style.background]="'green'">
-<div>
-<h2>Смирнова Екатерина</h2>
-<button mat-raised-button color="primary">Связаться</button>
-</div>
+>
+<p>Смирнова Екатерина</p>
+<button mat-raised-button color="primary">Связаться</button> -->
+
 <!-- <mat-card class="profile-card">
     <mat-card-header>
       <mat-card-title>Смирнова Екатерина</mat-card-title>
@@ -42,23 +42,39 @@
       <button mat-button>Оставить сообщение</button>
     </mat-card-actions>
   </mat-card> -->
-</mat-grid-tile>
+<!-- </mat-grid-tile> -->
 <mat-grid-tile
 [colspan]="3"
 [rowspan]="2"
-[style.background]="'yellow'">
-<p>
-  Здравствуйте, меня зовут Екатерина, я - мастер маникюра. Имею большой оптыт в этом деле.
-</p>
+>
+<div style="width: 100%;">
+    <p>
+        Здравствуйте, меня зовут Екатерина, я - мастер маникюра. Имею большой оптыт в этом деле. Буду рада, если вы выберите и запишитесь ко мне.
+      </p>
+</div>
+
 </mat-grid-tile>
-<!-- <mat-grid-tile
+<mat-grid-tile
 [colspan]="3"
 [rowspan]="1"
-[style.background]="'orange'">
-Orange
-</mat-grid-tile>  -->
+>
+<div style="display: inline-flex;
+width: 100%;">
+<p style="margin-right: 12px;">Выполнено работ <b>140</b></p> 
+<p>Довольных клиентов <b>96</b></p>
+</div>
+<!-- <p>Выполнено работ </p> <mat-chip color="primary" selected="true" selectable="false">25</mat-chip> -->
+<!-- <mat-chip-list>
+    <mat-chip selectable="false">09:00</mat-chip>
+    <mat-chip selectable="false">12:00</mat-chip>
+    <p>Выполнено работ </p> <mat-chip color="primary" selected="true" selectable="false">16:00</mat-chip>
+    <p>Довольных клиентов </p><mat-chip color="accent" selected="true" selectable="false">18:00</mat-chip>
+    <mat-chip color="accent" selected="true" selectable="false">18:00</mat-chip>
+    <mat-chip color="accent" selected="true" selectable="false">18:00</mat-chip>
+  </mat-chip-list> -->
+</mat-grid-tile> 
 </mat-grid-list>
-<mat-grid-list cols="3" rowHeight="1:1" gutterSize="5px">
+<mat-grid-list cols="3" rowHeight="1:1" gutterSize="5px" >
     <mat-grid-tile class="item"
         *ngFor="let tile of tiles"
         [colspan]="tile.cols"

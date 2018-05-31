@@ -9,7 +9,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import {
   MatCardModule,
   MatButtonModule,
-  MatChipsModule
+  MatChipsModule,
+  MatToolbarModule
   //MatGridListModule
 } from '@angular/material';
 @NgModule({
@@ -18,6 +19,7 @@ import {
     MatGridListModule,
     MatButtonModule,
     MatChipsModule,
+    MatToolbarModule
   ],
   declarations: []
 })

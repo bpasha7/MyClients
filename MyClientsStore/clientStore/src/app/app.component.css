@@ -60,5 +60,12 @@
         text-align: center;
         margin: 0;
     }
- 
+    .profile h2 {
+        color: #262626;
+        font-size: 1em; 
+    }
+    .profile p {
+        font-size: 0.8em;
+        color: #262626;
+    }
  }
