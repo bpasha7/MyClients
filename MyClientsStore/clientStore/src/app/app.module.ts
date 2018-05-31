@@ -5,21 +5,24 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 
-import { MatGridListModule } from '@angular/material/grid-list';
+// import { MatGridListModule } from '@angular/material/grid-list';
 import {
   MatCardModule,
   MatButtonModule,
   MatChipsModule,
-  MatToolbarModule
-  //MatGridListModule
+  MatToolbarModule,
+  MatGridListModule,
+  MatDialogModule
 } from '@angular/material';
+import { PreviewComponent } from './components/modal/preview/preview.component';
 @NgModule({
   exports: [
     MatCardModule,
     MatGridListModule,
     MatButtonModule,
     MatChipsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatDialogModule
   ],
   declarations: []
 })
@@ -27,7 +30,11 @@ export class DemoMaterialModule { }
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PreviewComponent
+  ],
+  entryComponents: [
+    PreviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +43,7 @@ export class DemoMaterialModule { }
   ],
   exports: [
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

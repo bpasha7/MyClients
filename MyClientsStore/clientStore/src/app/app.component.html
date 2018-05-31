@@ -82,7 +82,7 @@ width: 100%;">
         [style.background]="tile.color">
         <!-- <img style="min-width: 100%;
         height: auto;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-      <div class="product" style="background-image: url('https://material.angular.io/assets/img/examples/shiba2.jpg');">
+      <div class="product" (click)="showInfo()" style="background-image: url('https://material.angular.io/assets/img/examples/shiba2.jpg');">
       <div class="product-info">
         <h3>Product name</h3>
         <p>1500 $</p>
