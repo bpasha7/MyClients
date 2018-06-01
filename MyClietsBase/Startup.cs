@@ -68,6 +68,7 @@ namespace MyClientsBase
       services.AddScoped<IClientService, ClientService>();
       services.AddScoped<IOrderService, OrderService>();
       services.AddScoped<IBonusService, BonusService>();
+      services.AddScoped<IStoreService, StoreService>();
       services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
       {
         builder.AllowAnyOrigin()
