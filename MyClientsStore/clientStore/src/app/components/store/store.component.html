@@ -35,9 +35,7 @@ width: 100%;">
         [colspan]="1"
         [rowspan]="1"
         >
-        <!-- <img style="min-width: 100%;
-        height: auto;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-      <div class="product" (click)="showInfo()" style="background-image: url('https://material.angular.io/assets/img/examples/shiba2.jpg');">
+      <div class="product" (click)="showInfo()" [style.backgroundImage]="getUrl(product.id)">
       <div class="product-info">
         <h3>{{product.name}}</h3>
         <p>{{product.price}}</p>

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { StoreService } from 'src/app/services/store.service';
 import { ActivatedRoute } from '@angular/router';
 import { PreviewComponent } from 'src/app/components/modal/preview/preview.component';
+import { AppConfig } from '../../app.config';
 
 @Component({
   selector: 'app-store',
@@ -11,41 +12,41 @@ import { PreviewComponent } from 'src/app/components/modal/preview/preview.compo
   styleUrls: ['./store.component.css']
 })
 export class StoreComponent implements OnInit {
-  public hash = '';
+  public photoPath = '';
   public products: Array<Product> = [];
   constructor(
     public previewDialog: MatDialog,
     private _storeService: StoreService,
-    private route: ActivatedRoute
-  ) { 
-    
+    private route: ActivatedRoute,
+    private config: AppConfig
+  ) {
   }
 
   ngOnInit() {
-}
-// tslint:disable-next-line:use-life-cycle-interface
-ngAfterViewInit() {
+  }
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngAfterViewInit() {
     this.route.params.subscribe(params => {
-        this.loadStore(params['name']);
+      this.loadStore(params['name']);
     });
 
-}
+  }
   loadStore(name: string) {
     this._storeService.getStore(name).subscribe(
       data => {
         const jData = data.json();
         this.products = jData.products;
-        this.hash =jData.hash;
-          // this.client = data.json().client;
-          // this.orders = data.json().orders;
-          // this.filterOrders();
-          // // concat photo url
-          // this.photo = this.config.photoUrl + localStorage.getItem('userHash') + '/' + this.client.id + '.jpg';
+        this.photoPath = this.config.photoUrl + jData.hash + '/';
+        // this.photo = this.config.photoUrl + localStorage.getItem('userHash') + '/' + this.client.id + '.jpg';
       },
       error => {
-          //this.userService.responseErrorHandle(error);
+        //this.userService.responseErrorHandle(error);
       }
-  );
+    );
+  }
+
+  getUrl(id: number): string {
+    return 'url(' + this.photoPath + id + '_p.jpg)';
   }
 
   showInfo() {
@@ -55,11 +56,11 @@ ngAfterViewInit() {
       //height: 'auto',
       maxHeight: '650px',
       data: {
-          text: 'Product description',
-          title: 'Product Name',
-          src: 'https://material.angular.io/assets/img/examples/shiba2.jpg'
+        text: 'Product description',
+        title: 'Product Name',
+        src: 'https://material.angular.io/assets/img/examples/shiba2.jpg'
       }
-  });
+    });
 
-}
+  }
 }
