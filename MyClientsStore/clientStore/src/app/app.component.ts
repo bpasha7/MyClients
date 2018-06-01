@@ -25,9 +25,10 @@ export class AppComponent {
 
   showInfo() {
     const dialogRef = this.previewDialog.open(PreviewComponent, {
-     // maxWidth: '310px',
+      maxWidth: '410px',
       width: 'auto',
-      height: 'auto',
+      //height: 'auto',
+      maxHeight: '650px',
       data: {
           text: 'Product description',
           title: 'Product Name',

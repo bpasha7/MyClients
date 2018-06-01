@@ -24,6 +24,7 @@ namespace Data.EF
         public virtual DbSet<OrderPrepayment> OrderPrepayment { get; set; }
         public virtual DbSet<OrderItem> OrdersItems { get; set; }
         public virtual DbSet<BonusIncome> BonusIncomes { get; set; }
+        public virtual DbSet<Store> Stores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

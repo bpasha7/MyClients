@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { CdkTableModule } from '@angular/cdk/table';
+ import { CdkTableModule } from '@angular/cdk/table';
 
 import { AppComponent } from './app.component';
 
@@ -12,17 +12,24 @@ import {
   MatChipsModule,
   MatToolbarModule,
   MatGridListModule,
-  MatDialogModule
+  MatDialogModule,
+  MatTabsModule,
+  MatTableModule,
+  MatTabHeader
 } from '@angular/material';
 import { PreviewComponent } from './components/modal/preview/preview.component';
 @NgModule({
   exports: [
+    CdkTableModule,
     MatCardModule,
     MatGridListModule,
     MatButtonModule,
     MatChipsModule,
     MatToolbarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTabsModule,
+    MatTableModule,
+    
   ],
   declarations: []
 })

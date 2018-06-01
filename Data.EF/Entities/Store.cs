@@ -3,30 +3,22 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Data.EF.Entities { 
-	
-	public class Product : IEntity<int>
+namespace Data.EF.Entities
+{
+
+    public class Store : IEntity<int>
     {
-        public Product() { }
+        public Store() { }
         [Key]
         public int Id { get; set; }
         [Required]
-        [MaxLength(128)]
+        [MaxLength(64)]
         public string Name { get; set; }
-        [Required]
-        public decimal Price { get; set; }
-        /// <summary>
-        /// Has Photo or now
-        /// </summary>
+        public string About { get; set; }
         public bool HasPhoto { get; set; }
-        /// <summary>
-        /// Show into store
-        /// </summary>
-        public bool Show { get; set; }
-        /// <summary>
-        /// Removed flag
-        /// </summary>
-        public bool IsRemoved { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime ActivationEnd { get; set; }
+        public bool IsActive { get; set; }
         /// <summary>
         /// User
         /// </summary>
