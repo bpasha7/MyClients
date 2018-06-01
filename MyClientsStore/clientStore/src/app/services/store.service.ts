@@ -11,5 +11,7 @@ export class StoreService {
         private http: Http,
         private config: AppConfig
   ) { }
-  
+  getStore(name: string) {
+    return this.http.get(this.config.apiUrl + this.controller + '/' + name);
+  }
 }

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Data.DTO.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MyClientsBase.Helpers;
 using MyClientsBase.Services;
 
@@ -33,12 +35,52 @@ namespace MyClientsBase.Controllers
     /// Logger
     /// </summary>
     private ILogger _logger;
-    // GET: api/Stores/storeName
-    [HttpGet("{id}", Name = "Get")]
-    public string Get(string storeName)
-    {
 
-      return "value";
+    public StoresController(IStoreService storeService, IUserService userService, IOrderService orderService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
+    {
+      try
+      {
+        _storeService = storeService;
+
+        _mapper = mapper;
+        _appSettings = appSettings.Value;
+        _logger = loggerFactory.CreateLogger(typeof(UsersController));
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+      }
+    }
+
+    // GET: api/Stores/storeName
+    [HttpGet("{storeName}", Name = "GetStore")]
+    public IActionResult Get(string storeName)
+    {
+      try
+      {
+        var store = _storeService.GetStore(storeName);
+        if (store == null)
+          throw new AppException("Витрина недоступна!");
+        var products = store.UserInfo.Products;
+        var hash = AppFileSystem.GetUserMD5(store.UserInfo.Id, store.UserInfo.Login);
+        return Ok(new
+        {
+           Store = _mapper.Map<StoreDto>(store),
+           Products = _mapper.Map<ProductDto[]>(products),
+           Hash = hash
+          //History = _mapper.Map<BonusIncomeDto[]>(history),
+          //Types = bonusTypes
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
     }
 
     //// GET: api/Stores

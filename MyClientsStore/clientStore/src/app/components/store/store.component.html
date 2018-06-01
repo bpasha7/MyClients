@@ -1,0 +1,48 @@
+<mat-toolbar color="primary">Store: Смирнова Екатерина</mat-toolbar>
+<div class="profile" >
+<mat-grid-list cols="4" rowHeight="3:1" style="max-width: 600px; margin: auto">
+  <mat-grid-tile
+  [colspan]="1"
+  [rowspan]="3"
+  >
+  <img class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+</mat-grid-tile>
+<mat-grid-tile
+[colspan]="3"
+[rowspan]="2"
+>
+<div style="width: 100%;">
+    <p>
+        Здравствуйте, меня зовут Екатерина, я - мастер маникюра. Имею большой оптыт в этом деле. Буду рада, если вы выберите и запишитесь ко мне.
+      </p>
+</div>
+
+</mat-grid-tile>
+<mat-grid-tile
+[colspan]="3"
+[rowspan]="1"
+>
+<div style="display: inline-flex;
+width: 100%;">
+<p style="margin-right: 12px;">Выполнено работ <b>140</b></p> 
+<p>Довольных клиентов <b>96</b></p>
+</div>
+</mat-grid-tile> 
+</mat-grid-list>
+<mat-grid-list cols="3" rowHeight="1:1" gutterSize="5px" >
+    <mat-grid-tile class="item"
+        *ngFor="let product of products"
+        [colspan]="1"
+        [rowspan]="1"
+        >
+        <!-- <img style="min-width: 100%;
+        height: auto;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+      <div class="product" (click)="showInfo()" style="background-image: url('https://material.angular.io/assets/img/examples/shiba2.jpg');">
+      <div class="product-info">
+        <h3>{{product.name}}</h3>
+        <p>{{product.price}}</p>
+      </div>
+    </div>
+      </mat-grid-tile>
+  </mat-grid-list>
+</div>

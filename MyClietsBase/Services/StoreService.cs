@@ -2,6 +2,7 @@ using Data.EF;
 using Data.EF.Entities;
 using Data.EF.UnitOfWork;
 using Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,11 @@ namespace MyClientsBase.Services
     }
     public Store GetStore(string storeName)
     {
-      throw new NotImplementedException();
+#pragma warning Add_data_checking_and_filter_removed_ornotShow
+      return _repository.Query(store => store.Name == storeName && store.IsActive)
+        .Include(store => store.UserInfo)
+        .ThenInclude(user => user.Products)//.Where(p=>!p.IsRemoved && p.Show)
+        .SingleOrDefault();
     }
   }
 }
