@@ -83,15 +83,36 @@
         </div>
       
       </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Магазин
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="container-column">
+          <mat-icon matPrefix>store</mat-icon>
+          <input matInput placeholder="" [(ngModel)]="user.email" value="{{user.email}}">
+        </mat-form-field>
+        <mat-form-field class="container-column">
+          <textarea matInput placeholder="Описание" #aboutStore maxlength="128"></textarea>
+          <mat-hint align="end">{{aboutStore.value.length}} / 128</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="container-column">
+          <input matInput [matDatepicker]="pickerStore" placeholder="Активен до" [(ngModel)]="user.birthday" value="{{user.birthday}}">
+          <mat-datepicker-toggle matPrefix [for]="pickerStore"></mat-datepicker-toggle>
+          <mat-datepicker #pickerStore startView="month"></mat-datepicker>
+        </mat-form-field>
+        <div class="container-column">
+          <button mat-raised-button  color="primary">Сохранить</button>
+        </div>
+      
+      </mat-expansion-panel>
       <!-- Google calendar -->
       <mat-expansion-panel disabled>
         <mat-expansion-panel-header>
           <mat-panel-title>
             Настройка Google календарь
           </mat-panel-title>
-          <!-- <mat-panel-description>
-                  Телефон, Почта, ...
-                </mat-panel-description> -->
         </mat-expansion-panel-header>
 
         <mat-checkbox class="">Синхронизировать</mat-checkbox>
@@ -102,10 +123,6 @@
       </mat-expansion-panel>
     </mat-accordion>
   </mat-card-content>
-  <mat-card-actions>
-    <!-- <button mat-button>LIKE</button> -->
-    <!-- <button mat-button>К ветрине</button> -->
-  </mat-card-actions>
 </mat-card>
 <div class="container">
     <mat-expansion-panel (opened)="loadBonusHistory(0)">
@@ -113,10 +130,9 @@
             <mat-panel-title>
                 Накопления бонусов
             </mat-panel-title>
-            <mat-panel-description>
+            <!-- <mat-panel-description>
                 <mat-spinner *ngIf="inProgress" diameter="15"></mat-spinner>
-                <!-- <span *ngIf="orders.current != null || orders.old != null">Всего {{currentNotCanceled + oldNotCanceled}} записи</span> -->
-            </mat-panel-description>
+            </mat-panel-description> -->
         </mat-expansion-panel-header>
         <mat-nav-list>
             <!-- <h3 mat-subheader>Текущие: {{currentNotCanceled}}</h3> -->

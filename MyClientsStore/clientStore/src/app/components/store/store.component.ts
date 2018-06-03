@@ -40,7 +40,7 @@ export class StoreComponent implements OnInit {
         // this.photo = this.config.photoUrl + localStorage.getItem('userHash') + '/' + this.client.id + '.jpg';
       },
       error => {
-        //this.userService.responseErrorHandle(error);
+        // this.userService.responseErrorHandle(error);
       }
     );
   }
@@ -49,16 +49,16 @@ export class StoreComponent implements OnInit {
     return 'url(' + this.photoPath + id + '_p.jpg)';
   }
 
-  showInfo() {
+  showInfo(product: Product) {
     const dialogRef = this.previewDialog.open(PreviewComponent, {
       maxWidth: '410px',
       width: 'auto',
-      //height: 'auto',
+      // height: 'auto',
       maxHeight: '650px',
       data: {
-        text: 'Product description',
-        title: 'Product Name',
-        src: 'https://material.angular.io/assets/img/examples/shiba2.jpg'
+        text: product.price,
+        title: product.name,
+        src: this.getUrl(product.id) // this.photoPath + product.id + '_p.jpg'
       }
     });
 

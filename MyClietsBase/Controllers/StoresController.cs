@@ -14,7 +14,7 @@ using MyClientsBase.Services;
 
 namespace MyClientsBase.Controllers
 {
-  [AllowAnonymous]
+  
   [Produces("application/json")]
   [Route("api/Stores")]
   public class StoresController : Controller
@@ -51,7 +51,7 @@ namespace MyClientsBase.Controllers
         _logger.LogCritical($"{ex}");
       }
     }
-
+    [AllowAnonymous]
     // GET: api/Stores/storeName
     [HttpGet("{storeName}", Name = "GetStore")]
     public IActionResult Get(string storeName)

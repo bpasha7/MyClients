@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">Store: Смирнова Екатерина</mat-toolbar>
-<div class="profile" >
-<mat-grid-list cols="4" rowHeight="3:1" style="max-width: 600px; margin: auto">
+<div class="profile">
+  <!-- <mat-grid-list cols="4" rowHeight="3:1" style="max-width: 600px; margin: auto">
   <mat-grid-tile
   [colspan]="1"
   [rowspan]="3"
@@ -12,9 +12,11 @@
 [rowspan]="2"
 >
 <div style="width: 100%;">
-    <p>
+    <section class="mat-typography">
+    <p class="body-1">
         Здравствуйте, меня зовут Екатерина, я - мастер маникюра. Имею большой оптыт в этом деле. Буду рада, если вы выберите и запишитесь ко мне.
-      </p>
+    </p>
+    </section>
 </div>
 
 </mat-grid-tile>
@@ -28,19 +30,41 @@ width: 100%;">
 <p>Довольных клиентов <b>96</b></p>
 </div>
 </mat-grid-tile> 
-</mat-grid-list>
-<mat-grid-list cols="3" rowHeight="1:1" gutterSize="5px" >
-    <mat-grid-tile class="item"
-        *ngFor="let product of products"
-        [colspan]="1"
-        [rowspan]="1"
-        >
-      <div class="product" (click)="showInfo()" [style.backgroundImage]="getUrl(product.id)">
-      <div class="product-info">
-        <h3>{{product.name}}</h3>
-        <p>{{product.price}}</p>
+</mat-grid-list> -->
+<mat-icon svgIcon="thumbs-up"></mat-icon>
+  <div class="bounds">
+    <div class="content" fxLayout="row" fxLayout.xs="column" fxFlexFill>
+      <div fxFlex="20" class="sec1" fxFlex.xs="40">
+        <div style="height: 100px;"  fxLayout.xs="row"   fxLayout="column">
+        <img fxFlex="100" fxFlex.xs="30" class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+          <div fxFlex.xs="70">
+              <button mat-icon-button color="primary">
+                  <mat-icon>email</mat-icon>
+                </button>
+                <button mat-icon-button>
+                    <mat-icon>call</mat-icon>
+                  </button>
+          </div>
       </div>
     </div>
-      </mat-grid-tile>
+      <div fxFlex="80" class="sec2" fxFlex.xs="60">
+          <section class="mat-typography">
+        <p>
+          Здравствуйте, меня зовут Екатерина, я - мастер маникюра. Имею большой оптыт в этом деле. Буду рада, если вы выберите и запишитесь
+          ко мне.
+        </p>
+      </section>
+      </div>
+    </div>
+  </div>
+  <mat-grid-list cols="3" rowHeight="1:1" gutterSize="5px">
+    <mat-grid-tile class="item" *ngFor="let product of products" [colspan]="1" [rowspan]="1">
+      <div class="product" (click)="showInfo(product)" [style.backgroundImage]="getUrl(product.id)">
+        <div class="product-info">
+          <h3>{{product.name}}</h3>
+          <p>{{product.price}}</p>
+        </div>
+      </div>
+    </mat-grid-tile>
   </mat-grid-list>
 </div>

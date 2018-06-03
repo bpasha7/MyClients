@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import { AppConfig } from './app.config';
+import { FlexLayoutModule } from '@angular/flex-layout';
 /*Routes */
 const appRoutes: Routes = [
   { path: ':name', component: StoreComponent },
@@ -23,7 +24,8 @@ import {
   MatDialogModule,
   MatTabsModule,
   MatTableModule,
-  MatTabHeader
+  MatTabHeader,
+  MatIconModule
 } from '@angular/material';
 import { PreviewComponent } from './components/modal/preview/preview.component';
 import { StoreComponent } from './components/store/store.component';
@@ -38,7 +40,7 @@ import { StoreComponent } from './components/store/store.component';
     MatDialogModule,
     MatTabsModule,
     MatTableModule,
-    
+    MatIconModule
   ],
   declarations: []
 })
@@ -60,7 +62,8 @@ export class DemoMaterialModule { }
     HttpModule,
     BrowserModule,
     BrowserAnimationsModule,
-    DemoMaterialModule
+    DemoMaterialModule,
+    FlexLayoutModule
   ],
   exports: [
     MatCardModule,

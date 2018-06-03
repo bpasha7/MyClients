@@ -4,15 +4,8 @@
 }
 .avatar {
     border-radius: 100%;
-    width: 90%;
-    margin: 5%;
-}
-.profile h2 {
-    color: #262626;
-    text-align: left;
-}
-.profile p {
-    color: #262626;
+    max-width: 125px;
+    /* height: 100%; */
 }
 .profile-card {
     position: inherit;
@@ -61,12 +54,26 @@
         text-align: center;
         margin: 0;
     }
-    .profile h2 {
-        color: #262626;
-        font-size: 1em; 
-    }
-    .profile p {
-        font-size: 0.8em;
-        color: #262626;
-    }
  }
+
+ /* // */
+
+    .bounds {
+      /* background-color:#ddd; */
+      max-height: 300px;
+      margin: auto;
+      max-width: 650px;
+      padding: 10px 0 10px 0;
+    }
+    .sec1, .sec2 {
+       padding-top: 5px; 
+      
+    } 
+    .sec2 {
+        text-align:center;
+    }
+    
+    .content {
+      min-width: 300px;
+      /*height: 400px;*/
+    }

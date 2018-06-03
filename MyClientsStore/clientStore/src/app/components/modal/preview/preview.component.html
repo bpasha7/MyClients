@@ -1,21 +1,19 @@
-<h1 mat-dialog-title>{{ title }} </h1>
+<h1 mat-dialog-title>{{ title }} <mat-icon svgIcon="email"></mat-icon></h1>
 <div mat-dialog-content style="padding: 0 5px;">
     <!-- <img class="image-preview" src ="{{imageSrc}}"/> 
     <p>{{ text }}</p> -->
   <!-- <p *ngIf="showText">{{ text }}</p>
   <div *ngIf="showHtml" [innerHtml]="text"></div>-->
-  <mat-card class="example-card">
+  <!-- <mat-card class="example-card">
       
 
-       <mat-card-content>
-          <img mat-card-image src="{{imageSrc}}" >
+       <mat-card-content> -->
+         
+          <!-- <img mat-card-image src="{{imageSrc}}" > -->
        
-      </mat-card-content>
-      <!--<mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions> -->
-    </mat-card>
+      <!-- </mat-card-content>
+    </mat-card> -->
+    <div class="product" [style.backgroundImage]="imageSrc"></div>
     <mat-tab-group alignTabs="center">
         <mat-tab label="Описание"> <p>
             {{ text }}

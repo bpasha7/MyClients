@@ -7,12 +7,12 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabsModule } from '@angula
   styleUrls: ['./preview.component.css']
 })
 export class PreviewComponent implements OnInit {
-  ngOnInit(): void {
-    // throw new Error("Method not implemented.");
-  }
   public title = '';
   public text = '';
   public imageSrc: string;
+  ngOnInit(): void {
+    // throw new Error("Method not implemented.");
+  }
   constructor(
     public dialogRef: MatDialogRef<PreviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
