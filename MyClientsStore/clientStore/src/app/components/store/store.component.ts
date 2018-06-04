@@ -5,6 +5,7 @@ import { StoreService } from 'src/app/services/store.service';
 import { ActivatedRoute } from '@angular/router';
 import { PreviewComponent } from 'src/app/components/modal/preview/preview.component';
 import { AppConfig } from '../../app.config';
+import { MessageComponent } from '../modal/message/message.component';
 
 @Component({
   selector: 'app-store',
@@ -61,6 +62,12 @@ export class StoreComponent implements OnInit {
         src: this.getUrl(product.id) // this.photoPath + product.id + '_p.jpg'
       }
     });
+  }
 
+  showMessageForm() {
+    const dialogRef = this.previewDialog.open(MessageComponent, {
+      maxWidth: '410px',
+      width: 'auto'
+    });
   }
 }

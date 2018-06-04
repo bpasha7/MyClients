@@ -24,6 +24,10 @@ namespace Data.EF.Entities {
         /// </summary>
         public bool Show { get; set; }
         /// <summary>
+        /// Product description
+        /// </summary>
+        public string Description { get; set; }
+        /// <summary>
         /// Removed flag
         /// </summary>
         public bool IsRemoved { get; set; }

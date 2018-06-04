@@ -25,10 +25,13 @@ import {
   MatTabsModule,
   MatTableModule,
   MatTabHeader,
-  MatIconModule
+  MatIconModule,
+  MatFormFieldModule,
+  MatInputModule
 } from '@angular/material';
 import { PreviewComponent } from './components/modal/preview/preview.component';
 import { StoreComponent } from './components/store/store.component';
+import { MessageComponent } from './components/modal/message/message.component';
 @NgModule({
   exports: [
     CdkTableModule,
@@ -40,7 +43,9 @@ import { StoreComponent } from './components/store/store.component';
     MatDialogModule,
     MatTabsModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   declarations: []
 })
@@ -50,10 +55,12 @@ export class DemoMaterialModule { }
   declarations: [
     AppComponent,
     StoreComponent,
-    PreviewComponent
+    PreviewComponent,
+    MessageComponent
   ],
   entryComponents: [
     PreviewComponent,
+    MessageComponent
   ],
   imports: [
     RouterModule.forRoot(

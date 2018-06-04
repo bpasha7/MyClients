@@ -29,6 +29,9 @@ namespace Data.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Store>()
+            .HasIndex(store => store.Name)
+            .IsUnique();
         }
 
     }

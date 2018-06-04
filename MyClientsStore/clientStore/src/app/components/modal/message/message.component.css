@@ -1,0 +1,7 @@
+.message-form{
+    /* display: flex;
+    flex-direction: column; */
+}
+.message-form > * {
+    width: 100%;
+}

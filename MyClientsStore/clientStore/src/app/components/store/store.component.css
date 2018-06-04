@@ -1,6 +1,7 @@
 .profile {
     max-width: 800px;
     margin: auto;
+    margin-bottom: 35px;
 }
 .avatar {
     border-radius: 100%;
