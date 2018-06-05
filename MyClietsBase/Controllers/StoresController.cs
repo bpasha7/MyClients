@@ -101,11 +101,42 @@ namespace MyClientsBase.Controllers
           UserId = userId,
           Date = DateTime.Now
         };
-        var res = _storeService.ProlongPeriond(userId, storeId, 10, bonus);
+        decimal balance = 0;
+        var res = _storeService.ProlongPeriond(userId, storeId, 10, bonus, out balance);
 
         return Ok(new
         {
-          Date = res
+          Date = res,
+          Balance = balance
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+    [HttpPut]
+    public IActionResult UpdateInfo([FromBody]StoreDto storeDto)
+    {
+      try
+      {
+        var store = _mapper.Map<Store>(storeDto);
+        if (store == null)
+          throw new AppException("Неверные данные!");
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        _logger.LogInformation($"User #{userId}, Update store info #{store.Id}");
+
+        _storeService.UpdateInfo(userId, store);
+
+        return Ok(new
+        {
+          
         });
       }
       catch (AppException ex)

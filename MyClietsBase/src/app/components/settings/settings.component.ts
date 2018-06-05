@@ -38,7 +38,9 @@ export class SettingsComponent implements OnInit {
       passwordConfirmCtrl: ['', Validators.required]
     });
   }
-
+  /**
+   * Load user and store info
+   */
   loadUserInfo() {
     this.userService.getUserInfo().subscribe(
       data => {
@@ -50,69 +52,110 @@ export class SettingsComponent implements OnInit {
       }
     );
   }
-
+  /**
+   * Load bonus history
+   * @param skip number positions to skip
+   */
   loadBonusHistory(skip: number) {
-    if( skip === 0 ) {
+    if (this.inProgress === true) {
+      return;
+    }
+    if (skip === 0) {
       this.bonusType = [];
       this.bonusHistory = [];
     }
     this.inProgress = true;
     this.userService.getBonusHistory(skip).subscribe(
       data => {
-        if( skip === 0 ) {
+        if (skip === 0) {
           this.bonusType = data.json().types;
           this.bonusHistory = data.json().history;
         } else {
           this.bonusHistory = this.bonusHistory.concat(data.json().history);
-        }  
+        }
         this.inProgress = false;
       },
       error => {
         this.userService.responseErrorHandle(error);
-        this.inProgress = false;        
+        this.inProgress = false;
       }
     );
   }
-
-  getBonusName(id: number):string {
-    return this.bonusType.find(item => item.id === id).name;  
+  /**
+   * Get bonus type name by id
+   * @param id Bonus type id
+   */
+  getBonusName(id: number): string {
+    return this.bonusType.find(item => item.id === id).name;
+  }
+  /**
+   * Prolong user store
+   */
+  prolongStore() {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      data: {
+        title: 'Подтвердите',
+        text: 'Продлить личный магазин на 10 дней за 30 бонусов?',
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 1) {
+        this.inProgress = true;
+        this.userService.prolongStorePeriod(this.store.id).subscribe(
+          data => {
+            const jdata = data.json();
+            this.store.activationEnd = jdata.date;
+            this.user.bonusBalance = jdata.balance;
+            this.store.isActive = true;
+            this.inProgress = false;
+            this.userService.showSnackBar('Продлено!'); 
+          },
+          error => {
+            this.userService.responseErrorHandle(error);
+            this.inProgress = false;
+          }
+        );
+      }
+    });
   }
 
-  prolongStore(){
-    this.userService.prolongStorePeriod(this.store.id).subscribe(
+  updateStoreInfo() {
+    this.userService.updateStoreInfo(this.store).subscribe(
       data => {
-        this.store.activationEnd = data.json().Date;
-        this.store.isActive = true;
+        this.userService.showSnackBar('Информация обновлена!');
       },
       error => {
-        this.userService.responseErrorHandle(error);   
+        this.userService.responseErrorHandle(error);
+        // this.inProgress = false;
       }
     );
   }
-
+  /**
+   * Edit user password
+   */
   editPassword() {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       data: {
         title: 'Подтвердите',
         text: 'Изменить пароль?',
-       }
-   });
+      }
+    });
 
-   dialogRef.afterClosed().subscribe(result => {
-     if (result === 1) {
-       this.userService.editPassword(this.password).subscribe(
-         data => {
-          this.userService.showSnackBar('Пароль изменен, перезайдите!');
-          setTimeout(() => {
-            this.userService.goLogin();
-        }, 2500);
-         },
-         error => {
-           this.userService.responseErrorHandle(error);
-         }
-       );
-     }
-   });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 1) {
+        this.userService.editPassword(this.password).subscribe(
+          data => {
+            this.userService.showSnackBar('Пароль изменен, перезайдите!');
+            setTimeout(() => {
+              this.userService.goLogin();
+            }, 2500);
+          },
+          error => {
+            this.userService.responseErrorHandle(error);
+          }
+        );
+      }
+    });
   }
 
 }

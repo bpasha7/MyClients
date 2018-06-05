@@ -26,7 +26,7 @@ namespace MyClientsBase.Services
     /// <param name="storeId">Store Id</param>
     /// <param name="days">Days number</param>
     /// <returns>Prolong date</returns>
-    DateTime ProlongPeriond(int userId, int storeId, int days, BonusIncome bonus);
+    DateTime ProlongPeriond(int userId, int storeId, int days, BonusIncome bonus, out decimal balance);
     /// <summary>
     /// Update only store info
     /// </summary>
@@ -56,7 +56,7 @@ namespace MyClientsBase.Services
         .SingleOrDefault();
     }
 
-    public DateTime ProlongPeriond(int userId, int storeId, int days, BonusIncome bonus)
+    public DateTime ProlongPeriond(int userId, int storeId, int days, BonusIncome bonus, out decimal balance)
     {
       //find store if exist
       var store = _repository.Query(s => s.Id == storeId && s.UserId == userId)
@@ -79,6 +79,7 @@ namespace MyClientsBase.Services
       store.UserInfo.BonusBalance += bonus.Total;
       //save changes
       _repository.Save();
+      balance = store.UserInfo.BonusBalance;
       return store.ActivationEnd;
     }
 

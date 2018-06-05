@@ -1,7 +1,7 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { AppConfig } from '../app.config';
-import { User, Product, Order, Discount, Outgoing } from '../models/index';
+import { User, Product, Order, Discount, Outgoing, Store } from '../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppService } from './app.service';
 import { HttpHeaders, HttpRequest, HttpClient } from '@angular/common/http';
@@ -68,8 +68,11 @@ export class UserService extends AppService {
      * Prolong store period
      * @param storeId 
      */
-    prolongStorePeriod(storeId: number){
+    prolongStorePeriod(storeId: number) {
         return this.http.patch(this.config.apiUrl + '/stores/prolong?storeId=' + storeId, null, this.jwt());
+    }
+    updateStoreInfo(store: Store) {
+        return this.http.put(this.config.apiUrl + '/stores', store, this.jwt());
     }
     //#endregion
     /**

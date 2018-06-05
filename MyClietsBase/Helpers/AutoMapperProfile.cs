@@ -40,6 +40,7 @@ namespace MyClientsBase.Helpers
       CreateMap<BonusIncomeDto, BonusIncome>();
 
       CreateMap<Store, StoreDto>();
+      CreateMap<StoreDto, Store>();
       //CreateMap<StoreDto, Store>();
     }
   }
