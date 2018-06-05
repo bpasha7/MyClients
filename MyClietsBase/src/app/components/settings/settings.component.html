@@ -93,18 +93,18 @@
         </mat-expansion-panel-header>
         <div class="container-row">
           <mat-form-field>
-            <input matInput [matDatepicker]="pickerStore" placeholder="Активен до" [(ngModel)]="store.activationEnd" value="{{store.activationEnd}}">
+            <input matInput [matDatepicker]="pickerStore" placeholder="Активен до" [(ngModel)]="store.activationEnd" value="{{store.activationEnd}}" disabled>
             <mat-datepicker-toggle matPrefix [for]="pickerStore"></mat-datepicker-toggle>
             <mat-datepicker #pickerStore startView="month"></mat-datepicker>
           </mat-form-field>
-          <button mat-raised-button style="height: fit-content;" color="primary">Продлить на 10 дней</button>
+          <button (click)="prolongStore()" mat-raised-button style="height: fit-content;" color="primary">Продлить на 10 дней</button>
         </div>
         <mat-form-field class="container-column">
           <mat-icon matPrefix>store</mat-icon>
           <input matInput placeholder="" [(ngModel)]="store.name" value="{{store.name}}">
         </mat-form-field>
         <mat-form-field class="container-column">
-          <textarea style="height: 50px;" matInput placeholder="Описание" #aboutStore maxlength="128"></textarea>
+          <textarea [(ngModel)]="store.about" value="{{store.about}}" style="height: 50px;" matInput placeholder="Описание" #aboutStore maxlength="128"></textarea>
           <mat-hint align="end">{{aboutStore.value.length}} / 128</mat-hint>
         </mat-form-field>
         <div class="container-column">
@@ -142,9 +142,10 @@
     <mat-nav-list>
       <!-- <h3 mat-subheader>Текущие: {{currentNotCanceled}}</h3> -->
       <mat-list-item *ngFor="let bonus of bonusHistory">
-        <mat-icon mat-list-icon style="color:green;">check_circle</mat-icon>
+        <mat-icon *ngIf="bonus.total > 0" mat-list-icon style="color:green;">check_circle</mat-icon>
+        <mat-icon *ngIf="bonus.total < 0" mat-list-icon style="color:red;">cancel</mat-icon>
         <h4 mat-line>{{ bonus.date | date:'d MMMM, H:mm' }}
-          <span style="float: right;font-weight: bold;">+{{bonus.total}}</span>
+          <span style="float: right;font-weight: bold;"><span *ngIf="bonus.total > 0">+</span>{{bonus.total}}</span>
         </h4>
         <p mat-line> {{ getBonusName(bonus.typeId) }}</p>
         <mat-divider></mat-divider>

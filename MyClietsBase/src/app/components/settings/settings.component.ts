@@ -78,6 +78,18 @@ export class SettingsComponent implements OnInit {
     return this.bonusType.find(item => item.id === id).name;  
   }
 
+  prolongStore(){
+    this.userService.prolongStorePeriod(this.store.id).subscribe(
+      data => {
+        this.store.activationEnd = data.json().Date;
+        this.store.isActive = true;
+      },
+      error => {
+        this.userService.responseErrorHandle(error);   
+      }
+    );
+  }
+
   editPassword() {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       data: {

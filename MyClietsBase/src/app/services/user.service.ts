@@ -57,8 +57,19 @@ export class UserService extends AppService {
     editPassword(password: string) {
         return this.http.patch(this.config.apiUrl + this.controller + '/password?password='+ password, null, this.jwt());
     }
+    /**
+     * 
+     * @param skip 
+     */
     getBonusHistory(skip:number) {
         return this.http.get(this.config.apiUrl + this.controller + '/bonuses?skip=' + skip, this.jwt());        
+    }
+    /**
+     * Prolong store period
+     * @param storeId 
+     */
+    prolongStorePeriod(storeId: number){
+        return this.http.patch(this.config.apiUrl + '/stores/prolong?storeId=' + storeId, null, this.jwt());
     }
     //#endregion
     /**

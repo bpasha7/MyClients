@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.DTO.Entities;
+using Data.EF.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,7 +17,8 @@ using MyClientsBase.Services;
 
 namespace MyClientsBase.Controllers
 {
-  
+  [Authorize]
+  [EnableCors("MyPolicy")]
   [Produces("application/json")]
   [Route("api/Stores")]
   public class StoresController : Controller
@@ -82,6 +86,48 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
+    [HttpPatch("prolong")]
+    public IActionResult ProlongActivation([FromQuery]int storeId)
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+        _logger.LogInformation($"User #{userId}, Prolong store #{storeId}");
+        var bonus = new BonusIncome
+        {
+          Total = _appSettings.Bonuses.Prolong,
+          TypeId = _appSettings.BonusTypes.Prolong,
+          UserId = userId,
+          Date = DateTime.Now
+        };
+        var res = _storeService.ProlongPeriond(userId, storeId, 10, bonus);
+
+        return Ok(new
+        {
+          Date = res
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    //var product = _mapper.Map<Product>(productDto);
+
+    //    if (product == null)
+    //      throw new AppException("Неверный данные!");
+
+    //var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+    //_logger.LogInformation($"User #{userId}, UpdateProduct #{product.Id}");
+
 
     //// GET: api/Stores
     //[HttpGet]
