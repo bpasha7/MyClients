@@ -7,4 +7,6 @@ export class Product {
     price: number;
     userId: number;
     hasPhoto: boolean;
+    show: boolean;
+    description: string;
 }

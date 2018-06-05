@@ -8,12 +8,12 @@
     <mat-card-subtitle>{{user.login}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <h2 class="">Бонусы: <span>{{user.bonusBalance}}</span><mat-icon [color]="'primary'" 
-      matTooltip="Заходите каждый день в программу, 
+    <h2 class="">Бонусы:
+      <span>{{user.bonusBalance}}</span>
+      <mat-icon [color]="'primary'" matTooltip="Заходите каждый день в программу, 
       добавляйте клиентов, услуги, товары, а также записывайте 
-      на прием или продавайте и получайте за это бонусы!" 
-      [matTooltipPosition]="'right'"
-      >info</mat-icon></h2>
+      на прием или продавайте и получайте за это бонусы!" [matTooltipPosition]="'right'">info</mat-icon>
+    </h2>
     <section class="section-progress">
       <span class="label-progress">0</span>
       <mat-progress-bar class="bonus-progress" [color]="'warn'" [mode]="'determinate'" [value]="(user.bonusBalance / 50) * 100"></mat-progress-bar>
@@ -46,7 +46,8 @@
         </mat-form-field>
 
         <mat-form-field class="container-column">
-          <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="user.birthday" value="{{user.birthday}}" disabled>
+          <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="user.birthday" value="{{user.birthday}}"
+            disabled>
           <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker startView="year"></mat-datepicker>
         </mat-form-field>
@@ -65,23 +66,24 @@
                   Телефон, Почта, ...
                 </mat-panel-description> -->
         </mat-expansion-panel-header>
-        <div [formGroup]="passwordChangeGroup" >
-        <mat-form-field class="container-column">
+        <div [formGroup]="passwordChangeGroup">
+          <mat-form-field class="container-column">
             <mat-icon matPrefix>vpn_key</mat-icon>
             <input matInput minlength="8" type="password" placeholder="Пароль" [(ngModel)]="password" formControlName="passwordCtrl">
             <mat-hint align="start">Не менее 8 символов</mat-hint>
           </mat-form-field>
           <mat-form-field class="container-column">
-              <mat-icon matPrefix>vpn_key</mat-icon>
+            <mat-icon matPrefix>vpn_key</mat-icon>
             <input matInput minlength="8" type="password" placeholder="Подтверждение" [(ngModel)]="confirmPassword" formControlName="passwordConfirmCtrl">
             <mat-hint *ngIf="confirmPassword != password" align="start">
-              <strong>Пароли не совападают</strong></mat-hint>
+              <strong>Пароли не совападают</strong>
+            </mat-hint>
           </mat-form-field>
         </div>
         <div class="container-column">
           <button mat-raised-button (click)="editPassword()" color="primary" [disabled]="password.length < 8 || confirmPassword != password">Принять</button>
         </div>
-      
+
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -89,29 +91,32 @@
             Магазин
           </mat-panel-title>
         </mat-expansion-panel-header>
+        <div class="container-row">
+          <mat-form-field>
+            <input matInput [matDatepicker]="pickerStore" placeholder="Активен до" [(ngModel)]="store.activationEnd" value="{{store.activationEnd}}">
+            <mat-datepicker-toggle matPrefix [for]="pickerStore"></mat-datepicker-toggle>
+            <mat-datepicker #pickerStore startView="month"></mat-datepicker>
+          </mat-form-field>
+          <button mat-raised-button style="height: fit-content;" color="primary">Продлить на 10 дней</button>
+        </div>
         <mat-form-field class="container-column">
           <mat-icon matPrefix>store</mat-icon>
-          <input matInput placeholder="" [(ngModel)]="user.email" value="{{user.email}}">
+          <input matInput placeholder="" [(ngModel)]="store.name" value="{{store.name}}">
         </mat-form-field>
         <mat-form-field class="container-column">
-          <textarea matInput placeholder="Описание" #aboutStore maxlength="128"></textarea>
+          <textarea style="height: 50px;" matInput placeholder="Описание" #aboutStore maxlength="128"></textarea>
           <mat-hint align="end">{{aboutStore.value.length}} / 128</mat-hint>
         </mat-form-field>
-        <mat-form-field class="container-column">
-          <input matInput [matDatepicker]="pickerStore" placeholder="Активен до" [(ngModel)]="user.birthday" value="{{user.birthday}}">
-          <mat-datepicker-toggle matPrefix [for]="pickerStore"></mat-datepicker-toggle>
-          <mat-datepicker #pickerStore startView="month"></mat-datepicker>
-        </mat-form-field>
         <div class="container-column">
-          <button mat-raised-button  color="primary">Сохранить</button>
+          <button mat-raised-button color="primary" [disabled]="!store.isActive">Сохранить</button>
         </div>
-      
+
       </mat-expansion-panel>
       <!-- Google calendar -->
       <mat-expansion-panel disabled>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Настройка Google календарь
+            Настройка Google
           </mat-panel-title>
         </mat-expansion-panel-header>
 
@@ -125,29 +130,31 @@
   </mat-card-content>
 </mat-card>
 <div class="container">
-    <mat-expansion-panel (opened)="loadBonusHistory(0)">
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Накопления бонусов
-            </mat-panel-title>
-            <!-- <mat-panel-description>
+  <mat-expansion-panel (opened)="loadBonusHistory(0)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Накопления бонусов
+      </mat-panel-title>
+      <!-- <mat-panel-description>
                 <mat-spinner *ngIf="inProgress" diameter="15"></mat-spinner>
             </mat-panel-description> -->
-        </mat-expansion-panel-header>
-        <mat-nav-list>
-            <!-- <h3 mat-subheader>Текущие: {{currentNotCanceled}}</h3> -->
-            <mat-list-item *ngFor="let bonus of bonusHistory">
-                <mat-icon mat-list-icon style="color:green;">check_circle</mat-icon>
-                <h4 mat-line>{{ bonus.date | date:'d MMMM, H:mm' }} <span style="float: right;font-weight: bold;">+{{bonus.total}}</span></h4>
-                <p mat-line> {{ getBonusName(bonus.typeId) }}</p>
-                <mat-divider></mat-divider>
-            </mat-list-item>
-            <mat-list-item (click)="loadBonusHistory(bonusHistory.length)">
-              <div style="margin: auto;">
-                <mat-icon *ngIf="!inProgress" mat-list-icon>expand_more</mat-icon>
-                <mat-spinner *ngIf="inProgress" diameter="15"></mat-spinner>
-              </div>
-            </mat-list-item>
-        </mat-nav-list>
-    </mat-expansion-panel>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+      <!-- <h3 mat-subheader>Текущие: {{currentNotCanceled}}</h3> -->
+      <mat-list-item *ngFor="let bonus of bonusHistory">
+        <mat-icon mat-list-icon style="color:green;">check_circle</mat-icon>
+        <h4 mat-line>{{ bonus.date | date:'d MMMM, H:mm' }}
+          <span style="float: right;font-weight: bold;">+{{bonus.total}}</span>
+        </h4>
+        <p mat-line> {{ getBonusName(bonus.typeId) }}</p>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+      <mat-list-item (click)="loadBonusHistory(bonusHistory.length)">
+        <div style="margin: auto;">
+          <mat-icon *ngIf="!inProgress" mat-list-icon>expand_more</mat-icon>
+          <mat-spinner *ngIf="inProgress" diameter="15"></mat-spinner>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-expansion-panel>
 </div>

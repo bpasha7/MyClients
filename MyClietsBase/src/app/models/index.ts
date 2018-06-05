@@ -7,3 +7,4 @@ export * from './orders';
 export * from './outgoing';
 export * from './message';
 export * from './bonus';
+export * from './store';

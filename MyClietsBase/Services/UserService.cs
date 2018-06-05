@@ -280,7 +280,11 @@ namespace MyClientsBase.Services
     public User GetUserInfo(int userId)
     {
       //return
-      var user = _repository.Find(u => u.Id == userId);
+      var user = _repository
+        .Query(u => u.Id == userId)
+        .Include(u=>u.StoreInfo)
+        .SingleOrDefault()
+        ;
       //_repository.
       //var balance = getUserBalance(userId);
       //user.BonusBalance = balance;

@@ -65,6 +65,10 @@ namespace Data.EF.Entities
         /// Bonus Incomes
         /// </summary>
         public virtual ICollection<BonusIncome> BonusIncomes { get; set; }
+        /// <summary>
+        /// Store
+        /// </summary>
+        public virtual Store StoreInfo { get; set; }
 
     }
 }

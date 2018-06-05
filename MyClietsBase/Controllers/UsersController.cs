@@ -247,9 +247,14 @@ namespace MyClientsBase.Controllers
         if(userId < 1)
           throw new AppException("Неверный данные!");
         var user = _userService.GetUserInfo(userId);
+        if(user == null)
+        {
+          throw new AppException("Ошибка получения данных!");
+        }
         return Ok(new
         {
           User = _mapper.Map<UserDto>(user),
+          Store = _mapper.Map<StoreDto>(user.StoreInfo)
         });
       }
       catch (AppException ex)

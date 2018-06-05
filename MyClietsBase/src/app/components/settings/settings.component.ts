@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { TooltipPosition } from '@angular/material';
-import { User, Bonus, BonusType } from '../../models';
+import { User, Bonus, BonusType, Store } from '../../models';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OutgoingModalComponent, ConfirmationComponent } from '../modals';
 
@@ -13,6 +13,7 @@ import { OutgoingModalComponent, ConfirmationComponent } from '../modals';
 })
 export class SettingsComponent implements OnInit {
   public user: User;
+  public store: Store;
   public password = '';
   public confirmPassword = '';
   public bonusHistory: Array<Bonus> = [];
@@ -26,6 +27,7 @@ export class SettingsComponent implements OnInit {
     public dialog: MatDialog
   ) {
     this.user = new User();
+    this.store = new Store();
   }
 
   ngOnInit() {
@@ -41,6 +43,7 @@ export class SettingsComponent implements OnInit {
     this.userService.getUserInfo().subscribe(
       data => {
         this.user = data.json().user;
+        this.store = data.json().store;
       },
       error => {
         this.userService.responseErrorHandle(error);
