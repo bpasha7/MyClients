@@ -31,6 +31,15 @@ namespace MyClientsBase
         .AddEnvironmentVariables();
       Configuration = builder.Build();
     }
+    // For testing
+    //public Startup(IConfigurationRoot configuration)
+    //{
+    //  Configuration = configuration;
+    //}
+
+    //protected virtual void ConfigureAdditionalServices(IServiceCollection services)
+    //{
+    //}
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
@@ -86,7 +95,9 @@ namespace MyClientsBase
       });
       services.AddMvc();
       //inject automapper
-      services.AddAutoMapper();
+      services.AddAutoMapper(typeof(Startup));
+      // For testing
+      //ConfigureAdditionalServices(services);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

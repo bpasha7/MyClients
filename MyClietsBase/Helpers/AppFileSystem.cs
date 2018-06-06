@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FreeImageAPI;
+using Microsoft.AspNetCore.Http;
 
 namespace MyClientsBase.Helpers
 {
@@ -30,7 +32,41 @@ namespace MyClientsBase.Helpers
         return sb.ToString();
       }
     }
-
+    /// <summary>
+    /// Save file async to users dir
+    /// </summary>
+    /// <param name="path">User directory</param>
+    /// <param name="fileName">File name to save</param>
+    /// <param name="file">File</param>
+    /// <returns>Saving result</returns>
+    public static async Task<bool> SaveFileAsync(string path, string fileName, IFormFile file)
+    {
+      try
+      {
+        //create directory in not exist
+        if (!Directory.Exists(path))
+          Directory.CreateDirectory(path);
+        path += $"\\{fileName}";
+        //delete existing file
+        if (System.IO.File.Exists(path + ".jpg"))
+          System.IO.File.Delete(path + ".jpg");
+        using (FileStream fstream = new FileStream(path + ".new", FileMode.Create))
+        {
+          await file.CopyToAsync(fstream);
+        }
+        return true;
+      }
+      catch (Exception ex)
+      {
+        return false;
+      }
+    }
+    /// <summary>
+    /// Compressing Image
+    /// </summary>
+    /// <param name="imagePath">Path to image</param>
+    /// <param name="size">Size to compress</param>
+    /// <returns>Compressing result</returns>
     public static bool CompressImage(string imagePath, int size)
     {
       try

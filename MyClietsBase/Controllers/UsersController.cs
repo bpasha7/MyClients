@@ -346,12 +346,12 @@ namespace MyClientsBase.Controllers
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var tokenString = tokenHandler.WriteToken(token);
         var hash = AppFileSystem.GetUserMD5(user.Id, user.Login);
-        _logger.LogInformation($"User #{user.Id} was logged.");
+        _logger?.LogInformation($"User #{user.Id} was logged.");
 
         var res = _userService.IncomeBonus(user.Id, _appSettings.BonusTypes.Login, _appSettings.Bonuses.Login, _appSettings.BonusLimitPerDay.Login);
 
         if (res)
-          _logger.LogInformation($"User #{user.Id}, {_appSettings.Bonuses.Login} bonus incomes");
+          _logger?.LogInformation($"User #{user.Id}, {_appSettings.Bonuses.Login} bonus incomes");
 
         return Ok(new
         {
@@ -365,7 +365,7 @@ namespace MyClientsBase.Controllers
       }
       catch (Exception ex)
       {
-        _logger.LogCritical($"{ex}");
+        _logger?.LogCritical($"{ex}");
         return BadRequest("Service error!");
       }
     }

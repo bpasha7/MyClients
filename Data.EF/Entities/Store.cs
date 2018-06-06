@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Entities;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,6 +26,18 @@ namespace Data.EF.Entities
         [ForeignKey("UserId")]
         public virtual User UserInfo { get; set; }
         public int? UserId { get; set; }
+        #region Not mapped
+        [NotMapped]
+        public string UserName
+        {
+            get
+            {
+                return UserInfo?.Name;
+            }
+        }
+        [NotMapped]
+        public IList<Product> Products { get; set; }
+        #endregion
     }
 
 }

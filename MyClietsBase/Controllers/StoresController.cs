@@ -40,19 +40,19 @@ namespace MyClientsBase.Controllers
     /// </summary>
     private ILogger _logger;
 
-    public StoresController(IStoreService storeService, IUserService userService, IOrderService orderService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
+    public StoresController(IStoreService storeService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
     {
       try
       {
         _storeService = storeService;
 
         _mapper = mapper;
-        _appSettings = appSettings.Value;
+        _appSettings = appSettings?.Value;
         _logger = loggerFactory.CreateLogger(typeof(UsersController));
       }
       catch (Exception ex)
       {
-        _logger.LogCritical($"{ex}");
+        _logger?.LogCritical($"{ex}");
       }
     }
     [AllowAnonymous]
@@ -65,15 +65,12 @@ namespace MyClientsBase.Controllers
         var store = _storeService.GetStore(storeName);
         if (store == null)
           throw new AppException("Витрина недоступна!");
-        var products = store.UserInfo.Products;
+        var products = store.Products;
         var hash = AppFileSystem.GetUserMD5(store.UserInfo.Id, store.UserInfo.Login);
         return Ok(new
         {
-           Store = _mapper.Map<StoreDto>(store),
-           Products = _mapper.Map<ProductDto[]>(products),
+           Store = _mapper.Map<StoreForClientDto>(store),
            Hash = hash
-          //History = _mapper.Map<BonusIncomeDto[]>(history),
-          //Types = bonusTypes
         });
       }
       catch (AppException ex)

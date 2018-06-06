@@ -79,15 +79,20 @@ namespace MyClientsBase.Controllers
         var hash = AppFileSystem.GetUserMD5(userId, User.Identity.Name);
         //create directory in not exist
         var path = $"{Directory.GetCurrentDirectory()}{_appSettings.PhotoFolder}{hash}";
-        if (!Directory.Exists(path))
-          Directory.CreateDirectory(path);
-        path += $"\\{id}_p";
+        //if (!Directory.Exists(path))
+        //  Directory.CreateDirectory(path);
+        //path += $"\\{id}_p";
 
-        if (System.IO.File.Exists(path + ".jpg"))
-          System.IO.File.Delete(path + ".jpg");
-        using (FileStream fstream = new FileStream(path + ".new", FileMode.Create))
+        //if (System.IO.File.Exists(path + ".jpg"))
+        //  System.IO.File.Delete(path + ".jpg");
+        //using (FileStream fstream = new FileStream(path + ".new", FileMode.Create))
+        //{
+        //  await file.CopyToAsync(fstream);
+        //}
+        if(!await AppFileSystem.SaveFileAsync(path, $"{id}_p", file))
         {
-          await file.CopyToAsync(fstream);
+          _logger.LogError($"File {path} was not saved!");
+          throw new AppException("Ошибка загрузки файла.");
         }
         if (!AppFileSystem.CompressImage(path, _appSettings.PhotoProductSize))
         {

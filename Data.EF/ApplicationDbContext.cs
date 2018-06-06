@@ -6,11 +6,19 @@ namespace Data.EF
 {
     public class ApplicationDbContext : DbContext
     {
+        private DbContextOptions _options;
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
 
         }
+
+        public ApplicationDbContext(DbContextOptions options)
+        {
+            _options = options;
+        }
+
         /// <summary>
         /// Users info
         /// </summary>

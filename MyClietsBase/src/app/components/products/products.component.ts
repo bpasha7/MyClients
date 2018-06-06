@@ -205,7 +205,7 @@ export class ProductsComponent implements OnInit {
 
     openEditProductDialog(selectedProduct: Product): void {
         const dialogRef = this.dialog.open(ProductModalComponent, {
-            maxWidth: '310px',
+            // maxWidth: '310px',
             width: 'auto',
             data: { product: selectedProduct }
         });

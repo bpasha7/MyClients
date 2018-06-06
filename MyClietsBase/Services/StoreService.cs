@@ -33,6 +33,7 @@ namespace MyClientsBase.Services
     /// <param name="userId">User Id</param>
     /// <param name="editedStore">Store to be updated</param>
     void UpdateInfo(int userId, Store editedStore);
+    string Test(int i);
   }
   public class StoreService : IStoreService
   {
@@ -49,10 +50,19 @@ namespace MyClientsBase.Services
     }
     public Store GetStore(string storeName)
     {
-#pragma warning Add_data_checking_and_filter_removed_ornotShow
       return _repository.Query(store => store.Name == storeName && store.IsActive)
         .Include(store => store.UserInfo)
-        .ThenInclude(user => user.Products)//.Where(p=>!p.IsRemoved && p.Show)
+        .ThenInclude(user => user.Products)
+        .AsNoTracking()
+        .Select(s => new Store
+        {
+          Id = s.Id,
+          Name = s.Name,
+          About = s.About,
+          UserInfo = s.UserInfo,
+          Products = s.UserInfo.Products.Where(p => !p.IsRemoved && p.Show).ToList()
+        }
+        )
         .SingleOrDefault();
     }
 
@@ -62,12 +72,10 @@ namespace MyClientsBase.Services
       var store = _repository.Query(s => s.Id == storeId && s.UserId == userId)
         .Include(s => s.UserInfo)
         .ThenInclude(u => u.BonusIncomes)
-        //.AsNoTracking()
         .SingleOrDefault();
-      //var store = _repository.Find(s => s.Id == storeId && s.UserId == userId);
       if (store == null)
         throw new AppException("Магазин не найден!");
-      if(store.UserInfo.BonusBalance < -bonus.Total)
+      if (store.UserInfo.BonusBalance < -bonus.Total)
         throw new AppException("Недостаточно средств!");
       //if activation day is in past, calculate from today
       store.ActivationEnd = store.ActivationEnd.Date < DateTime.Now.Date ?
@@ -81,6 +89,11 @@ namespace MyClientsBase.Services
       _repository.Save();
       balance = store.UserInfo.BonusBalance;
       return store.ActivationEnd;
+    }
+
+    public string Test(int i)
+    {
+      return "Test";
     }
 
     public void UpdateInfo(int userId, Store editedStore)

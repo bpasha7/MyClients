@@ -14,9 +14,12 @@ namespace MyClientsBase.Helpers
 
       CreateMap<Client, ClientDto>();
       CreateMap<ClientDto, Client>();
-
+      #region Product
       CreateMap<Product, ProductDto>();
       CreateMap<ProductDto, Product>();
+
+      CreateMap<Product, StoreProductDto>();
+      #endregion
 
       CreateMap<Discount, DiscountDto>();
       CreateMap<DiscountDto, Discount>();
@@ -38,10 +41,12 @@ namespace MyClientsBase.Helpers
 
       CreateMap<BonusIncome, BonusIncomeDto>();
       CreateMap<BonusIncomeDto, BonusIncome>();
-
+      #region Store
       CreateMap<Store, StoreDto>();
       CreateMap<StoreDto, Store>();
-      //CreateMap<StoreDto, Store>();
+
+      CreateMap<Store, StoreForClientDto>();
+      #endregion
     }
   }
 }

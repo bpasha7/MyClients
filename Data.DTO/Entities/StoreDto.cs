@@ -12,4 +12,13 @@ namespace Data.DTO.Entities
         public DateTime ActivationEnd { get; set; }
         public bool IsActive { get; set; }
     }
+
+    public class StoreForClientDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string About { get; set; }
+        public string UserName { get; set; }
+        public IList<StoreProductDto> Products { get; set; }
+    }
 }

@@ -13,6 +13,10 @@ namespace MyClientsBase.Helpers
     public BounusesList Bonuses { get; set; }
     public BounusTypes BonusTypes { get; set; }
     public BonusLimitPerDay BonusLimitPerDay { get; set; }
+    public string Test()
+    {
+      return "test";
+    }
   }
   public class BounusesList
   {
