@@ -34,7 +34,7 @@ namespace MyClientsBase.Services
     void CreateOutgoing(Outgoing outgoing);
     void UpdateOutgoing(int userId, Outgoing outgoing);
     void DeleteOutgoing(int userId, int outgoingId);
-    void AddMessage(Message message);
+    void AddMessage(Message message, string storeName);
     void SetMessageAsRead(int userId, int messageId);
     IList<Product> GetProducts(int userId);
     IList<Discount> GetDiscounts(int userId);
@@ -221,11 +221,27 @@ namespace MyClientsBase.Services
       return _repository.Find(u => u.Id == userId, m => m.Messages).Messages.OrderByDescending(o => o.Date).ToList();
     }
 
-    public void AddMessage(Message message)
+    public void AddMessage(Message message, string storeName)
     {
       message.Date = DateTime.Now;
-      _repository.Find(u => u.Id == message.UserId, m => m.Messages).Messages.Add(message);
-      _repository.Save();
+      if (storeName != null)
+      {
+        var userId = _repository.Query(
+          u => u.StoreInfo.Name == storeName
+          )
+          .Include(u => u.StoreInfo)
+          .SingleOrDefault()?
+          .Id;
+        if (userId == null)
+          throw new AppException("Магазин не найден!");
+        _repository.Find(u => u.Id == userId, m => m.Messages).Messages.Add(message);
+        _repository.Save();
+      }
+      else
+      {
+        _repository.Find(u => u.Id == message.UserId, m => m.Messages).Messages.Add(message);
+        _repository.Save();
+      }
     }
 
     public IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd)

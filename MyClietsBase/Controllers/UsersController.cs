@@ -15,6 +15,8 @@ using MyClientsBase.Services;
 using Microsoft.AspNetCore.Cors;
 using Data.Reports;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace MyClientsBase.Controllers
 {
@@ -68,7 +70,52 @@ namespace MyClientsBase.Controllers
         _logger.LogCritical($"{ex}");
       }
     }
+    [HttpPost, DisableRequestSizeLimit, Route("/photo")]
+    public async Task<IActionResult> UploadUserPhoto()
+    {
+      try
+      {
+        var file = Request.Form.Files.FirstOrDefault();
+        if (file == null)
+          throw new AppException("Empty file!");
+        if (file.Length > _appSettings.MaxImageSize * 1024)
+          throw new AppException("Слишком большое изображени");
+        //combine path to user folder using md5 hash
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
+        _logger.LogInformation($"User #{userId}, UploadAvatarPhoto");
+
+        var userName = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+        var hash = AppFileSystem.GetUserMD5(userId, User.Identity.Name);
+        //create directory in not exist
+        var path = $"{Directory.GetCurrentDirectory()}{_appSettings.PhotoFolder}{hash}";
+
+        if (!await AppFileSystem.SaveFileAsync(path, $"me", file))
+        {
+          _logger.LogError($"File {path} was not saved!");
+          throw new AppException("Ошибка загрузки файла.");
+        }
+        if (!AppFileSystem.CompressImage(path, _appSettings.PhotoProductSize))
+        {
+          _logger.LogError($"File {path} was not compressed and deleted!");
+          throw new AppException("Ошибка загрузки файла.");
+        }
+        //_userService.SetPhotoFlag(userId, id);
+        return Ok(new
+        {
+
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
     [HttpGet("bonuses")]
     public IActionResult GetBonusHistory([FromQuery] int skip)
     {
@@ -106,10 +153,10 @@ namespace MyClientsBase.Controllers
 
         if (message == null)
           throw new AppException("Неверный данные!");
-        if (message.UserId == null)
+        if (message.UserId == null || messageDto.StoreName == null)
           throw new AppException("Неверный данные!");
 
-        _userService.AddMessage(message);
+        _userService.AddMessage(message, messageDto.StoreName);
         return Ok(new
         {
           Message = "Запись добавлена!"

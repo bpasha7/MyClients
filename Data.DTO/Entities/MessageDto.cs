@@ -14,5 +14,6 @@ namespace Data.DTO.Entities
         public bool IsRead { get; set; }
         public bool IsRemoved { get; set; }
         public int UserId { get; set; }
+        public string StoreName { get; set; }
     }
 }

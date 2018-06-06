@@ -1,20 +1,21 @@
 <h1 mat-dialog-title>Оставить сообщение</h1>
 <div class="message-form" mat-dialog-content>
   <mat-form-field>
-    <input matInput #nameInput maxlength="25" placeholder="Представьтесь">
+    <input matInput #nameInput maxlength="25" [(ngModel)]="message.from" placeholder="Представьтесь">
     <mat-hint align="end">{{nameInput.value?.length || 0}}/25</mat-hint>
   </mat-form-field>
   <mat-form-field>
-    <input matInput #contactInput maxlength="25" placeholder="Введите контакты для связи">
+    <input matInput #contactInput maxlength="25" [(ngModel)]="contacts" placeholder="Введите контакты для связи">
     <mat-hint align="end">{{contactInput.value?.length || 0}}/25</mat-hint>
   </mat-form-field>
 
   <mat-form-field hintLabel="Максимум 100 символов">
-    <textarea #textMessage maxlength="100" matInput placeholder="Введите сообщение"></textarea>
+    <textarea #textMessage maxlength="100" [(ngModel)]="message.text" matInput placeholder="Введите сообщение"></textarea>
     <mat-hint align="end">{{textMessage.value?.length || 0}}/100</mat-hint>
   </mat-form-field>
 </div>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Назад</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Отправить</button>
+  <button mat-button (click)="send()" cdkFocusInitial>Отправить</button>
 </mat-dialog-actions>
+<!-- [mat-dialog-close]="true" -->

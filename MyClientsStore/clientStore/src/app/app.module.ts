@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import { AppConfig } from './app.config';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 /*Routes */
 const appRoutes: Routes = [
   { path: ':name', component: StoreComponent },
@@ -70,7 +71,8 @@ export class DemoMaterialModule { }
     BrowserModule,
     BrowserAnimationsModule,
     DemoMaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FormsModule
   ],
   exports: [
     MatCardModule,

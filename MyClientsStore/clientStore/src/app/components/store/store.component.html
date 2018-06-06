@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">Store: Смирнова Екатерина</mat-toolbar>
+<mat-toolbar color="primary">Store: {{store.userName}}</mat-toolbar>
 <div class="profile">
   <div class="bounds">
     <div class="content" fxLayout="row" fxLayout.xs="column" fxFlexFill>
@@ -8,7 +8,7 @@
           <div class="horizontal-info" fxFlex.xs="70" fxFlex="0">
               <section class="mat-typography">
                   <h2 style="text-align: center;">
-                    link_test_store
+                    {{store.name}}
                   </h2>
                 </section>
               <button style="display: block;
@@ -26,15 +26,14 @@
       <div fxFlex="80" class="sec2" fxFlex.xs="60">
           <section class="mat-typography">
         <h3 style="text-align: -webkit-auto;">
-          Здравствуйте, меня зовут Екатерина, я - мастер маникюра. Имею большой оптыт в этом деле. Буду рада, если вы выберите и запишитесь
-          ко мне.
+          {{store.about}}
         </h3>
       </section>
       </div>
     </div>
   </div>
   <mat-grid-list cols="3" rowHeight="1:1" gutterSize="5px">
-    <mat-grid-tile class="item" *ngFor="let product of products" [colspan]="1" [rowspan]="1">
+    <mat-grid-tile class="item" *ngFor="let product of store.products" [colspan]="1" [rowspan]="1">
       <div class="product" (click)="showInfo(product)" [style.backgroundImage]="getUrl(product.id)">
         <div class="product-info">
           <h3>{{product.name}}</h3>

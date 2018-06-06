@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PreviewComponent } from 'src/app/components/modal/preview/preview.component';
 import { AppConfig } from '../../app.config';
 import { MessageComponent } from '../modal/message/message.component';
+import { Store } from '../../models/store';
 
 @Component({
   selector: 'app-store',
@@ -14,29 +15,29 @@ import { MessageComponent } from '../modal/message/message.component';
 })
 export class StoreComponent implements OnInit {
   public photoPath = '';
-  public products: Array<Product> = [];
+  public store: Store;
   constructor(
     public previewDialog: MatDialog,
     private _storeService: StoreService,
     private route: ActivatedRoute,
     private config: AppConfig
   ) {
+    this.store = new Store();
   }
 
   ngOnInit() {
-  }
-  // tslint:disable-next-line:use-life-cycle-interface
-  ngAfterViewInit() {
     this.route.params.subscribe(params => {
       this.loadStore(params['name']);
     });
-
+  }
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngAfterViewInit() {
   }
   loadStore(name: string) {
     this._storeService.getStore(name).subscribe(
       data => {
         const jData = data.json();
-        this.products = jData.products;
+        this.store = jData.store;
         this.photoPath = this.config.photoUrl + jData.hash + '/';
         // this.photo = this.config.photoUrl + localStorage.getItem('userHash') + '/' + this.client.id + '.jpg';
       },
@@ -67,7 +68,10 @@ export class StoreComponent implements OnInit {
   showMessageForm() {
     const dialogRef = this.previewDialog.open(MessageComponent, {
       maxWidth: '410px',
-      width: 'auto'
+      width: 'auto',
+      data: {
+        storeName: this.store.name
+      }
     });
   }
 }
