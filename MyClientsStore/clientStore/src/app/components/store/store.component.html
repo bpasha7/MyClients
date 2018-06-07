@@ -3,32 +3,46 @@
   <div class="bounds">
     <div class="content" fxLayout="row" fxLayout.xs="column" fxFlexFill>
       <div fxFlex="20" class="sec1" fxFlex.xs="40">
-        <div style="height: 100px;"  fxLayout.xs="row"   fxLayout="column">
-        <img fxFlex="100" fxFlex.xs="30" class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+        <!-- avatar and botton for mobile -->
+        <div style="height: 100px;" fxLayout.xs="row" fxLayout="column">
+          <!-- <img fxFlex="100" fxFlex.xs="30" class="avatar" [src]="avatar"> -->
+          <div fxFlex="100" fxFlex.xs="30" class="avatar" [style.backgroundImage]="avatar"></div>
           <div class="horizontal-info" fxFlex.xs="70" fxFlex="0">
-              <section class="mat-typography">
-                  <h2 style="text-align: center;">
-                    {{store.name}}
-                  </h2>
-                </section>
-              <button style="display: block;
+            <section class="mat-typography">
+              <h2 style="text-align: center;">
+                {{store.name}}
+              </h2>
+            </section>
+            <button style="display: block;
               margin: auto;
               padding: 0 60px 0 60px;" (click)="showMessageForm()" mat-raised-button color="primary">Написать</button>
-              <!-- <button mat-icon-button color="primary">
-                  <mat-icon>email</mat-icon>
-                </button>
-                <button mat-icon-button>
-                    <mat-icon>call</mat-icon>
-                  </button> -->
           </div>
+        </div>
       </div>
-    </div>
       <div fxFlex="80" class="sec2" fxFlex.xs="60">
-          <section class="mat-typography">
-        <h3 style="text-align: -webkit-auto;">
-          {{store.about}}
-        </h3>
-      </section>
+        <!-- <div style="height: 100px;" fxLayout.xs="row" fxLayout="column"> -->
+        <section class="mat-typography">
+          <h3 style="text-align: -webkit-auto; ">
+            {{store.about}}
+          </h3>
+        </section>
+        <div class="stats">
+          <!-- <span-list> -->
+          <span>
+            <b>{{store.products?.length}}</b>&nbsp;товаров</span>
+          <span>Средняя цена:&nbsp;
+            <b>{{store.products?.length}}</b>
+          </span>
+          <span>Просмотры:&nbsp;
+            <b>73</b>
+          </span>
+          <!-- </span-list> -->
+          <!-- <span>Всего товаров {{store.products.length}}</span>
+            <span>Средняя цена {{store.products.length}}</span> -->
+        </div>
+
+
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -36,8 +50,10 @@
     <mat-grid-tile class="item" *ngFor="let product of store.products" [colspan]="1" [rowspan]="1">
       <div class="product" (click)="showInfo(product)" [style.backgroundImage]="getUrl(product.id)">
         <div class="product-info">
-          <h3>{{product.name}}</h3>
-          <p>{{product.price}}</p>
+          <section class="mat-typography">
+            <h3>{{product.name}}</h3>
+            <p>{{product.price}}</p>
+          </section>
         </div>
       </div>
     </mat-grid-tile>

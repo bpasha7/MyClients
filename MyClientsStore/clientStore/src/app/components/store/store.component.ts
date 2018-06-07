@@ -15,6 +15,7 @@ import { Store } from '../../models/store';
 })
 export class StoreComponent implements OnInit {
   public photoPath = '';
+  public avatar = '';
   public store: Store;
   constructor(
     public previewDialog: MatDialog,
@@ -39,6 +40,7 @@ export class StoreComponent implements OnInit {
         const jData = data.json();
         this.store = jData.store;
         this.photoPath = this.config.photoUrl + jData.hash + '/';
+        this.avatar = 'url(' + this.photoPath + 'me.jpg)';
         // this.photo = this.config.photoUrl + localStorage.getItem('userHash') + '/' + this.client.id + '.jpg';
       },
       error => {
