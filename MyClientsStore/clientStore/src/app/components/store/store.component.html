@@ -29,12 +29,12 @@
         <div class="stats">
           <!-- <span-list> -->
           <span>
-            <b>{{store.products?.length}}</b>&nbsp;товаров</span>
+            <b>{{store?.products?.length}}</b>&nbsp;товаров</span>
           <span>Средняя цена:&nbsp;
-            <b>{{store.products?.length}}</b>
+            <b>{{store?.avarage}}</b>
           </span>
-          <span>Просмотры:&nbsp;
-            <b>73</b>
+          <span><mat-icon style="color: green; vertical-align: bottom;">remove_red_eye</mat-icon>&nbsp;
+            <b>{{store?.visits}}</b>
           </span>
           <!-- </span-list> -->
           <!-- <span>Всего товаров {{store.products.length}}</span>

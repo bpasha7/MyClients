@@ -65,8 +65,9 @@ namespace MyClientsBase.Controllers
         var store = _storeService.GetStore(storeName);
         if (store == null)
           throw new AppException("Витрина недоступна!");
-        var products = store.Products;
         var hash = AppFileSystem.GetUserMD5(store.UserInfo.Id, store.UserInfo.Login);
+        _storeService.AddVisit(store.Id);
+        _logger.LogInformation($"Visit store #{store.Id}");
         return Ok(new
         {
            Store = _mapper.Map<StoreForClientDto>(store),

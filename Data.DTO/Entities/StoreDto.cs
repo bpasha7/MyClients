@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Data.DTO.Entities
@@ -21,6 +22,10 @@ namespace Data.DTO.Entities
         public string About { get; set; }
         public string UserName { get; set; }
         public long Visits { get; set; }
+        public decimal Avarage { get
+            {
+                return Products.Count > 0 ? Products.Sum(p => p.Price) / Products.Count : 0;
+            } }
         public IList<StoreProductDto> Products { get; set; }
     }
 }

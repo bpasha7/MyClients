@@ -33,7 +33,7 @@ namespace MyClientsBase.Services
     /// <param name="userId">User Id</param>
     /// <param name="editedStore">Store to be updated</param>
     void UpdateInfo(int userId, Store editedStore);
-    string Test(int i);
+    void AddVisit(int storeId);
   }
   public class StoreService : IStoreService
   {
@@ -48,6 +48,16 @@ namespace MyClientsBase.Services
       _unitOfWork = new UnitOfWork(context);
       _repository = _unitOfWork.EfRepository<Store>();
     }
+
+    public void AddVisit(int storeId)
+    {
+      var store = _repository.Find(s => s.Id == storeId);
+      if (store == null)
+        return;
+      store.Visits++;
+      _repository.Save();
+    }
+
     public Store GetStore(string storeName)
     {
       return _repository.Query(store => store.Name == storeName && store.IsActive)
@@ -59,6 +69,7 @@ namespace MyClientsBase.Services
           Id = s.Id,
           Name = s.Name,
           About = s.About,
+          Visits = s.Visits,
           UserInfo = s.UserInfo,
           Products = s.UserInfo.Products.Where(p => !p.IsRemoved && p.Show).ToList()
         }
@@ -89,11 +100,6 @@ namespace MyClientsBase.Services
       _repository.Save();
       balance = store.UserInfo.BonusBalance;
       return store.ActivationEnd;
-    }
-
-    public string Test(int i)
-    {
-      return "Test";
     }
 
     public void UpdateInfo(int userId, Store editedStore)
