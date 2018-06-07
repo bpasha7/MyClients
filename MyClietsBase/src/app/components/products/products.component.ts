@@ -4,7 +4,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Product, Discount } from '../../models/index';
 import { UserService } from '../../services/index';
-import { ProductModalComponent, DiscountModalComponent, PhotoModalComponent, MessagePreviewComponent, ConfirmationComponent } from '../modals';
+import { ProductModalComponent,
+    DiscountModalComponent,
+    PhotoModalComponent,
+    MessagePreviewComponent,
+    ConfirmationComponent
+} from '../modals';
 import { AppConfig } from '../../app.config';
 
 @Component({
@@ -147,7 +152,6 @@ export class ProductsComponent implements OnInit {
               text: 'Удалить ' + product.name + ' цена ' + product.price  + '?',
              }
          });
-     
          dialogRef.afterClosed().subscribe(result => {
            if (result === 1) {
              this.userService.removeProduct(product.id).subscribe(
@@ -188,7 +192,7 @@ export class ProductsComponent implements OnInit {
             });
         } else { // 0 - product tab index
             const dialogRef = this.dialog.open(ProductModalComponent, {
-                maxWidth: '310px',
+                minWidth: '310px',
                 width: 'auto'
             });
             // Waiting closing product modal dialog
@@ -205,14 +209,14 @@ export class ProductsComponent implements OnInit {
 
     openEditProductDialog(selectedProduct: Product): void {
         const dialogRef = this.dialog.open(ProductModalComponent, {
-            // maxWidth: '310px',
+            minWidth: '310px',
             width: 'auto',
             data: { product: selectedProduct }
         });
 
         dialogRef.afterClosed().subscribe(result => {
             if (result.id !== 0) {
-                this.discountDataSorce.data.push(result);
+                this.productDataSorce.data.push(result);
             }
         });
     }

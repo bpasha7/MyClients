@@ -6,5 +6,6 @@ export class Store {
     name: string;
     about: string;
     isActive: boolean;
+    visits: number;
     activationEnd: Date;
 }

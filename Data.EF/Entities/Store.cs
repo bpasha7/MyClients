@@ -16,10 +16,10 @@ namespace Data.EF.Entities
         [MaxLength(64)]
         public string Name { get; set; }
         public string About { get; set; }
-        public bool HasPhoto { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime ActivationEnd { get; set; }
         public bool IsActive { get; set; }
+        public long Visits { get; set; }
         /// <summary>
         /// User
         /// </summary>
@@ -37,6 +37,12 @@ namespace Data.EF.Entities
         }
         [NotMapped]
         public IList<Product> Products { get; set; }
+        [NotMapped]
+        public bool? HasPhoto { get
+            {
+                return UserInfo?.HasPhoto;
+            }
+        }
         #endregion
     }
 

@@ -29,7 +29,7 @@ namespace Data.EF.Entities
         public bool Activated { get; set; }
 
         public decimal BonusBalance { get; set; }
-
+        public bool HasPhoto { get; set; }
 
         [Column(TypeName = "VARBINARY(128)")]
         public byte[] PasswordHash { get; set; }

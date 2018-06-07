@@ -16,5 +16,6 @@ namespace Data.DTO.Entities
         public string Email { get; set; }
         public DateTime Birthday { get; set; }
         public decimal BonusBalance { get; set; }
+        public bool HasPhoto { get; set; }
     }
 }

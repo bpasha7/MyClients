@@ -8,5 +8,6 @@ export class User {
     birthday: Date;
     email: string;
     name: string;
+    hasPhoto: boolean;
     bonusBalance: number;
 }

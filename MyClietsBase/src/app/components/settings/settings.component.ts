@@ -4,7 +4,11 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { TooltipPosition } from '@angular/material';
 import { User, Bonus, BonusType, Store } from '../../models';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { OutgoingModalComponent, ConfirmationComponent } from '../modals';
+import {
+  OutgoingModalComponent,
+  ConfirmationComponent,
+  PhotoModalComponent
+} from '../modals';
 
 @Component({
   selector: 'app-settings',
@@ -108,13 +112,28 @@ export class SettingsComponent implements OnInit {
             this.user.bonusBalance = jdata.balance;
             this.store.isActive = true;
             this.inProgress = false;
-            this.userService.showSnackBar('Продлено!'); 
+            this.userService.showSnackBar('Продлено!');
           },
           error => {
             this.userService.responseErrorHandle(error);
             this.inProgress = false;
           }
         );
+      }
+    });
+  }
+  /**
+   * Open dialog for uploading new product photo
+   */
+  openPhotoDialog() {
+    const dialogRef = this.dialog.open(PhotoModalComponent, {
+      data: {
+        type: 'user'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== 0) {
+        this.user.hasPhoto = true;
       }
     });
   }
