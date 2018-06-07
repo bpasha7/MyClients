@@ -51,6 +51,22 @@ export class UserService extends AppService {
         return this.http.post(this.config.apiUrl + this.controller + '/register', user);
     }
     /**
+     * Upload user avatar
+     * @param form FormData
+     */
+    uploadAvatarPhoto(form: FormData) {
+        const req = new HttpRequest('POST',
+            this.config.apiUrl + this.controller + '/photo',
+            form,
+            {
+                reportProgress: true,
+                headers: new HttpHeaders({
+                    'Authorization': 'Bearer ' + localStorage.getItem('currentUser'),
+                })
+            });
+        return this.httpCleint.request(req);
+    }
+    /**
      * Edit password
      * @param password 
      */

@@ -9,6 +9,7 @@ import {
   ConfirmationComponent,
   PhotoModalComponent
 } from '../modals';
+import { AppConfig } from '../../app.config';
 
 @Component({
   selector: 'app-settings',
@@ -16,6 +17,7 @@ import {
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
+  photoDir: string;
   public user: User;
   public store: Store;
   public password = '';
@@ -28,10 +30,12 @@ export class SettingsComponent implements OnInit {
     private _formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
     private userService: UserService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private config: AppConfig
   ) {
     this.user = new User();
     this.store = new Store();
+    this.photoDir = this.config.photoUrl + localStorage.getItem('userHash') + '/';
   }
 
   ngOnInit() {
@@ -137,7 +141,13 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
-
+  /**
+   * Generate url for user photo
+   */
+  generateAvatarUrl(): string {
+    const url = this.user.hasPhoto ? this.photoDir + 'me.jpg' : this.config.defaultAvatar;
+    return 'url(' + url + ')';
+  }
   updateStoreInfo() {
     this.userService.updateStoreInfo(this.store).subscribe(
       data => {

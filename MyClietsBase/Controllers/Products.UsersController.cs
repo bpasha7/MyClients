@@ -94,6 +94,7 @@ namespace MyClientsBase.Controllers
           _logger.LogError($"File {path} was not saved!");
           throw new AppException("Ошибка загрузки файла.");
         }
+        path += $"\\{id}_p";
         if (!AppFileSystem.CompressImage(path, _appSettings.PhotoProductSize))
         {
           _logger.LogError($"File {path} was not compressed and deleted!");

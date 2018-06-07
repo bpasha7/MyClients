@@ -29,6 +29,7 @@ namespace MyClientsBase.Services
     void SetAsRemovedProduct(int userId, int productId);
     void UpdateProduct(Product product, int done);
     void SetPhotoFlag(int userId, int productId);
+    void SetPhotoFlag(int userId);
     void UpdateDiscount(Discount discount);
     void CreateDiscount(Discount discount);
     void CreateOutgoing(Outgoing outgoing);
@@ -330,6 +331,15 @@ namespace MyClientsBase.Services
         throw new Exception($"Услуга или товар не найдены.");
       product.HasPhoto = true;
       _productsRepository.Save();
+    }
+
+    public void SetPhotoFlag(int userId)
+    {
+      var user = _repository.Find(u => u.Id == userId);
+      if (user == null)
+        throw new Exception($"Пользователь не найден.");
+      user.HasPhoto = true;
+      _repository.Save();
     }
 
     public void SetAsRemovedProduct(int userId, int productId)

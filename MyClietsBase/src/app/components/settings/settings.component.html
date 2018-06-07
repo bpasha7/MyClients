@@ -1,6 +1,6 @@
 <mat-card class="">
   <mat-card-header>
-    <div mat-card-avatar class="avatar"></div>
+    <div mat-card-avatar (click)="openPhotoDialog()" class="avatar" [style.backgroundImage]="generateAvatarUrl()"></div>
     <mat-card-title>
       <mat-icon class="verify-icon">verified_user</mat-icon>
       {{user.name}}

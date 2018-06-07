@@ -7,4 +7,5 @@ export class AppConfig {
     public readonly apiUrl = this._host + '/api';
     public readonly photoUrl = this._host + '/photo/';
     public readonly defaultPhoto = this._host + '/photo/product.jpg';
+    public readonly defaultAvatar = this._host + '/photo/profile.png';
   }

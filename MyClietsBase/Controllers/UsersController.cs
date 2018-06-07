@@ -70,7 +70,7 @@ namespace MyClientsBase.Controllers
         _logger.LogCritical($"{ex}");
       }
     }
-    [HttpPost, DisableRequestSizeLimit, Route("/photo")]
+    [HttpPost, DisableRequestSizeLimit, Route("photo")]
     public async Task<IActionResult> UploadUserPhoto()
     {
       try
@@ -95,12 +95,13 @@ namespace MyClientsBase.Controllers
           _logger.LogError($"File {path} was not saved!");
           throw new AppException("Ошибка загрузки файла.");
         }
-        if (!AppFileSystem.CompressImage(path, _appSettings.PhotoProductSize))
+        path += $"\\me";
+        if (!AppFileSystem.CompressImage(path, _appSettings.PhotoSize))
         {
           _logger.LogError($"File {path} was not compressed and deleted!");
           throw new AppException("Ошибка загрузки файла.");
         }
-        //_userService.SetPhotoFlag(userId, id);
+        _userService.SetPhotoFlag(userId);
         return Ok(new
         {
 

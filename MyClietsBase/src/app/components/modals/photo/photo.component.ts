@@ -53,6 +53,7 @@ export class PhotoModalComponent {
         switch (this.type) {
             case 'client' :  this.updateClientPhoto(formData); break;
             case 'product' :  this.updateProductPhoto(formData); break;
+            case 'user' :  this.updateAvatarPhoto(formData); break;
         }
     }
 
@@ -80,6 +81,28 @@ export class PhotoModalComponent {
 
     updateProductPhoto(formData: FormData) {
         this.userService.uploadProductPhoto(this.id, formData).subscribe(event => {
+            if (event.type === HttpEventType.UploadProgress) {
+                this.progress = Math.round(100 * event.loaded / event.total);
+            } else if (event instanceof HttpResponse) {
+                if (event.status === 200) {
+                    this.snackBar.open('Фото обновлено', 'Закрыть', {
+                        duration: 2000,
+                    });
+                    this.progress = 0;
+                    setTimeout(() => {
+                        this.dialogRef.close(this.src);
+                    }, 2000);
+                } else {
+                    this.snackBar.open('Ошибка загрузки', 'Закрыть', {
+                        duration: 2000,
+                    });
+                }
+            }
+        });
+    }
+
+    updateAvatarPhoto(formData: FormData) {
+        this.userService.uploadAvatarPhoto(formData).subscribe(event => {
             if (event.type === HttpEventType.UploadProgress) {
                 this.progress = Math.round(100 * event.loaded / event.total);
             } else if (event instanceof HttpResponse) {
