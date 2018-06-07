@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Оставить сообщение</h1>
 <div class="message-form" mat-dialog-content>
   <mat-form-field>
-    <input matInput #nameInput maxlength="25" [(ngModel)]="message.from" placeholder="Представьтесь">
+    <input matInput #nameInput maxlength="25" [(ngModel)]="who" placeholder="Представьтесь">
     <mat-hint align="end">{{nameInput.value?.length || 0}}/25</mat-hint>
   </mat-form-field>
   <mat-form-field>
@@ -14,8 +14,7 @@
     <mat-hint align="end">{{textMessage.value?.length || 0}}/100</mat-hint>
   </mat-form-field>
 </div>
-<mat-dialog-actions>
-  <button mat-button mat-dialog-close>Назад</button>
-  <button mat-button (click)="send()" cdkFocusInitial>Отправить</button>
-</mat-dialog-actions>
-<!-- [mat-dialog-close]="true" -->
+<div mat-dialog-actions style="display: block">
+  <button mat-button class="button-cancel" [mat-dialog-close]="0">Назад</button>
+  <button (click)="send()" [disabled]="inProc || textMessage.value?.length === 0 || contactInput.value?.length === 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>Отправить</button>
+</div>

@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabsModule } from '@angula
 export class PreviewComponent implements OnInit {
   public title = '';
   public text = '';
+  public price = '';
   public imageSrc: string;
   ngOnInit(): void {
     // throw new Error("Method not implemented.");
@@ -18,6 +19,7 @@ export class PreviewComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) {
     if (data != null) {
         this.text = data.text;
+        this.price = data.price;
         this.title = data.title;
         this.imageSrc = data.src;
       }

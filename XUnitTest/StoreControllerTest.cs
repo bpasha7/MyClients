@@ -201,6 +201,7 @@ namespace XUnitTest
             refreshContext();
             addBonusTypes(5, "Продление магазина.");
             var user = addUserWithBonusesAndStore(50);
+            populateProducts(user);
             try
             {
                 _service.GetStore(user.StoreInfo.Name);

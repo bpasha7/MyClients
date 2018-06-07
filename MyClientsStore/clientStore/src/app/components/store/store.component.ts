@@ -58,7 +58,8 @@ export class StoreComponent implements OnInit {
       // height: 'auto',
       maxHeight: '650px',
       data: {
-        text: product.price,
+        text: product.description,
+        price: product.price,
         title: product.name,
         src: this.getUrl(product.id) // this.photoPath + product.id + '_p.jpg'
       }

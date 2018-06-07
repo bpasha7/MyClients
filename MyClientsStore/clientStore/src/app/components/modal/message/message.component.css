@@ -5,3 +5,10 @@
 .message-form > * {
     width: 100%;
 }
+.button-ok{
+    color: green;
+    float: right;
+}
+.button-cancel{
+    color:red;
+}

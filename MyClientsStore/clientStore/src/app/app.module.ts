@@ -14,7 +14,6 @@ const appRoutes: Routes = [
 
 ];
 /*Routes */
-
 // import { MatGridListModule } from '@angular/material/grid-list';
 import {
   MatCardModule,
@@ -28,11 +27,14 @@ import {
   MatTabHeader,
   MatIconModule,
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatSnackBarModule
 } from '@angular/material';
+
 import { PreviewComponent } from './components/modal/preview/preview.component';
 import { StoreComponent } from './components/store/store.component';
 import { MessageComponent } from './components/modal/message/message.component';
+
 @NgModule({
   exports: [
     CdkTableModule,
@@ -46,7 +48,8 @@ import { MessageComponent } from './components/modal/message/message.component';
     MatTableModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule
   ],
   declarations: []
 })
@@ -76,7 +79,7 @@ export class DemoMaterialModule { }
   ],
   exports: [
     MatCardModule,
-    MatGridListModule,
+    MatGridListModule
   ],
   providers: [
     AppConfig,

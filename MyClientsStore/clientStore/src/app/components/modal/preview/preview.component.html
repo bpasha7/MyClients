@@ -2,9 +2,10 @@
 <div mat-dialog-content style="padding: 0 5px;">
     <div class="product" [style.backgroundImage]="imageSrc"></div>
     <mat-tab-group alignTabs="center">
-        <mat-tab label="Описание"> <p>
-            {{ text }}
-        </p></mat-tab>
+        <mat-tab label="Описание"> 
+            <p>{{ text }}</p>
+            <p><b>Стоимость: {{ price }}</b></p>
+        </mat-tab>
         <mat-tab label="Записаться" disabled>Content 2</mat-tab>
       </mat-tab-group>
 </div>

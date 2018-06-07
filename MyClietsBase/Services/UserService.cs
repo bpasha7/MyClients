@@ -234,6 +234,7 @@ namespace MyClientsBase.Services
           .Id;
         if (userId == null)
           throw new AppException("Магазин не найден!");
+        message.Type = 2;
         _repository.Find(u => u.Id == userId, m => m.Messages).Messages.Add(message);
         _repository.Save();
       }
