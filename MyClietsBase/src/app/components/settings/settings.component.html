@@ -92,6 +92,10 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="container-row">
+            <mat-icon class="social-button">link</mat-icon>   
+            <a style="text-decoration: none;color: inherit;" href="http://store.bizmak.ru/{{store.name}}" *ngIf="store.isActive">store.bizmak.ru/{{store.name}}</a>       
+        </div>
+        <div class="container-row">
           <mat-form-field>
             <input matInput [matDatepicker]="pickerStore" placeholder="Активен до" [(ngModel)]="store.activationEnd" value="{{store.activationEnd}}"
               disabled>
@@ -104,7 +108,7 @@
         </div>
         <mat-form-field class="container-column">
           <mat-icon matPrefix>store</mat-icon>
-          <input matInput placeholder="" [(ngModel)]="store.name" value="{{store.name}}">
+          <input matInput placeholder="Название магазина на английском" [(ngModel)]="store.name" value="{{store.name}}">
         </mat-form-field>
         <mat-form-field class="container-column">
           <textarea [(ngModel)]="store.about" value="{{store.about}}" style="height: 50px;" matInput placeholder="Описание" #aboutStore

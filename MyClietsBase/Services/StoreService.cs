@@ -60,7 +60,7 @@ namespace MyClientsBase.Services
 
     public Store GetStore(string storeName)
     {
-      return _repository.Query(store => store.Name == storeName && store.IsActive)
+      return _repository.Query(store => store.Name == storeName && store.IsActive && store.ActivationEnd.Date >= DateTime.Now)
         .Include(store => store.UserInfo)
         .ThenInclude(user => user.Products)
         .AsNoTracking()
@@ -72,8 +72,7 @@ namespace MyClientsBase.Services
           Visits = s.Visits,
           UserInfo = s.UserInfo,
           Products = s.UserInfo.Products.Where(p => !p.IsRemoved && p.Show).ToList()
-        }
-        )
+        })
         .SingleOrDefault();
     }
 
