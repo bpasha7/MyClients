@@ -23,7 +23,7 @@ export class ClientModalComponent {
     }
 
     create() {
-        this.client.birthday.setHours(-this.client.birthday.getTimezoneOffset() / 60);
+        // this.client.birthday.setHours(-this.client.birthday.getTimezoneOffset() / 60);
         this.inProc = true;
         this.clientService.create(this.client).subscribe(
             data => {
@@ -42,11 +42,11 @@ export class ClientModalComponent {
     }
 
     update() {
-        this.client.birthday = new Date(this.client.birthday);
-        const offset = this.client.birthday.getTimezoneOffset();
-        if (offset) {
-            this.client.birthday.setHours(-offset / 60);
-        }
+        // this.client.birthday = new Date(this.client.birthday);
+        // const offset = this.client.birthday.getTimezoneOffset();
+        // if (offset) {
+        //     this.client.birthday.setHours(-offset / 60);
+        // }
         this.inProc = true;
         this.clientService.update(this.client).subscribe(
             data => {

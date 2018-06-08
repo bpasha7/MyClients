@@ -172,10 +172,11 @@ export class OrderModalComponent implements OnInit {
         this.order.productsId = this.selectedProducts.map(p => p.id);
         const splitted = this.time.split(':', 2);
         // tslint:disable-next-line:radix
-        this.order.date.setHours(parseInt(splitted[0]) - this.order.date.getTimezoneOffset() / 60);
-        this.order.datePrepay.setHours(-this.order.date.getTimezoneOffset() / 60);
+        this.order.date.setHours(parseInt(splitted[0]));//  - this.order.date.getTimezoneOffset() / 60
+        // this.order.datePrepay.setHours(-this.order.date.getTimezoneOffset() / 60);
         // tslint:disable-next-line:radix
         this.order.date.setMinutes(parseInt(splitted[1]));
+        // this.order.date = moment(this.order.date.toLocaleString()).toDate();
         return true;
     }
     /**

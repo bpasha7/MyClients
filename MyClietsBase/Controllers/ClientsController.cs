@@ -69,6 +69,7 @@ namespace MyClientsBase.Controllers
 
         if (client == null)
           throw new AppException("Не удалось создать нового клиента!");
+        client.Birthday = clientDto.Birthday.ToLocalTime();
 
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
@@ -112,7 +113,7 @@ namespace MyClientsBase.Controllers
 
         if (client == null)
           throw new AppException("Не удалось обновить клиента!");
-
+        client.Birthday = clientDto.Birthday.ToLocalTime();
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
         if (client.UserId != userId)

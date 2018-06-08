@@ -53,10 +53,8 @@
     margin: 0;
 }
 .product-info p {
-    /* font-size: 1em;  */
     color: lightgray;
     text-align: center;
-    /* margin: 0; */
 }
 .sec2 {
     padding: 5px;
@@ -69,9 +67,6 @@
     .header{
         height: 140px;
     }
-    /* .avatar-block .contact-block{
-        display: block;
-    } */
 }
 @media only screen and (max-width: 600px) {
     .avatar-block .contact-block{
@@ -82,12 +77,10 @@
     }
 }
 @media only screen and (max-width: 420px) {
-
     .product-info p {
         font-size: 0.8em; 
         color: lightgray;
         text-align: center;
-        /* display: none; */
         margin: 0;
     }
     .product-info h3 {

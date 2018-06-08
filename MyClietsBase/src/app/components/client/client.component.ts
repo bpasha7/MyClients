@@ -133,7 +133,7 @@ export class ClientComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
                 // newOrder.id = result.id;
-                newOrder.date.setHours(newOrder.date.getHours() + newOrder.date.getTimezoneOffset() / 60);
+                // newOrder.date.setHours(newOrder.date.getHours() + newOrder.date.getTimezoneOffset() / 60);
                 if (newOrder.date > this.today) {
                     this.orders.current.push(newOrder);
                     this.sort(this.orders.current, true);
@@ -164,7 +164,7 @@ export class ClientComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
-                temp.date.setHours(temp.date.getHours() + temp.date.getTimezoneOffset() / 60);
+                //temp.date.setHours(temp.date.getHours() + temp.date.getTimezoneOffset() / 60);
                 const currentPos = this.orders.current.findIndex(item => item.id === temp.id);
                 if (currentPos !== -1) {
                     this.orders.current.splice(currentPos, 1);

@@ -28,7 +28,7 @@ namespace MyClientsBase.Controllers
 
         if (order == null || orderDto.ProductsId == null)
           throw new AppException("Неверный данные!");
-
+        order.Date = orderDto.Date.ToLocalTime();
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         order.UserId = userId;
        
@@ -37,7 +37,7 @@ namespace MyClientsBase.Controllers
           order.Prepayment = new OrderPrepayment
           {
             Total = orderDto.Prepay,
-            Date = orderDto.DatePrepay,
+            Date = orderDto.DatePrepay.ToLocalTime(),
           };
         }
 
@@ -87,7 +87,7 @@ namespace MyClientsBase.Controllers
 
         if (order == null || orderDto.ProductsId == null)
           throw new AppException("Неверный данные!");
-
+        order.Date = orderDto.Date.ToLocalTime();
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
         if (order.UserId != userId)
@@ -102,7 +102,7 @@ namespace MyClientsBase.Controllers
           op = new OrderPrepayment
           {
             Total = orderDto.Prepay,
-            Date = orderDto.DatePrepay
+            Date = orderDto.DatePrepay.ToLocalTime()
           };
           //order.Prepayment = op;
         }
