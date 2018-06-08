@@ -10,11 +10,19 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { ENTER } from '@angular/cdk/keycodes';
 
+// import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'order-dialog',
     styleUrls: ['./order.component.css'],
     templateUrl: './order.component.html',
+    providers: [
+        // The locale would typically be provided on the root module of your application. We do it at
+        // the component level here, due to limitations of our example generation script.
+        {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
+      ],
 })
 
 export class OrderModalComponent implements OnInit {
@@ -46,9 +54,14 @@ export class OrderModalComponent implements OnInit {
     ngOnInit(): void {
         this.photoDir = this.config.photoUrl + localStorage.getItem('userHash') + '/';
         //const myDate = new Date();
-        this.order.date = new Date(this.order.date);
-        this.order.datePrepay = new Date(this.order.datePrepay);
+        //this.order.date = new Date(this.order.date);
+        //this.order.datePrepay = new Date(this.order.datePrepay);
         // tslint:disable-next-line:max-line-length
+        // because angular bug(:)
+        const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+        if (iOS) {
+            this.order.date.setHours(this.order.date.getHours() + this.order.date.getTimezoneOffset() / 60);
+        }
         this.time = ('0' + this.order.date.getHours()).slice(-2) + ':' + ('0' + this.order.date.getMinutes()).slice(-2);
         this.productsSelectCtrl = new FormControl();
         this.initProducts();
@@ -172,7 +185,7 @@ export class OrderModalComponent implements OnInit {
         this.order.productsId = this.selectedProducts.map(p => p.id);
         const splitted = this.time.split(':', 2);
         // tslint:disable-next-line:radix
-        this.order.date.setHours(parseInt(splitted[0]));//  - this.order.date.getTimezoneOffset() / 60
+        this.order.date.setHours(parseInt(splitted[0])); //  - this.order.date.getTimezoneOffset() / 60
         // this.order.datePrepay.setHours(-this.order.date.getTimezoneOffset() / 60);
         // tslint:disable-next-line:radix
         this.order.date.setMinutes(parseInt(splitted[1]));

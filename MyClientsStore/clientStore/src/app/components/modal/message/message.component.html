@@ -16,5 +16,5 @@
 </div>
 <div mat-dialog-actions style="display: block">
   <button mat-button class="button-cancel" [mat-dialog-close]="0">Назад</button>
-  <button (click)="send()" [disabled]="inProc || textMessage.value?.length === 0 || contactInput.value?.length === 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>Отправить</button>
+  <button (click)="send()" [disabled]="inProc || textMessage.value?.length === 0 || contactInput.value?.length === 0" mat-button class="button-ok" cdkFocusInitial>Отправить</button>
 </div>

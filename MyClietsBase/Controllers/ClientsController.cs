@@ -69,7 +69,7 @@ namespace MyClientsBase.Controllers
 
         if (client == null)
           throw new AppException("Не удалось создать нового клиента!");
-        client.Birthday = clientDto.Birthday.ToLocalTime();
+        client.Birthday = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Parse(clientDto.Birthday.ToString()), "Pacific Standard Time", "UTC");
 
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 

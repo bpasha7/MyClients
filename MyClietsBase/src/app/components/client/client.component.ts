@@ -153,7 +153,10 @@ export class ClientComponent implements OnInit {
         const temp = Object.assign({}, order);
         if (temp.prepay === 0) {
             temp.datePrepay = new Date();
+        } else {
+            temp.datePrepay = new Date(temp.datePrepay);
         }
+        temp.date = new Date(temp.date);
         const dialogRef = this.clientDialog.open(OrderModalComponent, {
             maxWidth: '310px',
             width: 'auto',
