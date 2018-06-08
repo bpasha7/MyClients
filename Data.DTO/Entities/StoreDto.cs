@@ -24,7 +24,7 @@ namespace Data.DTO.Entities
         public long Visits { get; set; }
         public decimal Avarage { get
             {
-                return Products.Count > 0 ? Products.Sum(p => p.Price) / Products.Count : 0;
+                return Products.Count > 0 ? Math.Round(Products.Sum(p => p.Price) / Products.Count, 0) : 0;
             } }
         public IList<StoreProductDto> Products { get; set; }
     }
