@@ -120,6 +120,8 @@ export class ClientComponent implements OnInit {
         newOrder.prepay = 0;
         newOrder.clientId = this.client.id;
         newOrder.date = new Date();
+        newOrder.date.setHours(9);
+        newOrder.date.setMinutes(0);
         newOrder.datePrepay = new Date();
         newOrder.discountId = 0;
         const dialogRef = this.clientDialog.open(OrderModalComponent, {
