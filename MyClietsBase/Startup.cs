@@ -40,6 +40,7 @@ namespace MyClientsBase
 
       //inject app config
       services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+      services.Configure<AppEmail>(Configuration.GetSection("AppSettings:SmtpServer"));
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(options =>
           {
@@ -54,7 +55,6 @@ namespace MyClientsBase
               IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Jwt:Key"]))
             };
           });
-
       services.AddAuthorization(auth => {
         auth.DefaultPolicy = new AuthorizationPolicyBuilder()
             .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)

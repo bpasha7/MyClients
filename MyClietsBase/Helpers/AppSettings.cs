@@ -5,7 +5,7 @@ namespace MyClientsBase.Helpers
     public string ConnectionString { get; set; }
     public string Secret { get; set; }
     public string PhotoFolder { get; set; }
-    public string IsUser { get; set; }
+    public string ConfirmUrl { get; set; }
     public int PassDaysExpired { get; set; }
     public long MaxImageSize { get; set; }
     public int PhotoSize { get; set; }
@@ -13,10 +13,8 @@ namespace MyClientsBase.Helpers
     public BounusesList Bonuses { get; set; }
     public BounusTypes BonusTypes { get; set; }
     public BonusLimitPerDay BonusLimitPerDay { get; set; }
-    public string Test()
-    {
-      return "test";
-    }
+    public SmtpServer SmtpServer { get; set; }
+
   }
   public class BounusesList
   {
@@ -47,6 +45,13 @@ namespace MyClientsBase.Helpers
     public int Prolong { get; set; }
 
 
+  }
+  public class SmtpServer
+  {
+    public string Host { get; set; }
+    public string Account { get; set; }
+    public string Password { get; set; }
+    public int Port { get; set; }
   }
   //public class Bounus
   //{

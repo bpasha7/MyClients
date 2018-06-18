@@ -158,9 +158,10 @@ namespace MyClientsBase.Controllers
           throw new AppException("Неверный данные!");
 
         _userService.AddMessage(message, messageDto.StoreName);
+
         return Ok(new
         {
-          Message = "Запись добавлена!"
+          //Message = "Запись добавлена!"
         });
       }
       catch (AppException ex)
@@ -419,7 +420,6 @@ namespace MyClientsBase.Controllers
     }
 
     [AllowAnonymous]
-    [HttpPost]
     [HttpPost("register")]
     public IActionResult Register([FromBody]UserDto userDto)
     {
@@ -430,10 +430,13 @@ namespace MyClientsBase.Controllers
 
         _logger.LogInformation($"New User #{user.Id}");
 
+        var mailer = new AppEmail(_appSettings.SmtpServer);
+        var body = $"Для подтверждения перейдите по <a href=\"{_appSettings.ConfirmUrl}{user.Login}\">ссылке</a>";
+        mailer.Send(user.Email, body, "Подтверждение регистрации", true);
 
         return Ok(new
         {
-          Message = "Учетная запиь создана."
+          Message = "Учетная запиь создана. Подтвердите через почту!"
         }
       );
       }
@@ -443,6 +446,37 @@ namespace MyClientsBase.Controllers
         return BadRequest(ex.Message);
       }
       catch(Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    [AllowAnonymous]
+    [HttpGet("register/{login}")]
+    public IActionResult Register(string login)
+    {
+      try
+      {
+
+        _logger.LogInformation($"User #{login} start confirmation");
+
+        _userService.Confirm(login);
+
+        _logger.LogInformation($"User #{login} end confirmation");
+
+        return Ok(new
+        {
+          Message = "Учетная запись подтверждена!"
+        }
+      );
+      }
+      catch (AppException ex)
+      {
+        // return error message if there was an exception
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
       {
         _logger.LogCritical($"{ex}");
         return BadRequest("Service error!");

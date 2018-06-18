@@ -7,16 +7,13 @@ using System.Threading.Tasks;
 
 namespace MyClientsBase.Helpers
 {
-  public static class AppEmail
+  public class AppEmail
   {
-    /// <summary>
-    /// Smtp Port
-    /// </summary>
-    public static int Port { get; set; }
-    /// <summary>
-    /// Smtp host
-    /// </summary>
-    public static string Host { get; set; }
+    private SmtpServer _server;
+    public AppEmail(SmtpServer server)
+    {
+      _server = server;
+    }
     /// <summary>
     /// Send text email
     /// </summary>
@@ -25,16 +22,14 @@ namespace MyClientsBase.Helpers
     /// <param name="subject"></param>
     /// <param name="isHtml"></param>
     /// <returns></returns>
-    public static string Send(string email, string text, string subject, bool isHtml)
+    public string Send(string email, string text, string subject, bool isHtml = false)
     {
       try
       {
-        var client = new SmtpClient(Host, Port);
+        var client = new SmtpClient(_server.Host, _server.Port);
         client.UseDefaultCredentials = false;
-        client.Credentials = new NetworkCredential("username", "password");
-
-
-        MailMessage message = new MailMessage("info.bizmak.ru", email);//bezruk@maltat.ru nussvn@maltat.ru|melnikova-ep@primorsk.maltat.ru
+        client.Credentials = new NetworkCredential(_server.Account, _server.Password);
+        MailMessage message = new MailMessage(_server.Account, email);
         message.Subject = subject;
         message.Body = text;
         message.SubjectEncoding = System.Text.Encoding.UTF8;
