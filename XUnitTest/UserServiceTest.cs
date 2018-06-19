@@ -15,52 +15,67 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using NetEscapades.AspNetCore.SecurityHeaders.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using MyClientsBase.Helpers;
 
 namespace XUnitTest
 {
-    //public class UserServiceTest
-    //{
-    //    private readonly IUserService _userService;
-    //    private ApplicationDbContext _context;
-    //    private User _user;
+    public class UserServiceUnitTest
+    {
+        private DbContextOptions<ApplicationDbContext> _options;
+        private ApplicationDbContext _context;
+        private IUserService _service;
 
-    //    public UserServiceTest()
-    //    {
-    //        var connection = "server=localhost;port=3306;database=test;user=root;password=;";
-    //        var dbOption = new DbContextOptionsBuilder<ApplicationDbContext>()
-    //        .UseMySQL(connection, b => b.MigrationsAssembly("MyClientsBase"))
-    //        .Options;
-    //        _context = new ApplicationDbContext(dbOption);
-    //        _userService = new UserService(_context);
-    //    }
-
-    //    [Theory,
-    //    InlineData("test", "test")]
-    //    public void CorrectLoginPass(string login, string pass)
-    //    {
-    //        _user = _userService.Authenticate(login, pass);
-    //        Assert.NotNull(_user);
-    //        Assert.Equal(_user.Login, login);
-    //    }
-
-    //    [Theory,
-    //    InlineData("test", "12345")]
-    //    public void NotCorrectLoginPass(string login, string pass)
-    //    {
-    //        _user = _userService.Authenticate(login, pass);
-    //        Assert.Null(_user);
-    //    }
-    //    /// <summary>
-    //    /// Testing 
-    //    /// </summary>
-    //    /// <param name="testOwnerId">Test or owner user</param>
-    //    [Theory,
-    //    InlineData(1)]
-    //    public void GetListOfCurrentOrders(int testOwnerId)
-    //    {
-    //        //var orders = _userService.GetCurrentOrders(testOwnerId);
-    //        //Assert.NotNull(orders);
-    //        //Assert.True(orders.Count >= 0);
-    //    }
-    //}
+        private void refreshContext()
+        {
+            _options = new DbContextOptionsBuilder<ApplicationDbContext>()
+              .UseInMemoryDatabase(databaseName: DateTime.Now.Millisecond.ToString())
+              .Options;
+            _context = new ApplicationDbContext(_options);
+            _service = new UserService(_context);
+        }
+        //private User createNewUser()
+        //{
+        //    var user = new User
+        //    {
+        //        Login = "test",
+        //        Name = "Test Test"
+        //    };
+        //}
+        /// <summary>
+        /// Test availible data for new user
+        /// </summary>
+        [Fact]
+        public void RegisterNewUser()
+        {
+            refreshContext();
+            var user = new User
+            {
+                Login = "test",
+                Name = "Test Test"
+            };
+            var pass = "12345";
+            _service.Create(user, pass);
+            // Zero balance
+            Assert.Equal(0, user.BonusBalance);
+            // Has store
+            Assert.NotNull(user.StoreInfo);
+            // Not activated
+            Assert.False(user.Activated);
+            // Not comfired account
+            try
+            {
+                _service.Authenticate(user.Login, pass);
+            }
+            catch(Exception ex)
+            {
+                Assert.Equal(typeof(AppException), ex.GetType());
+            }
+            // confirm
+            _service.Confirm(user.Login);
+            Assert.True(user.Activated);
+            // try to get user data
+            var res = _service.Authenticate(user.Login, pass);
+            Assert.NotNull(res);
+        }
+    }
 }
