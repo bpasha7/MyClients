@@ -3,7 +3,7 @@
         <div>
             <img img mat-card-image class="client-photo" [src]="photo" alt="">
             <div class="client-menu-bar">
-                <button mat-mini-fab style="vertical-align: bottom;" color="primary">
+                <button *ngIf="client.link?.length > 0" mat-mini-fab style="vertical-align: bottom;" color="primary">
                     <a class="link-text" href="{{client.link}}" target="blank">
                         <mat-icon aria-label="">public</mat-icon>
                     </a>

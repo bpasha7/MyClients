@@ -44,12 +44,12 @@
                         <span>{{row.phone}}</span>
                     </button>
                 </mat-menu>
-                <button mat-icon-button class="social-button">
+                <button *ngIf="row.link?.length > 0" mat-icon-button class="social-button">
                     <a class="link-text" href="{{row.link}}" target="_blank">
                         <mat-icon color="primary">public</mat-icon>
                     </a>
                 </button>
-                <button mat-icon-button class="social-button">
+                <button *ngIf="row.linkPhoto?.length > 0" mat-icon-button class="social-button">
                     <a class="link-text" href="{{row.linkPhoto}}" target="_blank">
                         <mat-icon class="social-button" svgIcon="instagram"></mat-icon>
                     </a>
