@@ -10,14 +10,12 @@ using System.Linq;
 
 namespace XUnitTest
 {
-    public class StoreUnitTest
+    public class StoreServiceUnitTest
     {
         private DbContextOptions<ApplicationDbContext> _options;
         private ApplicationDbContext _context;
         private IStoreService _service;
-        //public StoreUnitTest()
-        //{
-        //}
+
         private void refreshContext()
         {
             _options = new DbContextOptionsBuilder<ApplicationDbContext>()

@@ -164,6 +164,11 @@ namespace MyClientsBase.Services
 
       user.PasswordHash = passwordHash;
       user.PasswordSalt = passwordSalt;
+      user.StoreInfo = new Store
+      {
+        ActivationEnd = DateTime.Now,
+        Name = $"{user.Login}{DateTime.Now.Millisecond}"
+      };
       _repository.Add(user);
 
       return user;
@@ -237,7 +242,8 @@ namespace MyClientsBase.Services
         if (userId == null)
           throw new AppException("Магазин не найден!");
         message.Type = 2;
-        _repository.Find(u => u.Id == userId, m => m.Messages).Messages.Add(message);
+        var user =_repository.Find(u => u.Id == userId, m => m.Messages);
+        user.Messages.Add(message);
         _repository.Save();
       }
       else
