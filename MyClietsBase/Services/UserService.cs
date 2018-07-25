@@ -142,7 +142,7 @@ namespace MyClientsBase.Services
 
     public IList<Product> GetProducts(int userId)
     {
-      return _productsRepository.Query(p => p.UserId == userId && !p.IsRemoved).OrderBy(o => o.Name).ToList();
+      return _productsRepository.Query(p => p.UserId == userId/* && !p.IsRemoved*/).OrderBy(o => o.Name).ToList();
     }
 
     public IList<Discount> GetDiscounts(int userId)

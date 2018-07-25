@@ -27,6 +27,7 @@ export class ProductsComponent implements OnInit {
     public products: Product[] = [];
     public discounts: Discount[] = [];
     public showFilter = false;
+    public showRemoved = false;
     public currentTabPosition = 0;
     public photoDir = '';
     ngOnInit() {
@@ -59,7 +60,7 @@ export class ProductsComponent implements OnInit {
         this.userService.getProducts().subscribe(
             data => {
                 this.products = data.json().products;
-                this.productDataSorce = new MatTableDataSource(this.products);
+                // this.productDataSorce = new MatTableDataSource(this.products);
                 this.initProductSourceTable();
             },
             error => {
@@ -80,6 +81,8 @@ export class ProductsComponent implements OnInit {
      * Init paginator and sort for discount data source
      */
     private initProductSourceTable() {
+        const products = this.products.filter(p => p.isRemoved === this.showRemoved);
+        this.productDataSorce = new MatTableDataSource(products);
         if (this.productDataSorce != null) {
             this.productDataSorce.paginator = this.paginatorProducts;
             this.productDataSorce.sort = this.sortProducts;
@@ -112,6 +115,10 @@ export class ProductsComponent implements OnInit {
      */
     showHideFilter() {
         this.showFilter = !this.showFilter;
+    }
+    showHideRemoved() {
+        this.showRemoved = !this.showRemoved;
+        this.initProductSourceTable();
     }
     /**
      * Applay filter for selected tab

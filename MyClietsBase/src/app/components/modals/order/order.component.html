@@ -17,7 +17,7 @@
         />
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduct" (optionSelected)="selectProduct($event)">
-        <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+        <mat-option *ngFor="let product of filteredProducts | async" [value]="product" [ngStyle]="{'display' : product.isRemoved ? 'none' : 'block'}">
           <img style="vertical-align:middle;" aria-hidden src="{{generateProductPhotoUrl(product)}}" height="25" />
           <span>{{product.name}} </span>
           <small>{{product.price}}</small>

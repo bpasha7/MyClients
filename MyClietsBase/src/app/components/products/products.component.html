@@ -75,6 +75,9 @@
     </div>
   </mat-tab>
 </mat-tab-group>
+<button mat-mini-fab [ngStyle]="{'background': showRemoved ? 'orange': 'green'}" class="hide-fixed-button" (click)="showHideRemoved()">
+  <mat-icon aria-label="">restore_from_trash</mat-icon>
+</button>
 <button mat-mini-fab [ngStyle]="{'background': showFilter ? 'orange': 'green'}" class="search-fixed-button" (click)="showHideFilter()">
   <mat-icon aria-label="">search</mat-icon>
 </button>

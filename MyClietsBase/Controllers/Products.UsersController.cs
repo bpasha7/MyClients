@@ -45,7 +45,7 @@ namespace MyClientsBase.Controllers
         return Ok(new
         {
           Message = "Услуга добавлена!",
-          PorductId = product.Id
+          ProductId = product.Id
         });
       }
       catch (AppException ex)

@@ -83,7 +83,7 @@ export class OrderModalComponent implements OnInit {
      */
     filterProducts(name: string): Product[] {
         return this.products.filter(product =>
-            product.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
+            product.name.toLowerCase().indexOf(name.toLowerCase()) === 0 && !product.isRemoved);
     }
     /**
      * Display format selected product
