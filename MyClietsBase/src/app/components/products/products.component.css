@@ -19,9 +19,9 @@
     bottom: 35px;
     right: 115px;
 }
-::ng-deep .mat-tab-labels{
-    justify-content: center; /* align items in Main Axis */
-}
+/* ::ng-deep .mat-tab-labels{
+    justify-content: center; /* align items in Main Axis
+} */
 .product-photo{
     object-fit: contain;
     height: 40px;

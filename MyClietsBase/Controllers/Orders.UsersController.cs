@@ -166,8 +166,10 @@ namespace MyClientsBase.Controllers
         var orders = _orderService.GetCurrentOrders(userId);
         var feature = orders.Where(o => o.Date.Date > DateTime.Now.Date).OrderBy(d => d.Date);
         var current = orders.Where(o => o.Date.Date == DateTime.Now.Date).OrderBy(d => d.Date);
+        var old = orders.Where(o => o.Date.Date < DateTime.Now.Date).OrderBy(d => d.Date);
         return Ok(new
         {
+          Old = _mapper.Map<OrderInfoDto[]>(old),
           Feature = _mapper.Map<OrderInfoDto[]>(feature),
           Current = _mapper.Map<OrderInfoDto[]>(current)
         });

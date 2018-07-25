@@ -1,26 +1,50 @@
 <div class="container">
-  <mat-list *ngIf="orders != null">
-    <div *ngIf="orders.current != null && orders.current.length > 0">
-      <h3 mat-subheader>Сегодня</h3>
-      <mat-list-item *ngFor="let order of orders.current">
-        <mat-icon mat-list-icon>work</mat-icon>
-        <h4 mat-line>{{order.clientName}}</h4>
-        <p mat-line>{{order.date | date:'HH:mm'}} {{order.location}}</p>
-        <button mat-icon-button routerLink="/client/{{order.clientId}}" color="primary">
-          <mat-icon>account_box</mat-icon>
-        </button>
-      </mat-list-item>
-    </div>
-    <div *ngIf="orders.feature != null && orders.feature.length > 0">
-      <h3 mat-subheader>Скоро</h3>
-      <mat-list-item *ngFor="let order of orders.feature">
-        <mat-icon mat-list-icon>work</mat-icon>
-        <h4 mat-line>{{order.clientName}}</h4>
-        <p mat-line> {{order.date | date:'d MMMM'}}, {{order.date | date:'HH:mm'}} {{order.location}}</p>
-        <button mat-icon-button routerLink="/client/{{order.clientId}}" color="primary">
-          <mat-icon>account_box</mat-icon>
-        </button>
-      </mat-list-item>
-    </div>
-  </mat-list>
+  <mat-tab-group mat-stretch-tabs [selectedIndex]="1">
+    <mat-tab label="Прошлые">
+      <mat-list *ngIf="orders != null">
+        <div *ngIf="orders.old != null && orders.old.length > 0">
+          <!-- <h3 mat-subheader>Сегодня</h3> -->
+          <mat-list-item *ngFor="let order of orders.old">
+            <mat-icon mat-list-icon>work</mat-icon>
+            <h4 mat-line>{{order.clientName}}</h4>
+            <p mat-line> {{order.date | date:'d MMMM'}}, {{order.date | date:'HH:mm'}} {{order.location}}</p>
+            <button mat-icon-button routerLink="/client/{{order.clientId}}" color="primary">
+              <mat-icon>account_box</mat-icon>
+            </button>
+          </mat-list-item>
+        </div>
+      </mat-list>
+    </mat-tab>
+    <mat-tab label="Сегодня">
+      <mat-list *ngIf="orders != null">
+        <div *ngIf="orders.current != null && orders.current.length > 0">
+          <!-- <h3 mat-subheader>Сегодня</h3> -->
+          <mat-list-item *ngFor="let order of orders.current">
+            <mat-icon mat-list-icon>work</mat-icon>
+            <h4 mat-line>{{order.clientName}}</h4>
+            <p mat-line>{{order.date | date:'HH:mm'}} {{order.location}}</p>
+            <button mat-icon-button routerLink="/client/{{order.clientId}}" color="primary">
+              <mat-icon>account_box</mat-icon>
+            </button>
+          </mat-list-item>
+        </div>
+      </mat-list>
+    </mat-tab>
+    <mat-tab label="Скоро">
+      <mat-list *ngIf="orders != null">
+        <div *ngIf="orders.feature != null && orders.feature.length > 0">
+          <!-- <h3 mat-subheader>Скоро</h3> -->
+          <mat-list-item *ngFor="let order of orders.feature">
+            <mat-icon mat-list-icon>work</mat-icon>
+            <h4 mat-line>{{order.clientName}}</h4>
+            <p mat-line> {{order.date | date:'d MMMM'}}, {{order.date | date:'HH:mm'}} {{order.location}}</p>
+            <button mat-icon-button routerLink="/client/{{order.clientId}}" color="primary">
+              <mat-icon>account_box</mat-icon>
+            </button>
+          </mat-list-item>
+        </div>
+      </mat-list>
+    </mat-tab>
+  </mat-tab-group>
+
 </div>
