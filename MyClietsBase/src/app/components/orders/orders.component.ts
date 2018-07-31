@@ -24,10 +24,10 @@ export class OrdersComponent implements OnInit {
     this.userService.getCurrentOrders().subscribe(
       data => {
         this.orders = data.json();
-        if (this.orders.current.length === 0 && this.orders.future.length === 0) {
+        if (this.orders.current.length === 0 && this.orders.feature.length === 0) {
           this.selectedTab = 0;
         }
-        if (this.orders.current.length === 0 && this.orders.future.length !== 0) {
+        if (this.orders.current.length === 0 && this.orders.feature.length !== 0) {
           this.selectedTab = 2;
         }
       },

@@ -4,6 +4,6 @@ import { Order } from '.';
  */
 export class Orders {
     current: Order[];
-    future: Order[];
+    feature: Order[];
     old: Order[];
 }

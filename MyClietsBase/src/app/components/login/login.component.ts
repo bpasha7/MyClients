@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   /**
    * Url for redirecting after succes logining
    */
-  private returnUrl = '/clients';
+  private returnUrl = '/orders';
 
   constructor(
     private route: ActivatedRoute,
