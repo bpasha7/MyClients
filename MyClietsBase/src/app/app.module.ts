@@ -92,7 +92,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'client/:id', component: ClientComponent },
   { path: 'analytics', component: AnalyticsComponent },
-  { path: '', component: MessagesComponent },
+  { path: '', component: OrdersComponent },
   { path: 'messages', component: MessagesComponent },
   { path: 'start', component: RegistrationComponent },
 

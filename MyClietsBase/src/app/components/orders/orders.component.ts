@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material';
 })
 export class OrdersComponent implements OnInit {
   orders: Orders = null;
+  selectedTab = 1;
   constructor(
     public snackBar: MatSnackBar,
     private userService: UserService
@@ -23,6 +24,12 @@ export class OrdersComponent implements OnInit {
     this.userService.getCurrentOrders().subscribe(
       data => {
         this.orders = data.json();
+        if (this.orders.current.length === 0 && this.orders.future.length === 0) {
+          this.selectedTab = 0;
+        }
+        if (this.orders.current.length === 0 && this.orders.future.length !== 0) {
+          this.selectedTab = 2;
+        }
       },
       error => {
         this.userService.responseErrorHandle(error);
