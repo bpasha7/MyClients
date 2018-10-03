@@ -49,6 +49,9 @@
     <Content Update="nlog.config" CopyToOutputDirectory="PreserveNewest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Views\ConfirmView.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
