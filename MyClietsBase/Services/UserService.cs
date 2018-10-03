@@ -23,7 +23,7 @@ namespace MyClientsBase.Services
     /// <returns></returns>
     User Authenticate(string login, string password);
     User Create(User user, string password);
-    void Confirm(string userLogin);
+    string Confirm(string userLogin);
     User GetUserInfo(int userId);
     void UpdateUserPassword(int userId, string password);
     void CreateProduct(Product product);
@@ -404,13 +404,14 @@ namespace MyClientsBase.Services
       //  .Include(u => u.BonusIncomes).Single().BonusIncomes.Sum(b => b.Total);
     }
 
-    public void Confirm(string userLogin)
+    public string Confirm(string userLogin)
     {
       var user = _repository.Find(u => u.Login == userLogin);
       if (user == null)
         throw new AppException("Пользователь не найден!");
       user.Activated = true;
       _repository.Save();
+      return user.Name;
     }
     //private void updateUserBalance(int userId)
     //{

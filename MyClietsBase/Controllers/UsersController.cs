@@ -461,15 +461,11 @@ namespace MyClientsBase.Controllers
 
         _logger.LogInformation($"User #{login} start confirmation");
 
-        _userService.Confirm(login);
+        var name = _userService.Confirm(login);
 
         _logger.LogInformation($"User #{login} end confirmation");
 
-        return Ok(new
-        {
-          Message = "Учетная запись подтверждена!"
-        }
-      );
+        return View("~/Views/ConfirmView.cshtml", name);
       }
       catch (AppException ex)
       {
