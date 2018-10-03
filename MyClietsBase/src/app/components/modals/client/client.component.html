@@ -1,13 +1,15 @@
 <h1 mat-dialog-title>Новый клиент</h1>
 <div mat-dialog-content>
+    <form id="clientEditFrom" #f="ngForm" [formGroup]="clientFormGroup" (ngSubmit)="onSubmit()" >
   <div class="container-row">
     <mat-form-field>
-      <input matInput placeholder="Фамилия"  [(ngModel)]="client.lastName" required>
+      <input matInput placeholder="Фамилия" [(ngModel)]="client.lastName" formControlName="lastName" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Имя" [(ngModel)]="client.firstName" required>
+      <input matInput placeholder="Имя" [(ngModel)]="client.firstName" formControlName="firstName" required>
     </mat-form-field>
   </div>
+</form>
   <div class="container-column">
   </div>
   <div class="container-row">
@@ -41,6 +43,6 @@
 <div mat-dialog-actions style="display: block">
   <button mat-button class="button-cancel" (click)="onNoClick()">ОТМЕНА</button>
   <!-- <button mat-button class="button-ok" (click)="create()" [mat-dialog-close]="1" cdkFocusInitial>ДОБАВИТЬ</button> -->
-  <button [disabled]="inProc" *ngIf="client.id != 0" mat-button class="button-ok" (click)="update()" [mat-dialog-close]="1" cdkFocusInitial>ОБНОВИТЬ</button>
-  <button [disabled]="inProc" *ngIf="client.id == 0" mat-button class="button-ok" (click)="create()" cdkFocusInitial>ДОБАВИТЬ</button>
+  <button [disabled]="inProc" *ngIf="client.id > 0" mat-button class="button-ok" form="clientEditFrom" type="submit" cdkFocusInitial>ОБНОВИТЬ</button>
+  <button [disabled]="inProc" *ngIf="client.id === 0" mat-button class="button-ok" form="clientEditFrom" type="submit" cdkFocusInitial>ДОБАВИТЬ</button>
 </div>

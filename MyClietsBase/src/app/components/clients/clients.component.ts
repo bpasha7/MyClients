@@ -66,6 +66,7 @@ export class ClientsComponent implements OnInit {
     openDialog(): void {
         this.newClient = new Client();
         this.newClient.lastName = '';
+        this.newClient.firstName = '';
         this.newClient.id = 0;
         this.newClient.birthday = new Date(1990, 0, 1);
         const dialogRef = this.dialog.open(ClientModalComponent, {

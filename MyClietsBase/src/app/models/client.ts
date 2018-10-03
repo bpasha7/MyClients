@@ -10,5 +10,5 @@ export class Client {
     link: string;
     linkPhoto: string;
     userId: number;
-    commentary:string;
+    commentary: string;
 }
