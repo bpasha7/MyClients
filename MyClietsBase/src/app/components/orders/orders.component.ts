@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material';
 })
 export class OrdersComponent implements OnInit {
   orders: Orders = null;
+  busy: boolean;
   selectedTab = 1;
   constructor(
     public snackBar: MatSnackBar,
@@ -21,6 +22,7 @@ export class OrdersComponent implements OnInit {
   }
 
   loadCurrnetOrders() {
+    this.busy = true;
     this.userService.getCurrentOrders().subscribe(
       data => {
         this.orders = data.json();
@@ -30,8 +32,10 @@ export class OrdersComponent implements OnInit {
         if (this.orders.current.length === 0 && this.orders.feature.length !== 0) {
           this.selectedTab = 2;
         }
+        this.busy = false;
       },
       error => {
+        this.busy = false;
         this.userService.responseErrorHandle(error);
       }
     );

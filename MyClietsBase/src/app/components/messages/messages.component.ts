@@ -12,6 +12,7 @@ export class MessagesComponent implements OnInit {
   public messages: Message[] = [];
   public unread = 0;
   public today: Date;
+  public busy: boolean;
   constructor(
     public messageDialog: MatDialog,
     private userService: UserService,
@@ -69,11 +70,14 @@ export class MessagesComponent implements OnInit {
   }
 
   loadMessages() {
+    this.busy = true;
     this.userService.getMessages().subscribe(
       data => {
         this.messages = data.json().messages;
+        this.busy = false;
       },
       error => {
+        this.busy = false;
         this.userService.responseErrorHandle(error);
       }
     );

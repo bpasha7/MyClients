@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userService.notifyMenu('');
     this.userService.logout();
   }
 

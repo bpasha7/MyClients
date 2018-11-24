@@ -49,25 +49,24 @@
         Настройки
       </a>
       <a mat-list-item (click)="sidenav.toggle()" routerLink="/login">
-        <mat-icon mat-list-icon>exit_to_app
-        </mat-icon>
+        <mat-icon mat-list-icon>exit_to_app</mat-icon>
         Выход
+      </a>
+      <a mat-list-item class="my-info ">
+        <mat-icon mat-list-icon>info</mat-icon>
+        v. 0.5.1(beta)
       </a>
       <!-- </div> -->
     </mat-nav-list>
   </mat-sidenav>
-
   <mat-sidenav-content>
-    <!-- <div (click)="sidenav.isOpen ? sidenav.toggle() : skip()">{{sidenav.isOpen}} -->
     <router-outlet>
-
     </router-outlet>
-    <!-- </div> -->
   </mat-sidenav-content>
 
 </mat-sidenav-container>
 
 <mat-toolbar class="my-footer">
-  <div style="font-size: 12px; margin: auto;">Current Version 0.4.1 (beta)</div>
+  <!-- <div style="font-size: 12px; margin: auto;">Current Version 0.4.1 (beta)</div> -->
 </mat-toolbar>
 </div>

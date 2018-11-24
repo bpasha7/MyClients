@@ -30,6 +30,7 @@ export class ProductsComponent implements OnInit {
     public showRemoved = false;
     public currentTabPosition = 0;
     public photoDir = '';
+    busy:boolean = false;
     ngOnInit() {
         this.loadProducts();
         this.loadDiscounts();
@@ -57,13 +58,15 @@ export class ProductsComponent implements OnInit {
      * Load client product list and init data source
      */
     loadProducts() {
+        this.busy = true;
         this.userService.getProducts().subscribe(
             data => {
                 this.products = data.json().products;
-                // this.productDataSorce = new MatTableDataSource(this.products);
                 this.initProductSourceTable();
+                this.busy = false;
             },
             error => {
+                this.busy = false;
                 this.userService.responseErrorHandle(error);
             }
         );

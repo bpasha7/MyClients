@@ -1,10 +1,7 @@
-import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
-import { Title, DomSanitizer } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 import { UserService, ClientService } from './services';
 import { MatIconRegistry, NativeDateAdapter, MatSnackBar } from '@angular/material';
-//import { Client } from './models';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +9,7 @@ import { MatIconRegistry, NativeDateAdapter, MatSnackBar } from '@angular/materi
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  private subscription: Subscription;
   appName = 'My Clients';
-  separator = ' :: ';
   public isLogined = false;
   public unreadMessageCount = 0;
   title = this.appName;
@@ -66,10 +61,6 @@ export class AppComponent implements OnInit {
       }
     }
   }
-
-  // setTitel(section: string){
-  //   this.title = this.appName + this.separator + section;
-  // }
 }
 
 export class MyDateAdapter extends NativeDateAdapter {

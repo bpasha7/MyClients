@@ -1,6 +1,9 @@
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+
+// @Injectable()
 export class AppService {
     private messageSource;
     currentMessage;

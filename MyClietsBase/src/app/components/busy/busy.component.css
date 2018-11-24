@@ -1,0 +1,3 @@
+.busy-background {
+    position: fixed;min-width: 500px;z-index: 1;
+}

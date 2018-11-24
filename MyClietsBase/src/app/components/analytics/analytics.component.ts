@@ -28,7 +28,7 @@ export class AnalyticsComponent implements OnInit {
     responsive: true
     // maintainAspectRatio: false
   };
-
+  public busy: boolean;
   public show = false;
 
 
@@ -45,6 +45,7 @@ export class AnalyticsComponent implements OnInit {
    * loading report
    */
   public getReport() {
+    this.busy = true;
     this.userService.getReport(this.begin, this.end).subscribe(
       data => {
         const productReport = data.json().report;
@@ -78,8 +79,10 @@ export class AnalyticsComponent implements OnInit {
           { data: _totalChartData, label: 'Прибыль' },
         ];
         this.show = true;
+        this.busy = false;
       },
       error => {
+        this.busy = false;
         this.userService.responseErrorHandle(error);
       }
     );

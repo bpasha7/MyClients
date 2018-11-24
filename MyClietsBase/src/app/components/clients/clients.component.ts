@@ -1,5 +1,5 @@
 import { Component, ViewChild, Inject, OnInit } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl, MatSnackBar } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ClientModalComponent } from '../modals/client/client.component';
@@ -17,12 +17,12 @@ export class ClientsComponent implements OnInit {
     dataSource: MatTableDataSource<Client> = null;
     clients: Client[] = [];
     newClient: Client;
+    busy:boolean = false;
     // resultsLength: number = 0;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     constructor(
-        public snackBar: MatSnackBar,
         public dialog: MatDialog,
         private clientService: ClientService) {
     }
@@ -32,14 +32,21 @@ export class ClientsComponent implements OnInit {
         this.clientService.notifyMenu('Клиенты');
     }
 
+    // ngAfterViewInit() {
+    //     // this.clientService.showSnackBar('done!');
+    // }
+
     loadClients() {
+        this.busy = true;
         this.clientService.getAll().subscribe(
             data => {
                 this.clients = data.json().clients;
                 this.initDataSource();
+                this.busy = false;
             },
             error => {
                 this.clientService.responseErrorHandle(error);
+                this.busy = false;
             }
         );
     }

@@ -82,6 +82,8 @@ import { RegistrationComponent } from './components/registration/registration.co
 
 import { AppConfig } from './app.config';
 import { UserService, ClientService } from './services/index';
+import { BusyComponent } from './components/busy/busy.component';
+import { from } from 'rxjs';
 /*Routes */
 const appRoutes: Routes = [
   { path: 'settings', component: SettingsComponent },
@@ -166,7 +168,8 @@ export class DemoMaterialModule { }
     DiscountModalComponent,
     OutgoingModalComponent,
     MessagePreviewComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    BusyComponent
   ],
   declarations: [
     AppComponent,
@@ -187,7 +190,8 @@ export class DemoMaterialModule { }
     OutgoingsComponent,
     LoginComponent,
     SettingsComponent,
-    AnalyticsComponent
+    AnalyticsComponent,
+    BusyComponent
   ],
   bootstrap: [AppComponent],
   providers: [
