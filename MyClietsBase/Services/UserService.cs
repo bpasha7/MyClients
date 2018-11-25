@@ -26,6 +26,13 @@ namespace MyClientsBase.Services
     string Confirm(string userLogin);
     User GetUserInfo(int userId);
     void UpdateUserPassword(int userId, string password);
+    /// <summary>
+    /// Update user Telegram settings
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="pin"></param>
+    /// <param name="active"></param>
+    long UpdateUserTelegramSettings(int userId, string pin, bool active);
     void CreateProduct(Product product);
     void SetAsRemovedProduct(int userId, int productId);
     void UpdateProduct(Product product, int done);
@@ -412,6 +419,20 @@ namespace MyClientsBase.Services
       user.Activated = true;
       _repository.Save();
       return user.Name;
+    }
+
+    public long UpdateUserTelegramSettings(int userId, string pin, bool active)
+    {
+      if (string.IsNullOrWhiteSpace(pin))
+        throw new AppException("Pin содержит пробелы или пустой!");
+
+      var base64EncodedBytes = Convert.FromBase64String(pin);
+      var user = _repository.Find(u => u.Id == userId);
+      user.TelegramChatId = Convert.ToInt64(Encoding.UTF8.GetString(base64EncodedBytes));
+      user.UseTelegram = active;
+
+      _repository.Save();
+      return user.TelegramChatId;
     }
     //private void updateUserBalance(int userId)
     //{

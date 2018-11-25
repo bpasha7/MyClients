@@ -17,6 +17,7 @@ using Data.Reports;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Domain.Interfaces.Services;
 
 namespace MyClientsBase.Controllers
 {
@@ -54,7 +55,9 @@ namespace MyClientsBase.Controllers
     /// </summary>
     private ILogger _logger;
 
-    public UsersController(IBonusService bonusService, IUserService userService, IOrderService orderService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
+    private INotificationService _notificationService;
+
+    public UsersController(IBonusService bonusService, IUserService userService, IOrderService orderService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory, INotificationService notificationService)
     {
       try
       {
@@ -64,6 +67,7 @@ namespace MyClientsBase.Controllers
         _mapper = mapper;
         _appSettings = appSettings.Value;
         _logger = loggerFactory.CreateLogger(typeof(UsersController));
+        _notificationService = notificationService;
       }
       catch (Exception ex)
       {
@@ -316,7 +320,11 @@ namespace MyClientsBase.Controllers
         return BadRequest("Service error!");
       }
     }
-    [AllowAnonymous]
+    /// <summary>
+    /// Change existed password
+    /// </summary>
+    /// <param name="password"></param>
+    /// <returns></returns>
     [HttpPatch("password")]
     public IActionResult EditPassword([FromQuery] string password)
     {
@@ -327,6 +335,41 @@ namespace MyClientsBase.Controllers
           throw new AppException("Неверный данные!");
 
         _userService.UpdateUserPassword(userId, password);
+
+        return Ok(new
+        {
+
+        });
+      }
+      catch (AppException ex)
+      {
+        return BadRequest(ex.Message);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical($"{ex}");
+        return BadRequest("Service error!");
+      }
+    }
+
+    /// <summary>
+    /// Change Telegram settings
+    /// </summary>
+    /// <param name="pin">pin-code</param>
+    /// <param name="active">status</param>
+    /// <returns></returns>
+    [HttpPatch("telegram")]
+    public IActionResult EditTelegramSettings([FromQuery] string pin, [FromQuery] bool active)
+    {
+      try
+      {
+        var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        if (userId < 1)
+          throw new AppException("Неверный данные!");
+
+        var id = _userService.UpdateUserTelegramSettings(userId, pin, active);
+
+        _notificationService.SendTelegramNotification(id, "Учетная запись связана с программой MyClients!");
 
         return Ok(new
         {

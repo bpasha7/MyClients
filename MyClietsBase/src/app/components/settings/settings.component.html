@@ -12,7 +12,8 @@
       <span>{{user.bonusBalance}}</span>
       <mat-icon [color]="'primary'" matTooltip="Заходите каждый день в программу, 
       добавляйте клиентов, услуги, товары, а также записывайте 
-      на прием или продавайте и получайте за это бонусы!" [matTooltipPosition]="'right'">info</mat-icon>
+      на прием или продавайте и получайте за это бонусы!"
+        [matTooltipPosition]="'right'">info</mat-icon>
     </h2>
     <section class="section-progress">
       <span class="label-progress">0</span>
@@ -74,7 +75,8 @@
           </mat-form-field>
           <mat-form-field class="container-column">
             <mat-icon matPrefix>vpn_key</mat-icon>
-            <input matInput minlength="8" type="password" placeholder="Подтверждение" [(ngModel)]="confirmPassword" formControlName="passwordConfirmCtrl">
+            <input matInput minlength="8" type="password" placeholder="Подтверждение" [(ngModel)]="confirmPassword"
+              formControlName="passwordConfirmCtrl">
             <mat-hint *ngIf="confirmPassword != password" align="start">
               <strong>Пароли не совападают</strong>
             </mat-hint>
@@ -83,8 +85,8 @@
         <div class="container-column">
           <button mat-raised-button (click)="editPassword()" color="primary" [disabled]="password.length < 8 || confirmPassword != password">Принять</button>
         </div>
-
       </mat-expansion-panel>
+      <!-- Store settings -->
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -92,17 +94,18 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="container-row">
-            <mat-icon class="social-button">link</mat-icon>   
-            <a style="text-decoration: none;color: inherit;" href="http://store.bizmak.ru/{{store.name}}" *ngIf="store.isActive">store.bizmak.ru/{{store.name}}</a>       
+          <mat-icon class="social-button">link</mat-icon>
+          <a style="text-decoration: none;color: inherit;" href="http://store.bizmak.ru/{{store.name}}" target="_blank" *ngIf="store.isActive">store.bizmak.ru/{{store.name}}</a>
         </div>
         <div class="container-row">
           <mat-form-field>
-            <input matInput [matDatepicker]="pickerStore" placeholder="Активен до" [(ngModel)]="store.activationEnd" value="{{store.activationEnd}}"
-              disabled>
+            <input matInput [matDatepicker]="pickerStore" placeholder="Активен до" [(ngModel)]="store.activationEnd"
+              value="{{store.activationEnd}}" disabled>
             <mat-datepicker-toggle matPrefix [for]="pickerStore"></mat-datepicker-toggle>
             <mat-datepicker #pickerStore startView="month"></mat-datepicker>
           </mat-form-field>
-          <button (click)="prolongStore()" matBadge="30" matBadgePosition="after" matBadgeColor="warn" mat-raised-button style="height: fit-content;" color="primary" [disabled]="inProgress">
+          <button (click)="prolongStore()" matBadge="30" matBadgePosition="after" matBadgeColor="warn"
+            mat-raised-button style="height: fit-content;" color="primary" [disabled]="inProgress">
             Продлить
           </button>
         </div>
@@ -111,14 +114,33 @@
           <input matInput placeholder="Название магазина на английском" [(ngModel)]="store.name" value="{{store.name}}">
         </mat-form-field>
         <mat-form-field class="container-column">
-          <textarea [(ngModel)]="store.about" value="{{store.about}}" style="height: 50px;" matInput placeholder="Описание" #aboutStore
-            maxlength="128"></textarea>
+          <textarea [(ngModel)]="store.about" value="{{store.about}}" style="height: 50px;" matInput placeholder="Описание"
+            #aboutStore maxlength="128"></textarea>
           <mat-hint align="end">{{aboutStore.value.length}} / 128</mat-hint>
         </mat-form-field>
         <div class="container-column">
-          <button (click)="updateStoreInfo()"mat-raised-button color="primary" [disabled]="!store.isActive">Сохранить</button>
+          <button (click)="updateStoreInfo()" mat-raised-button color="primary" [disabled]="!store.isActive">Сохранить</button>
         </div>
 
+      </mat-expansion-panel>
+      <!-- Telegram settings -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Настройка Telegram
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-slide-toggle color="primary" class="container-column" [(ngModel)]="user.useTelegram">
+          Получать оповещения от
+          <a style="text-decoration: none;color: #32afed;" href="http://t.me/myclients_bot" target="_blank">бота</a>
+        </mat-slide-toggle>
+        <mat-form-field class="container-column">
+          <mat-icon matPrefix>fiber_pin</mat-icon>
+          <input matInput placeholder="Pin-код" [(ngModel)]="user.telegramPin">
+        </mat-form-field>
+        <div class="container-column">
+          <button mat-raised-button (click)="editTelegram()" color="primary">Сохранить</button>
+        </div>
       </mat-expansion-panel>
       <!-- Google calendar -->
       <mat-expansion-panel disabled>
@@ -127,9 +149,9 @@
             Настройка Google
           </mat-panel-title>
         </mat-expansion-panel-header>
-
+      
         <mat-checkbox class="">Синхронизировать</mat-checkbox>
-
+      
         <mat-form-field>
           <input matInput placeholder="gmail">
         </mat-form-field>

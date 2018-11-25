@@ -48,7 +48,7 @@ namespace MyClientsBase.Controllers
         _clientService = clientService;
         _mapper = mapper;
         _appSettings = appSettings.Value;
-        _logger = loggerFactory.CreateLogger(typeof(UsersController));
+        _logger = loggerFactory.CreateLogger(typeof(ClientsController));
       }
       catch (Exception ex)
       {

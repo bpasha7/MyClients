@@ -15,6 +15,8 @@ using Swashbuckle.AspNetCore.Swagger;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using Domain.Interfaces.Services;
 
 namespace MyClientsBase
 {
@@ -41,6 +43,7 @@ namespace MyClientsBase
       //inject app config
       services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
       services.Configure<AppEmail>(Configuration.GetSection("AppSettings:SmtpServer"));
+      services.Configure<TelegramBotConfiguration>(Configuration.GetSection("TelegramBotConfiguration"));
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(options =>
           {
@@ -68,6 +71,11 @@ namespace MyClientsBase
       services.AddScoped<IOrderService, OrderService>();
       services.AddScoped<IBonusService, BonusService>();
       services.AddScoped<IStoreService, StoreService>();
+
+      services.AddSingleton<ITelegramBotService, TelegramBotService>();
+      services.AddSingleton<IHostedService, BackgroundService>();
+      services.AddSingleton<INotificationService, NotificationService>();
+
       services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
       {
         builder.AllowAnyOrigin()
@@ -77,12 +85,14 @@ namespace MyClientsBase
                .Build();
       }));
 
-      
+
       // Register the Swagger generator, defining one or more Swagger documents
+#if DEBUG
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
       });
+#endif
       services.AddMvc();
       //inject automapper
       services.AddAutoMapper();
@@ -115,14 +125,13 @@ namespace MyClientsBase
       {
         app.UseDeveloperExceptionPage();
       }
-     
-      
-
+#if DEBUG
       app.UseSwagger();
       app.UseSwaggerUI(c =>
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
       });
+#endif
       app.UseCors("MyPolicy");
 
       app.UseMvcWithDefaultRoute();

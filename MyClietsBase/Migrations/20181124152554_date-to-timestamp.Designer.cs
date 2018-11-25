@@ -10,9 +10,10 @@ using System;
 namespace MyClientsBase.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181124152554_date-to-timestamp")]
+    partial class datetotimestamp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,7 +156,7 @@ namespace MyClientsBase.Migrations
                     b.Property<string>("Commentary");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp");
 
                     b.Property<int?>("DiscountId");
 

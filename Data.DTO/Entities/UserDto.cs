@@ -17,5 +17,7 @@ namespace Data.DTO.Entities
         public DateTime Birthday { get; set; }
         public decimal BonusBalance { get; set; }
         public bool HasPhoto { get; set; }
+        public bool? UseTelegram { get; set; }
+        public string TelegramPin { get; set; }
     }
 }

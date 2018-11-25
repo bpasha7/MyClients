@@ -9,6 +9,7 @@ import localeRu from '@angular/common/locales/ru';
 import localeRuExtra from '@angular/common/locales/extra/ru';
 registerLocaleData(localeRu, localeRuExtra);
 import { CustomPaginator } from './components/customPaginator';
+import { MomentModule } from 'angular2-moment';
 import {
   MAT_DATE_LOCALE,
   MAT_DATE_FORMATS,
@@ -158,7 +159,8 @@ export class DemoMaterialModule { }
     ClipboardModule,
     MatTableModule,
     MatSortModule,
-    ChartsModule
+    ChartsModule,
+    MomentModule
   ],
   entryComponents: [
     ClientModalComponent,

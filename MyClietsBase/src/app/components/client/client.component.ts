@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DatePipe } from '@angular/common';
+import { DateFormatPipe } from 'angular2-moment';
 import { Client, Order, Orders, Product } from '../../models/index';
 import { ClientService, UserService } from '../../services/index';
 import { OrderModalComponent, PhotoModalComponent, ClientModalComponent } from '../modals/index';
@@ -70,6 +71,8 @@ export class ClientComponent implements OnInit {
             data => {
                 this.client = data.json().client;
                 this.orders = data.json().orders;
+                // const moment = require('moment');
+                // console.info(moment(this.orders.current[1].date, 'YYYY-MM-DD HH:mm'));
                 this.filterOrders();
                 // concat photo url
                 this.photo = this.config.photoUrl + localStorage.getItem('userHash') + '/' + this.client.id + '.jpg';

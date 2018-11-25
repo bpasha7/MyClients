@@ -28,7 +28,7 @@ namespace MyClientsBase.Controllers
 
         if (order == null || orderDto.ProductsId == null)
           throw new AppException("Неверный данные!");
-        order.Date = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Parse(orderDto.Date.ToString()), "Pacific Standard Time", "UTC");
+        //order.Date = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Parse(orderDto.Date.ToString()), "Pacific Standard Time", "UTC");
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         order.UserId = userId;
        
@@ -37,8 +37,8 @@ namespace MyClientsBase.Controllers
           order.Prepayment = new OrderPrepayment
           {
             Total = orderDto.Prepay,
-            Date = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Parse(orderDto.DatePrepay.ToString()), "Pacific Standard Time", "UTC")
-        };
+            Date = orderDto.DatePrepay//TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Parse(orderDto.DatePrepay.ToString()), "Pacific Standard Time", "UTC")
+          };
         }
 
         if (order.DiscountId == 0)
@@ -87,7 +87,7 @@ namespace MyClientsBase.Controllers
 
         if (order == null || orderDto.ProductsId == null)
           throw new AppException("Неверный данные!");
-        order.Date = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Parse(orderDto.Date.ToString()), "Pacific Standard Time", "UTC");
+        //order.Date = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Parse(orderDto.Date.ToString()), "Pacific Standard Time", "UTC");
         var userId = Convert.ToInt32(User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
         if (order.UserId != userId)
@@ -102,8 +102,8 @@ namespace MyClientsBase.Controllers
           op = new OrderPrepayment
           {
             Total = orderDto.Prepay,
-            Date = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Parse(orderDto.DatePrepay.ToString()), "Pacific Standard Time", "UTC")
-        };
+            Date = orderDto.DatePrepay//TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Parse(orderDto.DatePrepay.ToString()), "Pacific Standard Time", "UTC")
+          };
           //order.Prepayment = op;
         }
 

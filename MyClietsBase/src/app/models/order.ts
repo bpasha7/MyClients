@@ -5,7 +5,7 @@ export class Order {
     id: number;
     location: string;
     commentary: string;
-    //productId: number;
+    // productId: number;
     total: number;
     prepay: number;
     userId: number;
