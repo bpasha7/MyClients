@@ -33,6 +33,8 @@ namespace Data.EF.Entities
 
         public bool? UseTelegram { get; set; }
         public long TelegramChatId { get; set; }
+
+        public int TimeZoneOffset { get; set; }
         [NotMapped]
         public string TelegramPin { get
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Domain.Interfaces.Notifications;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Services
@@ -8,6 +9,6 @@ namespace Domain.Interfaces.Services
         void Start();
         void Stop();
         Task SendMessage(long id, string text);
-        Task SendMessages(IDictionary<long, string> chatMessages);
+        Task SendMessages(IList<INotification> chatMessages);
     }
 }

@@ -1,7 +1,9 @@
+using Data.DTO.Notifications;
 using Data.EF;
 using Data.EF.Entities;
 using Data.EF.UnitOfWork;
 using Data.Reports;
+using Domain.Interfaces.Notifications;
 using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using MyClientsBase.Helpers;
@@ -52,6 +54,8 @@ namespace MyClientsBase.Services
     IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
     IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd);
     bool IncomeBonus(int userId, int type, decimal total, int limit);
+    Task<IList<INotification>> GetNextDayOrdersInfo();
+    void UpdateTimeZone(User user, int timeZoneOffset);
   }
   public class UserService : IUserService
   {
@@ -434,10 +438,25 @@ namespace MyClientsBase.Services
       _repository.Save();
       return user.TelegramChatId;
     }
-    //private void updateUserBalance(int userId)
-    //{
-    //  var user = _repository.Find(u => u.Id == userId);
-    //  var balance = 
-    //}
+
+    public async Task<IList<INotification>> GetNextDayOrdersInfo()
+    {
+      var tomorow = DateTime.Now.AddDays(1).Date;
+      return await _repository.Query(user => user.UseTelegram.HasValue && user.UseTelegram.Value && user.TelegramChatId != 0)
+        .Include(user => user.Orders)
+        .Select(u => new DailyPlanNotification
+        {
+           ChatId = u.TelegramChatId,
+           OrdersCount = u. Orders.Count(order => order.Date.AddHours(u.TimeZoneOffset).Date == tomorow)
+        })
+        .AsNoTracking()
+        .ToListAsync<INotification>();
+    }
+
+    public void UpdateTimeZone(User user, int timeZoneOffset)
+    {
+      user.TimeZoneOffset = timeZoneOffset;
+      _repository.Update(user);
+    }
   }
 }

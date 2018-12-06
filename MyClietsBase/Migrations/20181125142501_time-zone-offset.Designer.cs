@@ -10,8 +10,8 @@ using System;
 namespace MyClientsBase.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181125053000_date-revert")]
-    partial class daterevert
+    [Migration("20181125142501_time-zone-offset")]
+    partial class timezoneoffset
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -336,6 +336,8 @@ namespace MyClientsBase.Migrations
                         .HasColumnType("VARBINARY(128)");
 
                     b.Property<long>("TelegramChatId");
+
+                    b.Property<int>("TimeZoneOffset");
 
                     b.Property<bool?>("UseTelegram");
 

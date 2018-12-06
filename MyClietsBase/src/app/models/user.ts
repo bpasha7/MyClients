@@ -12,4 +12,5 @@ export class User {
     useTelegram: boolean;
     telegramPin: string;
     bonusBalance: number;
+    timeZoneOffset: number;
 }

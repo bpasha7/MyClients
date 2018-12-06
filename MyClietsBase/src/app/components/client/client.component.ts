@@ -1,10 +1,7 @@
 
-import { Component, ViewChild, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DatePipe } from '@angular/common';
-import { DateFormatPipe } from 'angular2-moment';
+import { MatSnackBar, MatDialog} from '@angular/material';
 import { Client, Order, Orders, Product } from '../../models/index';
 import { ClientService, UserService } from '../../services/index';
 import { OrderModalComponent, PhotoModalComponent, ClientModalComponent } from '../modals/index';
@@ -172,7 +169,7 @@ export class ClientComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result === 1) {
-                //temp.date.setHours(temp.date.getHours() + temp.date.getTimezoneOffset() / 60);
+                // temp.date.setHours(temp.date.getHours() + temp.date.getTimezoneOffset() / 60);
                 const currentPos = this.orders.current.findIndex(item => item.id === temp.id);
                 if (currentPos !== -1) {
                     this.orders.current.splice(currentPos, 1);

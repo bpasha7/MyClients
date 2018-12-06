@@ -54,7 +54,9 @@ namespace MyClientsBase.Controllers
     /// Logger
     /// </summary>
     private ILogger _logger;
-
+    /// <summary>
+    /// Notification service
+    /// </summary>
     private INotificationService _notificationService;
 
     public UsersController(IBonusService bonusService, IUserService userService, IOrderService orderService, IMapper mapper, IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory, INotificationService notificationService)
@@ -401,7 +403,7 @@ namespace MyClientsBase.Controllers
     /// <returns>Users properties or bad request with text message</returns>
     [AllowAnonymous]
     [HttpPost("authenticate")]
-    public IActionResult Authenticate([FromBody]UserDto userDto)
+    public async Task<IActionResult> Authenticate([FromBody]UserDto userDto)
     {
       try
       {
@@ -409,6 +411,10 @@ namespace MyClientsBase.Controllers
 
         if (user == null)
           throw new AppException("Неверный логин-пароль!");
+        if(user.TimeZoneOffset != userDto.TimeZoneOffset)
+        {
+          _userService.UpdateTimeZone(user, userDto.TimeZoneOffset);
+        }
         var claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Name),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
@@ -444,6 +450,9 @@ namespace MyClientsBase.Controllers
 
         if (res)
           _logger?.LogInformation($"User #{user.Id}, {_appSettings.Bonuses.Login} bonus incomes");
+
+        if (user.UseTelegram.HasValue && user.UseTelegram.Value)
+          await _notificationService.SendTelegramNotification(user.TelegramChatId, "Произведен вход в систему.");
 
         return Ok(new
         {

@@ -1,3 +1,4 @@
+using Domain.Interfaces.Notifications;
 using Domain.Interfaces.Services;
 using Microsoft.Extensions.Options;
 using MyClientsBase.Helpers;
@@ -29,20 +30,23 @@ namespace MyClientsBase.Services
       if (message?.Type == MessageType.Text)
       {
         var plainTextBytes = System.Text.Encoding.UTF8.GetBytes($"{message.Chat.Id}");
-        await _bot.SendTextMessageAsync(message.Chat.Id, $"Введите в личном кабинете <b>{Convert.ToBase64String(plainTextBytes)}</b>", ParseMode.Html );
+        await SendMessage(message.Chat.Id, $"Введите в личном кабинете");
+        await SendMessage(message.Chat.Id, $"<b>{Convert.ToBase64String(plainTextBytes)}</b>");
       }
     }
 
     public async Task SendMessage(long id, string text)
     {
-        await _bot.SendTextMessageAsync(id, text, ParseMode.Html);  
+      if (id == 0)
+        return;
+      await _bot.SendTextMessageAsync(id, text, ParseMode.Html);  
     }
 
-    public async Task SendMessages(IDictionary<long, string> chatMessages)
+    public async Task SendMessages(IList<INotification> chatMessages)
     {
       foreach (var item in chatMessages)
       {
-        await _bot.SendTextMessageAsync(item.Key, $"{item.Value}", ParseMode.Html);
+        await SendMessage(item.ChatId, $"{item.Message}");
       }
     }
 

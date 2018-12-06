@@ -38,7 +38,7 @@ namespace MyClientsBase
     {
       var connection = Configuration["AppSettings:Connection"];
       services.AddDbContext<ApplicationDbContext>(options =>
-                  options.UseMySQL(connection, b => b.MigrationsAssembly("MyClientsBase")));
+                  options.UseMySQL(connection, b => b.MigrationsAssembly("MyClientsBase")), optionsLifetime: ServiceLifetime.Singleton);
 
       //inject app config
       services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
@@ -74,7 +74,7 @@ namespace MyClientsBase
 
       services.AddSingleton<ITelegramBotService, TelegramBotService>();
       services.AddSingleton<IHostedService, BackgroundService>();
-      services.AddSingleton<INotificationService, NotificationService>();
+      services.AddScoped<INotificationService, NotificationService>();
 
       services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
       {

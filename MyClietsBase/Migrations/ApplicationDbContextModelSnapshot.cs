@@ -336,6 +336,8 @@ namespace MyClientsBase.Migrations
 
                     b.Property<long>("TelegramChatId");
 
+                    b.Property<int>("TimeZoneOffset");
+
                     b.Property<bool?>("UseTelegram");
 
                     b.HasKey("Id");

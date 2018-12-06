@@ -1,11 +1,8 @@
 ﻿using Domain.Interfaces.Notifications;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Data.Notifications
+namespace Data.DTO.Notifications
 {
-    public class DailyOrdersNotification : INotification
+    public class DailyPlanNotification : INotification
     {
         public long ChatId { get; set; }
         public int OrdersCount { get; set; }

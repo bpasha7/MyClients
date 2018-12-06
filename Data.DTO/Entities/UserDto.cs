@@ -19,5 +19,6 @@ namespace Data.DTO.Entities
         public bool HasPhoto { get; set; }
         public bool? UseTelegram { get; set; }
         public string TelegramPin { get; set; }
+        public int TimeZoneOffset { get; set; }
     }
 }
