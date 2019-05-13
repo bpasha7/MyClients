@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  myclientsbase:
+    image: ${DOCKER_REGISTRY}myclientsbase
+    build:
+      context: .
+      dockerfile: MyClietsBase/Dockerfile
