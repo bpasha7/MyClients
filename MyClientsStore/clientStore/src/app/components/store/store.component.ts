@@ -7,6 +7,8 @@ import { PreviewComponent } from 'src/app/components/modal/preview/preview.compo
 import { AppConfig } from '../../app.config';
 import { MessageComponent } from '../modal/message/message.component';
 import { Store } from '../../models/store';
+import { Cart } from '../../models/cart';
+import { CartItem } from '../../models/cartItem';
 
 @Component({
   selector: 'app-store',
@@ -17,6 +19,7 @@ export class StoreComponent implements OnInit {
   public photoPath = '';
   public avatar = '';
   public store: Store;
+  public cart: Cart;
   constructor(
     public previewDialog: MatDialog,
     private _storeService: StoreService,
@@ -24,6 +27,7 @@ export class StoreComponent implements OnInit {
     private config: AppConfig
   ) {
     this.store = new Store();
+    this.cart = new Cart();
   }
 
   ngOnInit() {
@@ -66,6 +70,14 @@ export class StoreComponent implements OnInit {
         src: this.getUrl(product.id) // this.photoPath + product.id + '_p.jpg'
       }
     });
+  }
+
+  addProductToChart(product: Product, qty: number = 1) {
+    this.cart.addItem(product, qty);
+  }
+
+  removeFromCart(id: number) {
+    this.cart.deleteItem(id);
   }
 
   showMessageForm() {

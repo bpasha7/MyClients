@@ -28,12 +28,17 @@ import {
   MatIconModule,
   MatFormFieldModule,
   MatInputModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatBadgeModule,
+  MatListModule,
+  MatSidenavModule,
+  MatDividerModule
 } from '@angular/material';
 
 import { PreviewComponent } from './components/modal/preview/preview.component';
 import { StoreComponent } from './components/store/store.component';
 import { MessageComponent } from './components/modal/message/message.component';
+import { StoreItemComponent } from './store-item/store-item.component';
 
 @NgModule({
   exports: [
@@ -42,6 +47,7 @@ import { MessageComponent } from './components/modal/message/message.component';
     MatGridListModule,
     MatButtonModule,
     MatChipsModule,
+    MatBadgeModule,
     MatToolbarModule,
     MatDialogModule,
     MatTabsModule,
@@ -49,9 +55,11 @@ import { MessageComponent } from './components/modal/message/message.component';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSnackBarModule
-  ],
-  declarations: []
+    MatSnackBarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatDividerModule
+  ]
 })
 export class DemoMaterialModule { }
 
@@ -60,7 +68,8 @@ export class DemoMaterialModule { }
     AppComponent,
     StoreComponent,
     PreviewComponent,
-    MessageComponent
+    MessageComponent,
+    StoreItemComponent
   ],
   entryComponents: [
     PreviewComponent,

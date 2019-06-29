@@ -1,81 +1,109 @@
-<mat-toolbar color="primary">Store: {{store.userName}}</mat-toolbar>
-<div class="profile">
-  <div class="bounds">
-    <div class="content" fxLayout="row" fxLayout.xs="column" fxFlexFill>
-      <div fxFlex="20" class="sec1" fxFlex.xs="40">
-        <!-- avatar and botton for mobile -->
-        <div class="header" fxLayout.xs="row" fxLayout="column">
-          <div fxFlex="100" class="avatar-block" fxFlex.xs="40">
-            <div  class="avatar" [style.backgroundImage]="avatar">
+<mat-toolbar color="primary">
+  <div style="width: 100%;">
+    <mat-icon style="vertical-align: middle;">store</mat-icon>: {{store.userName}}
+  </div>
+  <button mat-icon-button (click)="snav.toggle()">
+    <mat-icon matBadge="{{cart.items?.length}}" matBadgeColor="accent">shopping_cart</mat-icon>
+  </button>
+
+</mat-toolbar>
+<mat-sidenav-container >
+    <mat-sidenav #snav [mode]="'over'" [position]="'end'" style="height: calc(100vh - 64px); width: 30%; min-width: 250px;">
+        <mat-list>
+            <h3 mat-subheader>Позиции</h3>
+            <mat-list-item *ngFor="let item of cart.items">
+              <mat-icon mat-list-icon>local_offer</mat-icon>
+              <!-- <div class="cart-item-avatar" [style.backgroundImage]="getUrl(item.product.id)"></div> -->
+              <h4 mat-line>{{item.product.name}}</h4>
+              <span mat-line> {{item.product.price}}&#8381;
+                <button mat-icon-button (click)="addProductToChart(item.product, -1)">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                {{item.qty}}
+                <button mat-icon-button (click)="addProductToChart(item.product)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </span>
+              <button mat-icon-button color="warn" (click)="removeFromCart(item.product.id)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-icon>forward</mat-icon> {{cart.total}}
+          </mat-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+  <div class="profile">
+    <div class="bounds">
+      <div class="content" fxLayout="row" fxLayout.xs="column" fxFlexFill>
+        <div fxFlex="20" class="sec1" fxFlex.xs="40">
+          <!-- avatar and botton for mobile -->
+          <div class="header" fxLayout.xs="row" fxLayout="column">
+            <div fxFlex="100" class="avatar-block" fxFlex.xs="40">
+              <div  class="avatar" [style.backgroundImage]="avatar">
+              </div>
+              <div class="contact-block">
+                  <button mat-icon-button>
+                      <mat-icon>phone</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="showMessageForm()">
+                      <mat-icon color="primary">email</mat-icon>
+                  </button>
+              </div>
             </div>
-            <div class="contact-block">
-                <button mat-icon-button>
-                    <mat-icon>phone</mat-icon>
-                </button>
-                <button mat-icon-button (click)="showMessageForm()">
-                    <mat-icon color="primary">email</mat-icon>
-                </button>
+            <div class="horizontal-info" fxFlex.xs="60" fxFlex="0">
+              <section class="mat-typography">
+                <h2 style="margin-left: 10px;">
+                  {{store.name}}
+                </h2>
+              </section>
+              <div class="contact-block">
+                  <button mat-icon-button>
+                      <mat-icon>phone</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="showMessageForm()">
+                      <mat-icon color="primary">email</mat-icon>
+                  </button>
+
+              </div>
+              <!-- <button style="display: block;
+                margin-left: 10px;
+                padding: 0 30px 0 30px;" (click)="showMessageForm()" mat-raised-button color="primary">Написать</button> -->
             </div>
           </div>
-          <div class="horizontal-info" fxFlex.xs="60" fxFlex="0">
-            <section class="mat-typography">
-              <h2 style="margin-left: 10px;">
-                {{store.name}}
-              </h2>
-            </section>
-            <div class="contact-block">
-                <button mat-icon-button>
-                    <mat-icon>phone</mat-icon>
-                </button>
-                <button mat-icon-button (click)="showMessageForm()">
-                    <mat-icon color="primary">email</mat-icon>
-                </button>
-
-            </div>
-            <!-- <button style="display: block;
-              margin-left: 10px;
-              padding: 0 30px 0 30px;" (click)="showMessageForm()" mat-raised-button color="primary">Написать</button> -->
+        </div>
+        <div fxFlex="80" class="sec2" fxFlex.xs="60">
+          <!-- <div style="height: 100px;" fxLayout.xs="row" fxLayout="column"> -->
+          <section class="mat-typography">
+            <h3 style="text-align: -webkit-auto; ">
+              {{store.about}}
+            </h3>
+          </section>
+          <div class="stats">
+            <!-- <span-list> -->
+            <span>
+              Товаров&nbsp;
+              <b>{{store?.products?.length}}</b></span>
+            <span>Средняя цена:&nbsp;
+              <b>{{store?.avarage}}</b>
+            </span>
+            <span><mat-icon style="color: green; vertical-align: bottom;">remove_red_eye</mat-icon>&nbsp;
+              <b>{{store?.visits}}</b>
+            </span>
           </div>
         </div>
-      </div>
-      <div fxFlex="80" class="sec2" fxFlex.xs="60">
-        <!-- <div style="height: 100px;" fxLayout.xs="row" fxLayout="column"> -->
-        <section class="mat-typography">
-          <h3 style="text-align: -webkit-auto; ">
-            {{store.about}}
-          </h3>
-        </section>
-        <div class="stats">
-          <!-- <span-list> -->
-          <span>
-            Товаров&nbsp;
-            <b>{{store?.products?.length}}</b></span>
-          <span>Средняя цена:&nbsp;
-            <b>{{store?.avarage}}</b>
-          </span>
-          <span><mat-icon style="color: green; vertical-align: bottom;">remove_red_eye</mat-icon>&nbsp;
-            <b>{{store?.visits}}</b>
-          </span>
-          <!-- </span-list> -->
-          <!-- <span>Всего товаров {{store.products.length}}</span>
-            <span>Средняя цена {{store.products.length}}</span> -->
-        </div>
-
-
-        <!-- </div> -->
       </div>
     </div>
   </div>
-  <mat-grid-list cols="3" rowHeight="1:1" gutterSize="5px">
-    <mat-grid-tile class="item" *ngFor="let product of store.products" [colspan]="1" [rowspan]="1">
-      <div class="product" (click)="showInfo(product)" [style.backgroundImage]="getUrl(product.id)">
-        <div class="product-info">
-          <section class="mat-typography">
-            <h3>{{product.name}}</h3>
-            <p>{{product.price}}&#8381;</p>
-          </section>
-        </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-</div>
+  <div class="main-grid">
+      <!-- (click)="showInfo(product)" -->
+    <store-item 
+      *ngFor="let product of store.products"
+      (onAddToChart)="addProductToChart(product)"
+      [host]="photoPath"
+      [product]="product">
+    </store-item>
+  </div>
+</mat-sidenav-content>
+</mat-sidenav-container>

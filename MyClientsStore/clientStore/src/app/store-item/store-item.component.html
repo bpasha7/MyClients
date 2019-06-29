@@ -1,0 +1,29 @@
+<!--class="product" (click)="showInfo(product)"   -->
+<div
+[ngClass]="{'flipper': true, 'flipper-active': showDescription}"
+ (click)="showDescription = !showDescription">
+  <div [style.backgroundImage]="getUrl(product.id)"
+  class="product">
+    <div class="product-info" >
+      <section class="mat-typography">
+        <h3>{{product.name}}</h3>
+        <p>{{product.price}}&#8381;</p>
+      </section>
+    </div>
+  </div>
+
+  <div class="product-card-back">
+    <div class="product-description">
+        <h2 style="text-align: center;">{{product.name}}</h2>
+        <p class="price">{{product.price}}&#8381;</p>
+        <p class="description">{{product.description}}</p>
+        <div>
+          <button mat-button color="primary" (click)="addProductToChart()" *ngIf="showDescription">
+              В корзину
+              <mat-icon>add_shopping_cart</mat-icon>
+          </button>   
+        </div>
+    </div>
+  </div>
+</div>
+
