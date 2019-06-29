@@ -9,5 +9,8 @@ export class User {
     email: string;
     name: string;
     hasPhoto: boolean;
+    useTelegram: boolean;
+    telegramPin: string;
     bonusBalance: number;
+    timeZoneOffset: number;
 }

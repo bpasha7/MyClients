@@ -187,4 +187,26 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  editTelegram() {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      data: {
+        title: 'Подтвердите',
+        text: 'Внести изменения в настройки Telegram?',
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 1) {
+        this.userService.editTelegram(this.user.telegramPin, this.user.useTelegram).subscribe(
+          data => {
+            this.userService.showSnackBar('Изменения приняты!');
+          },
+          error => {
+            this.userService.responseErrorHandle(error);
+          }
+        );
+      }
+    });
+  }
+
 }

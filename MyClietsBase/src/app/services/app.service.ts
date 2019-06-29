@@ -40,7 +40,7 @@ export class AppService {
         const data = {
             type: 'snack',
             text: message,
-        }
+        };
         this.messageSource.next(data);
     }
     public responseErrorHandle(error: any) {

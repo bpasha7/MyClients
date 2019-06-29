@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.loading = true;
+    this.user.timeZoneOffset = new Date().getTimezoneOffset() / 60;
     this.userService.login(this.user).subscribe(
       data => {
         const user = data.json();

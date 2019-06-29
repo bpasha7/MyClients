@@ -31,6 +31,23 @@ namespace Data.EF.Entities
         public decimal BonusBalance { get; set; }
         public bool HasPhoto { get; set; }
 
+        public bool? UseTelegram { get; set; }
+        public long TelegramChatId { get; set; }
+
+        public int TimeZoneOffset { get; set; }
+        [NotMapped]
+        public string TelegramPin { get
+            {
+                if (TelegramChatId == 0)
+                    return "";
+                else
+                {
+                    var plainTextBytes = System.Text.Encoding.UTF8.GetBytes($"{TelegramChatId}");
+                    return $"{Convert.ToBase64String(plainTextBytes)}";
+                }
+            }
+        }
+
         [Column(TypeName = "VARBINARY(128)")]
         public byte[] PasswordHash { get; set; }
         [Column(TypeName = "VARBINARY(128)")]

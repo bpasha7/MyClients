@@ -1,4 +1,4 @@
-.avatar{
+.avatar {
     height: 60px;
     width: 60px;
     background-size: cover;
@@ -20,8 +20,18 @@
     flex-direction: row;
     margin-bottom: 10px
 }
-.verify-icon{
+.verify-icon {
     vertical-align: middle;
     color: green;
     margin-right: 5px;
+}
+.bot-link {
+    animation-name: example;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    text-decoration: none;
+}
+@keyframes example {
+    from {color: #32afed;}
+    to {color: #215372;}
 }

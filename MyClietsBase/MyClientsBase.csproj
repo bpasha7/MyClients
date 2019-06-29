@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <TypeScriptCompileBlocked>True</TypeScriptCompileBlocked>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
     <DockerTargetOS>Windows</DockerTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
@@ -29,6 +32,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.11" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore.Design" Version="6.10.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="NLog" Version="4.5.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.1.0" />

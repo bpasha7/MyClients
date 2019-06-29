@@ -2,6 +2,7 @@ using AutoMapper;
 using Data.DTO.Entities;
 using Data.EF.Entities;
 using Data.Reports;
+using System;
 
 namespace MyClientsBase.Helpers
 {
@@ -24,10 +25,11 @@ namespace MyClientsBase.Helpers
       CreateMap<Discount, DiscountDto>();
       CreateMap<DiscountDto, Discount>();
 
-      CreateMap<Order, OrderDto>();
+      CreateMap<Order, OrderDto>()
+        .ForMember(o => o.Date, b => b.MapFrom(z => DateTime.SpecifyKind(z.Date, DateTimeKind.Utc)));
       CreateMap<OrderDto, Order>();
-
-      CreateMap<Order, OrderInfoDto>();
+      CreateMap<Order, OrderInfoDto>()
+        .ForMember(o => o.Date, b => b.MapFrom(z => DateTime.SpecifyKind(z.Date, DateTimeKind.Utc)));
 
 
       //CreateMap<ProductsReport, ProductsReportDto>();

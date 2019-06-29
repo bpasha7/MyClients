@@ -158,7 +158,7 @@ export class DemoMaterialModule { }
     ClipboardModule,
     MatTableModule,
     MatSortModule,
-    ChartsModule
+    ChartsModule,
   ],
   entryComponents: [
     ClientModalComponent,

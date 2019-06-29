@@ -53,15 +53,15 @@ export class OrderModalComponent implements OnInit {
 
     ngOnInit(): void {
         this.photoDir = this.config.photoUrl + localStorage.getItem('userHash') + '/';
-        //const myDate = new Date();
-        //this.order.date = new Date(this.order.date);
-        //this.order.datePrepay = new Date(this.order.datePrepay);
+        // const myDate = new Date();
+        // this.order.date = new Date(this.order.date);
+        // this.order.datePrepay = new Date(this.order.datePrepay);
         // tslint:disable-next-line:max-line-length
         // because angular bug(:)
-        const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-        if (iOS) {
-            this.order.date.setHours(this.order.date.getHours() + this.order.date.getTimezoneOffset() / 60);
-        }
+        // const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+        // if (iOS) {
+        //     this.order.date.setHours(this.order.date.getHours() + this.order.date.getTimezoneOffset() / 60);
+        // }
         this.time = ('0' + this.order.date.getHours()).slice(-2) + ':' + ('0' + this.order.date.getMinutes()).slice(-2);
         this.productsSelectCtrl = new FormControl();
         this.initProducts();

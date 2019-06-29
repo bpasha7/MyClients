@@ -71,7 +71,15 @@ export class UserService extends AppService {
      * @param password 
      */
     editPassword(password: string) {
-        return this.http.patch(this.config.apiUrl + this.controller + '/password?password='+ password, null, this.jwt());
+        return this.http.patch(this.config.apiUrl + this.controller + '/password?password=' + password, null, this.jwt());
+    }
+    /**
+     * Edit Telegram settings
+     * @param pin telegram pin
+     * @param active telegram mode
+     */
+    editTelegram(pin: string, active: boolean) {
+        return this.http.patch(this.config.apiUrl + this.controller + '/telegram?pin=' + pin + '&active=' + active, null, this.jwt());
     }
     /**
      * 

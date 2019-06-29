@@ -1,7 +1,9 @@
+using Data.DTO.Notifications;
 using Data.EF;
 using Data.EF.Entities;
 using Data.EF.UnitOfWork;
 using Data.Reports;
+using Domain.Interfaces.Notifications;
 using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using MyClientsBase.Helpers;
@@ -26,6 +28,13 @@ namespace MyClientsBase.Services
     string Confirm(string userLogin);
     User GetUserInfo(int userId);
     void UpdateUserPassword(int userId, string password);
+    /// <summary>
+    /// Update user Telegram settings
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="pin"></param>
+    /// <param name="active"></param>
+    long UpdateUserTelegramSettings(int userId, string pin, bool active);
     void CreateProduct(Product product);
     void SetAsRemovedProduct(int userId, int productId);
     void UpdateProduct(Product product, int done);
@@ -45,6 +54,8 @@ namespace MyClientsBase.Services
     IList<Outgoing> GetOutgoings(int userId, DateTime begin, DateTime end);
     IList<MonthReport> GenerateOutgoingsReport(int userId, DateTime dateStart, DateTime dateEnd);
     bool IncomeBonus(int userId, int type, decimal total, int limit);
+    Task<IList<INotification>> GetNextDayOrdersInfo();
+    void UpdateTimeZone(User user, int timeZoneOffset);
   }
   public class UserService : IUserService
   {
@@ -413,10 +424,39 @@ namespace MyClientsBase.Services
       _repository.Save();
       return user.Name;
     }
-    //private void updateUserBalance(int userId)
-    //{
-    //  var user = _repository.Find(u => u.Id == userId);
-    //  var balance = 
-    //}
+
+    public long UpdateUserTelegramSettings(int userId, string pin, bool active)
+    {
+      if (string.IsNullOrWhiteSpace(pin))
+        throw new AppException("Pin содержит пробелы или пустой!");
+
+      var base64EncodedBytes = Convert.FromBase64String(pin);
+      var user = _repository.Find(u => u.Id == userId);
+      user.TelegramChatId = Convert.ToInt64(Encoding.UTF8.GetString(base64EncodedBytes));
+      user.UseTelegram = active;
+
+      _repository.Save();
+      return user.TelegramChatId;
+    }
+
+    public async Task<IList<INotification>> GetNextDayOrdersInfo()
+    {
+      var tomorow = DateTime.Now.AddDays(1).Date;
+      return await _repository.Query(user => user.UseTelegram.HasValue && user.UseTelegram.Value && user.TelegramChatId != 0)
+        .Include(user => user.Orders)
+        .Select(u => new DailyPlanNotification
+        {
+           ChatId = u.TelegramChatId,
+           OrdersCount = u. Orders.Count(order => order.Date.AddHours(u.TimeZoneOffset).Date == tomorow)
+        })
+        .AsNoTracking()
+        .ToListAsync<INotification>();
+    }
+
+    public void UpdateTimeZone(User user, int timeZoneOffset)
+    {
+      user.TimeZoneOffset = timeZoneOffset;
+      _repository.Update(user);
+    }
   }
 }
